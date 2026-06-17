@@ -1,0 +1,141 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+<title>세왕상사 거래처 번호 입력</title>
+<style>
+  :root{ --navy:#0f1d3a; --gold:#c8a96a; --red:#c44a26; --line:#e6e6e6; }
+  *{box-sizing:border-box; -webkit-tap-highlight-color:transparent;}
+  body{margin:0; font-family:-apple-system,'Apple SD Gothic Neo','Noto Sans KR',sans-serif;
+       background:#f4f5f7; color:#1e2026;}
+  .top{background:linear-gradient(135deg,#0a1426,#1c3868); color:#fff; padding:18px 18px 16px;}
+  .top .brand{font-size:12px; letter-spacing:3px; color:var(--gold); font-weight:700;}
+  .top h1{font-size:18px; margin:6px 0 2px;}
+  .top p{font-size:12px; color:rgba(255,255,255,.7); margin:0;}
+  .wrap{max-width:520px; margin:0 auto; padding:16px;}
+  .card{background:#fff; border:1px solid var(--line); border-radius:14px; padding:16px; margin-bottom:14px;
+        box-shadow:0 1px 4px rgba(0,0,0,.04);}
+  label{display:block; font-size:13px; font-weight:700; color:#3a3f48; margin:12px 0 6px;}
+  label:first-child{margin-top:0;}
+  input,select{width:100%; font-size:17px; padding:13px 14px; border:1.5px solid #dfe3e8;
+        border-radius:11px; background:#fff; outline:none;}
+  input:focus,select:focus{border-color:var(--navy);}
+  .me{background:#fdf6e6; border:1px solid var(--gold);}
+  .me label{color:#8b1a1a;}
+  .row2{display:flex; gap:10px;}
+  .row2>div{flex:1;}
+  .btn{width:100%; font-size:18px; font-weight:800; color:#fff; background:var(--navy);
+       border:none; border-radius:12px; padding:16px; margin-top:18px; letter-spacing:.5px;}
+  .btn:active{opacity:.85;}
+  .btn[disabled]{background:#9aa0a8;}
+  .count{text-align:center; font-size:13px; color:#6a6f78; margin:14px 0 4px;}
+  .count b{color:var(--red); font-size:16px;}
+  .toast{position:fixed; left:50%; bottom:24px; transform:translateX(-50%) translateY(20px);
+         background:#1e6b34; color:#fff; padding:12px 20px; border-radius:24px; font-size:15px; font-weight:700;
+         opacity:0; transition:.25s; pointer-events:none; box-shadow:0 4px 12px rgba(0,0,0,.2);}
+  .toast.show{opacity:1; transform:translateX(-50%) translateY(0);}
+  .toast.err{background:#b3261e;}
+  .hint{font-size:11px; color:#9aa0a8; margin-top:5px;}
+</style>
+</head>
+<body>
+  <div class="top">
+    <div class="brand">SEWANG</div>
+    <h1>거래처 번호 입력</h1>
+    <p>매장명·직책·이름·전화번호 입력 후 [추가]를 누르면 명단에 바로 저장됩니다.</p>
+  </div>
+  <div class="wrap">
+    <div class="card me">
+      <label>입력하는 분 (본인 이름) — 한 번만</label>
+      <input id="inputter" placeholder="예: 임창수" autocomplete="off">
+      <div class="hint">한 번 적어두면 계속 유지됩니다. 영업·배송 사원 공통.</div>
+    </div>
+
+    <div class="card">
+      <label>거래 상태</label>
+      <select id="status">
+        <option value="거래예정">거래예정 (영업 중·신규 발굴)</option>
+        <option value="거래중">거래중 (기존 거래처)</option>
+      </select>
+      <div class="hint">영업 중인 매장은 '거래예정'으로 두면 비교표에서 거래중과 구분됩니다.</div>
+      <label>매장명</label>
+      <input id="shop" placeholder="예: ○○상회" autocomplete="off">
+      <div class="row2">
+        <div>
+          <label>직책</label>
+          <select id="role">
+            <option value="">선택</option>
+            <option>점주</option><option>사장</option><option>매니저</option>
+            <option>담당</option><option>기타</option>
+          </select>
+        </div>
+        <div>
+          <label>이름</label>
+          <input id="name" placeholder="예: 김철수" autocomplete="off">
+        </div>
+      </div>
+      <label>전화번호</label>
+      <input id="phone" type="tel" inputmode="numeric" placeholder="010-0000-0000" autocomplete="off">
+      <button class="btn" id="add">+ 추가</button>
+    </div>
+
+    <div class="count">오늘 추가한 건수 <b id="cnt">0</b></div>
+  </div>
+  <div class="toast" id="toast"></div>
+
+<script>
+  // ★ 배포 후 Apps Script 웹 앱 URL(.../exec)을 여기에 붙여넣으세요.
+  var SCRIPT_URL = "https://script.google.com/macros/s/AKfycbyJ8-w8S1LK9_lB36t-2oWgBCqki90PIE5ogTNfnQP5ffNTORRqfUyerlpsnYgDlW3B/exec";
+
+  var $ = function(id){ return document.getElementById(id); };
+  // 입력자 이름 기억
+  $('inputter').value = localStorage.getItem('sewang_inputter') || "";
+  $('inputter').addEventListener('change', function(){
+    localStorage.setItem('sewang_inputter', this.value.trim());
+  });
+  var todayKey = 'sewang_cnt_' + new Date().toISOString().slice(0,10);
+  $('cnt').textContent = localStorage.getItem(todayKey) || 0;
+
+  function toast(msg, err){
+    var t=$('toast'); t.textContent=msg; t.className='toast show'+(err?' err':'');
+    setTimeout(function(){ t.className='toast'+(err?' err':''); }, 1600);
+  }
+  function fmtPhone(v){ return v.replace(/[^0-9]/g,''); }
+
+  $('phone').addEventListener('input', function(){
+    var n=fmtPhone(this.value);
+    if(n.length>=11) this.value=n.replace(/(\d{3})(\d{4})(\d{4})/,'$1-$2-$3');
+    else if(n.length>=7) this.value=n.replace(/(\d{3})(\d{3,4})/,'$1-$2');
+    else this.value=n;
+  });
+
+  $('add').addEventListener('click', function(){
+    var inputter=$('inputter').value.trim();
+    var status=$('status').value;
+    var shop=$('shop').value.trim();
+    var name=$('name').value.trim();
+    var role=$('role').value;
+    var phone=fmtPhone($('phone').value);
+    if(!shop){ toast('매장명을 입력하세요', true); return; }
+    if(phone.length<10){ toast('전화번호를 확인하세요', true); return; }
+    if(SCRIPT_URL.indexOf('여기에_')===0){ toast('SCRIPT_URL 미설정', true); return; }
+
+    var btn=$('add'); btn.disabled=true; btn.textContent='저장 중...';
+    fetch(SCRIPT_URL, {
+      method:'POST', mode:'no-cors',
+      headers:{'Content-Type':'text/plain;charset=utf-8'},
+      body: JSON.stringify({inputter:inputter, status:status, shop:shop, role:role, name:name, phone:phone})
+    }).then(function(){
+      var c=(parseInt(localStorage.getItem(todayKey)||0,10))+1;
+      localStorage.setItem(todayKey, c); $('cnt').textContent=c;
+      toast('✓ 저장됨 — ' + shop + ' (' + status + ')');
+      $('shop').value=''; $('name').value=''; $('role').value=''; $('phone').value='';
+      $('shop').focus();
+    }).catch(function(){
+      toast('저장 실패 — 네트워크 확인', true);
+    }).then(function(){ btn.disabled=false; btn.textContent='+ 추가'; });
+  });
+</script>
+</body>
+</html>
