@@ -15,7 +15,82 @@
   window.dataLayer = window.dataLayer || [];
   function gtag(){dataLayer.push(arguments);}
   gtag('js', new Date());
-  gtag('config', 'G-YVF4M8V5JD', { anonymize_ip: true });
+  
+  // v2026-06-24: URL 파라미터에서 거래처 식별자 + 캠페인 추출
+  (function(){
+    var params = new URLSearchParams(window.location.search);
+    var customerId = params.get('u') || params.get('cid') || params.get('user') || '';
+    var campaign = params.get('utm_campaign') || params.get('c') || '';
+    var source = params.get('utm_source') || params.get('s') || '';
+    var medium = params.get('utm_medium') || params.get('m') || '';
+    
+    // localStorage에 first-seen 저장 (재방문 식별)
+    if (customerId) {
+      try {
+        if (!localStorage.getItem('sw_uid')) {
+          localStorage.setItem('sw_uid', customerId);
+          localStorage.setItem('sw_first_seen', new Date().toISOString());
+        }
+        localStorage.setItem('sw_last_seen', new Date().toISOString());
+      } catch(e){}
+    }
+    var storedId = '';
+    try { storedId = localStorage.getItem('sw_uid') || ''; } catch(e){}
+    var finalId = customerId || storedId;
+    
+    var config = { anonymize_ip: false };
+    if (finalId) {
+      config.user_id = finalId;
+      config.customer_id = finalId;  // custom dimension (콘솔에서 등록 필요)
+    }
+    if (campaign) config.campaign = campaign;
+    if (source) config.campaign_source = source;
+    if (medium) config.campaign_medium = medium;
+    gtag('config', 'G-YVF4M8V5JD', config);
+    
+    // 첫 진입 이벤트 (URL 파라미터 동반 시)
+    if (customerId) {
+      gtag('event', 'visit_with_id', {
+        customer_id: customerId,
+        campaign: campaign,
+        source: source,
+        medium: medium
+      });
+    }
+    
+    // 체류 시간 이벤트 (30s / 60s / 120s)
+    [30, 60, 120].forEach(function(s){
+      setTimeout(function(){
+        gtag('event', 'dwell_' + s + 's', { customer_id: finalId, sec: s });
+      }, s * 1000);
+    });
+    
+    // 스크롤 깊이 (50% / 75% / 100%)
+    var sentDepth = {};
+    window.addEventListener('scroll', function(){
+      var h = document.documentElement;
+      var pct = Math.round(((h.scrollTop + window.innerHeight) / h.scrollHeight) * 100);
+      [50, 75, 100].forEach(function(d){
+        if (pct >= d && !sentDepth[d]) {
+          sentDepth[d] = true;
+          gtag('event', 'scroll_depth', { depth: d, customer_id: finalId });
+        }
+      });
+    }, { passive: true });
+    
+    // 외부 링크 클릭 (전화·웹사이트 등)
+    document.addEventListener('click', function(e){
+      var a = e.target.closest('a');
+      if (!a) return;
+      var href = a.getAttribute('href') || '';
+      if (/^(tel:|mailto:|https?:\/\/(?!msjung75\.github\.io))/.test(href)) {
+        gtag('event', 'click_external', { 
+          customer_id: finalId, 
+          url: href.substring(0, 200) 
+        });
+      }
+    });
+  })();
 </script>
 
 <style>
@@ -307,9 +382,12 @@ let currentUI = "ko";
 function trackAndDownload(week, lang, url){
   // GA4 익명 이벤트 전송 (누가 받았는지는 수집 안 함, 횟수만 집계)
   if (typeof gtag === "function"){
+    var uid = '';
+    try { uid = localStorage.getItem('sw_uid') || ''; } catch(e){}
     gtag('event', 'report_download', {
       report_week: week,
-      language: lang
+      language: lang,
+      customer_id: uid
     });
   }
   // 실제 파일 다운로드
