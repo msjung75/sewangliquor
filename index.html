@@ -15,82 +15,7 @@
   window.dataLayer = window.dataLayer || [];
   function gtag(){dataLayer.push(arguments);}
   gtag('js', new Date());
-  
-  // v2026-06-24: URL 파라미터에서 거래처 식별자 + 캠페인 추출
-  (function(){
-    var params = new URLSearchParams(window.location.search);
-    var customerId = params.get('u') || params.get('cid') || params.get('user') || '';
-    var campaign = params.get('utm_campaign') || params.get('c') || '';
-    var source = params.get('utm_source') || params.get('s') || '';
-    var medium = params.get('utm_medium') || params.get('m') || '';
-    
-    // localStorage에 first-seen 저장 (재방문 식별)
-    if (customerId) {
-      try {
-        if (!localStorage.getItem('sw_uid')) {
-          localStorage.setItem('sw_uid', customerId);
-          localStorage.setItem('sw_first_seen', new Date().toISOString());
-        }
-        localStorage.setItem('sw_last_seen', new Date().toISOString());
-      } catch(e){}
-    }
-    var storedId = '';
-    try { storedId = localStorage.getItem('sw_uid') || ''; } catch(e){}
-    var finalId = customerId || storedId;
-    
-    var config = { anonymize_ip: false };
-    if (finalId) {
-      config.user_id = finalId;
-      config.customer_id = finalId;  // custom dimension (콘솔에서 등록 필요)
-    }
-    if (campaign) config.campaign = campaign;
-    if (source) config.campaign_source = source;
-    if (medium) config.campaign_medium = medium;
-    gtag('config', 'G-YVF4M8V5JD', config);
-    
-    // 첫 진입 이벤트 (URL 파라미터 동반 시)
-    if (customerId) {
-      gtag('event', 'visit_with_id', {
-        customer_id: customerId,
-        campaign: campaign,
-        source: source,
-        medium: medium
-      });
-    }
-    
-    // 체류 시간 이벤트 (30s / 60s / 120s)
-    [30, 60, 120].forEach(function(s){
-      setTimeout(function(){
-        gtag('event', 'dwell_' + s + 's', { customer_id: finalId, sec: s });
-      }, s * 1000);
-    });
-    
-    // 스크롤 깊이 (50% / 75% / 100%)
-    var sentDepth = {};
-    window.addEventListener('scroll', function(){
-      var h = document.documentElement;
-      var pct = Math.round(((h.scrollTop + window.innerHeight) / h.scrollHeight) * 100);
-      [50, 75, 100].forEach(function(d){
-        if (pct >= d && !sentDepth[d]) {
-          sentDepth[d] = true;
-          gtag('event', 'scroll_depth', { depth: d, customer_id: finalId });
-        }
-      });
-    }, { passive: true });
-    
-    // 외부 링크 클릭 (전화·웹사이트 등)
-    document.addEventListener('click', function(e){
-      var a = e.target.closest('a');
-      if (!a) return;
-      var href = a.getAttribute('href') || '';
-      if (/^(tel:|mailto:|https?:\/\/(?!msjung75\.github\.io))/.test(href)) {
-        gtag('event', 'click_external', { 
-          customer_id: finalId, 
-          url: href.substring(0, 200) 
-        });
-      }
-    });
-  })();
+  gtag('config', 'G-YVF4M8V5JD', { anonymize_ip: true });
 </script>
 
 <style>
@@ -255,6 +180,29 @@
    ============================================================ */
 const REPORTS = [
   {
+    week: "2026-W27",
+    issue: { ko:"2026년 6월 결산 · 상반기 결산", en:"June 2026 Closing · First-Half Review", zh:"2026年6月总结 · 上半年总结", ja:"2026年6月総括 · 上半期総括" },
+    date: "2026-06-29",
+    title: {
+      ko:"세왕상사 시장동향 6월 결산 리포트 (무알콜 특집 — 일본 전문매장 & 한국 제품 가이드)",
+      en:"Sewang June Closing Report (Non-Alcoholic Special — Japan's Specialty Venues & Korea Product Guide)",
+      zh:"世旺商社 6月总结报告（无酒精特辑 — 日本专门店 & 韩国产品指南）",
+      ja:"世旺商社 6月総括レポート（ノンアル特集 — 日本の専門店 & 韓国製品ガイド）"
+    },
+    desc: {
+      ko:"여름 4대 카테고리 결산(생맥+21%·무알콜+102%·하이볼+4%·사케-19%) + 상반기 SNS가 줄 세운 매장 분석(야장·와인바·노포·콘셉트형) + 특집: 일본 무알콜 전문 매장 3곳(스마도리·LOW-NON-BAR·0%)과 한국에서 잘 팔리는 무알콜 제품 종목별(맥주~와인) 가이드.",
+      en:"Closing review of 4 summer categories (draft +21%, non-alc +102%, highball +4%, sake -19%) + H1 trending venues + Special: 3 Japanese non-alcoholic specialty venues & Korea's best-selling non-alc products by category.",
+      zh:"夏季4类品类总结（扎啤+21%·无酒精+102%·嗨棒+4%·清酒-19%）+ 上半年热门店铺分析 + 特辑：日本3家无酒精专门店与韩国畅销无酒精产品分品类指南。",
+      ja:"夏の4カテゴリ総括（生+21%·ノンアル+102%·ハイボール+4%·日本酒-19%）+ 上半期の注目店分析 + 特集：日本のノンアル専門店3軒と韓国で売れるノンアル製品の品目別ガイド。"
+    },
+    files: {
+      ko:"reports/2026-W27/Sewang_MarketReport_2026-06-Closing_KO.pdf",
+      en:"reports/2026-W27/Sewang_MarketReport_2026-06-Closing_EN.pdf",
+      zh:"reports/2026-W27/Sewang_MarketReport_2026-06-Closing_ZH.pdf",
+      ja:"reports/2026-W27/Sewang_MarketReport_2026-06-Closing_JP.pdf"
+    }
+  },
+  {
     week: "2026-W26",
     issue: { ko:"2026년 6월 4주차 · 여름특집", en:"Week 4, June 2026 (Summer Special)", zh:"2026年6月第4周（夏季特辑）", ja:"2026年6月第4週（夏特集）" },
     date: "2026-06-18",
@@ -382,12 +330,9 @@ let currentUI = "ko";
 function trackAndDownload(week, lang, url){
   // GA4 익명 이벤트 전송 (누가 받았는지는 수집 안 함, 횟수만 집계)
   if (typeof gtag === "function"){
-    var uid = '';
-    try { uid = localStorage.getItem('sw_uid') || ''; } catch(e){}
     gtag('event', 'report_download', {
       report_week: week,
-      language: lang,
-      customer_id: uid
+      language: lang
     });
   }
   // 실제 파일 다운로드
