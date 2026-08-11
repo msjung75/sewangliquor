@@ -1,0 +1,197 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+<title>세왕상사 시장동향 리포트 — 카카오톡으로 받기</title>
+<style>
+  :root{ --navy:#0f1d3a; --navy2:#1c3868; --gold:#c8a96a; --red:#8b1a1a; --line:#e6e6e6; }
+  *{box-sizing:border-box; -webkit-tap-highlight-color:transparent;}
+  body{margin:0; font-family:-apple-system,'Apple SD Gothic Neo','Noto Sans KR',sans-serif;
+       background:#f4f5f7; color:#1e2026; line-height:1.5; word-break:keep-all;}
+  .top{background:linear-gradient(140deg,#0a1426,#1c3868); color:#fff; padding:26px 20px 24px;}
+  .top .brand{font-size:11px; letter-spacing:4px; color:var(--gold); font-weight:800;}
+  .top h1{font-size:21px; margin:10px 0 6px; line-height:1.35; font-weight:900;}
+  .top h1 b{color:var(--gold);}
+  .top p{font-size:13.5px; color:rgba(255,255,255,.78); margin:0;}
+  .wrap{max-width:520px; margin:0 auto; padding:16px 16px 40px;}
+  .card{background:#fff; border:1px solid var(--line); border-radius:14px; padding:18px; margin-bottom:14px;
+        box-shadow:0 1px 4px rgba(0,0,0,.04);}
+  .card h2{font-size:15px; margin:0 0 3px; color:var(--navy); font-weight:900;}
+  .card .cs{font-size:12.5px; color:#7a8089; margin:0 0 4px;}
+  label{display:block; font-size:13px; font-weight:800; color:#3a3f48; margin:14px 0 6px;}
+  label .req{color:var(--red); margin-left:3px;}
+  label .opt{color:#a5abb3; font-weight:600; font-size:11.5px; margin-left:4px;}
+  input,select{width:100%; font-size:17px; padding:13px 14px; border:1.5px solid #dfe3e8;
+        border-radius:11px; background:#fff; outline:none; font-family:inherit;}
+  input:focus,select:focus{border-color:var(--navy2); box-shadow:0 0 0 3px rgba(28,56,104,.08);}
+  input.bad{border-color:#d24a3a; background:#fff7f6;}
+  .row2{display:flex; gap:10px;} .row2>div{flex:1;}
+  .hint{font-size:11.5px; color:#9aa0a8; margin-top:5px;}
+  .kbtn{width:100%; display:block; text-align:center; text-decoration:none; background:#FEE500; color:#191600;
+        font-size:18px; font-weight:900; padding:18px; border-radius:13px; margin-top:18px; border:none;
+        font-family:inherit;}
+  .kbtn:active{opacity:.85;} .kbtn[disabled]{background:#d9d9d9; color:#8a8a8a;}
+  .agree{background:#fbf9f3; border:1px solid #e8dfc8; border-radius:12px; padding:13px 14px; margin-top:16px;}
+  .ck{display:flex; gap:10px; align-items:flex-start; padding:7px 0; cursor:pointer;}
+  .ck input{width:21px; height:21px; flex-shrink:0; margin:1px 0 0; accent-color:var(--navy);}
+  .ck .t{font-size:13.5px; color:#2a2f36; font-weight:700;}
+  .ck .t em{font-style:normal; color:var(--red); font-weight:800;}
+  .det{font-size:11.5px; color:#7a8089; line-height:1.55; margin:2px 0 0 31px;}
+  .det b{color:#4a5058;}
+  .note{background:#fbf9f3; border:1px solid #e8dfc8; border-radius:11px; padding:12px 14px; margin-top:12px;
+        font-size:12.5px; color:#6a707a; line-height:1.6;}
+  .note b{color:#3a4048;}
+  .foot{text-align:center; font-size:11.5px; color:#8a9099; line-height:1.7; margin-top:16px;}
+  .foot b{color:var(--navy);}
+  #done{display:none;}
+  .okwrap{text-align:center; padding:14px 6px 4px;}
+  .okmark{width:60px; height:60px; border-radius:50%; background:#FEE500; margin:0 auto 14px;
+          display:flex; align-items:center; justify-content:center; font-size:28px;}
+  .okwrap h2{font-size:20px; color:var(--navy); margin:0 0 8px; font-weight:900;}
+  .okwrap p{font-size:14px; color:#5a616c; margin:0 0 4px;}
+  .lbtn{display:block; text-decoration:none; text-align:center; background:#fff; color:var(--navy);
+        border:1.5px solid var(--navy); font-size:15px; font-weight:800; padding:14px; border-radius:12px; margin-top:9px;}
+  .toast{position:fixed; left:50%; bottom:26px; transform:translateX(-50%) translateY(20px);
+         background:#b3261e; color:#fff; padding:13px 22px; border-radius:24px; font-size:14.5px; font-weight:700;
+         opacity:0; transition:.25s; pointer-events:none; box-shadow:0 4px 14px rgba(0,0,0,.22); z-index:9;}
+  .toast.show{opacity:1; transform:translateX(-50%) translateY(0);}
+</style>
+</head>
+<body>
+
+<div class="top">
+  <div class="brand">SEWANG · SINCE 1985</div>
+  <h1>매주 수요일,<br><b>카카오톡으로 보내드립니다</b></h1>
+  <p>사장님을 위한 주류 시장동향 리포트 — 무료입니다.</p>
+</div>
+
+<div class="wrap">
+
+  <div id="form">
+    <div class="card">
+      <h2>어느 매장이신가요?</h2>
+      <p class="cs">매장에 맞는 내용을 담기 위해 여쭙습니다. 연락처는 받지 않습니다.</p>
+
+      <label>매장명 <span class="req">*</span></label>
+      <input id="shop" placeholder="예: 세왕이자카야" autocomplete="organization">
+
+      <div class="row2">
+        <div>
+          <label>지역 <span class="opt">선택</span></label>
+          <select id="area">
+            <option value="">선택</option>
+            <option>서울 강남·서초</option><option>서울 송파·강동</option>
+            <option>서울 마포·서대문</option><option>서울 용산·중구·종로</option>
+            <option>서울 성동·광진</option><option>서울 강북·노원·도봉</option>
+            <option>서울 영등포·구로·양천</option><option>서울 강서·마곡</option>
+            <option>서울 관악·동작</option>
+            <option>경기 성남·분당·판교</option><option>경기 수원·용인</option>
+            <option>경기 하남·구리·남양주</option><option>경기 그 외</option>
+            <option>인천</option><option>그 외 지역</option>
+          </select>
+        </div>
+        <div>
+          <label>업종 <span class="opt">선택</span></label>
+          <select id="biz">
+            <option value="">선택</option>
+            <option>이자카야·일식</option><option>호프·맥주</option>
+            <option>바·칵테일</option><option>혼술바</option>
+            <option>한식·고깃집</option><option>포차·주점</option>
+            <option>양식·다이닝</option><option>호텔·연회</option>
+            <option>창업 준비 중</option><option>기타</option>
+          </select>
+        </div>
+      </div>
+
+      <label>세왕상사와 거래하고 계신가요? <span class="opt">선택</span></label>
+      <select id="status">
+        <option value="인스타신청">아니요 · 처음입니다</option>
+        <option value="거래중">네 · 거래 중입니다</option>
+      </select>
+
+      <div class="agree">
+        <label class="ck" for="ag1"><input type="checkbox" id="ag1"><span class="t"><em>(필수)</em> 개인정보 수집·이용에 동의합니다</span></label>
+        <div class="det"><b>수집항목</b> 매장명(선택: 지역·업종·거래여부) — <b>연락처는 수집하지 않습니다</b> · <b>이용목적</b> 리포트 구성 참고 및 통계 · <b>보유기간</b> 수신거부 요청 시까지</div>
+        <label class="ck" for="ag2"><input type="checkbox" id="ag2"><span class="t"><em>(필수)</em> 광고성 정보 수신에 동의합니다</span></label>
+        <div class="det">카카오톡 채널을 통해 매주 수요일 시장동향 리포트를 보내드립니다. 채널 차단·해지로 <b>언제든 수신을 중단</b>하실 수 있습니다.</div>
+      </div>
+
+      <button class="kbtn" id="go">동의하고 카카오톡 채널 추가</button>
+
+      <div class="note">
+        버튼을 누르면 <b>카카오톡 채널 추가 화면</b>으로 이동합니다.<br>
+        채널을 추가하시면 매주 수요일 리포트가 카톡으로 자동 도착합니다.<br>
+        <b>전화번호·개인정보는 받지 않으며</b>, 채널은 언제든 차단·해지하실 수 있습니다.
+      </div>
+
+      <div class="foot">
+        <b>세왕상사(주)</b> · 서울 강동구 진황도로61길 60<br>문의 02-2203-5311
+      </div>
+    </div>
+  </div>
+
+  <div id="done">
+    <div class="card">
+      <div class="okwrap">
+        <div class="okmark">💬</div>
+        <h2>카카오톡 창이 열렸습니다</h2>
+        <p><b>[채널 추가]</b> 를 눌러주세요.</p>
+        <p style="color:#8a9099;font-size:13px;margin-top:8px">창이 열리지 않았다면 아래 버튼을 눌러주세요.</p>
+      </div>
+      <a class="kbtn" id="again" href="http://pf.kakao.com/_ZGIMG/friend" target="_blank" rel="noopener" style="text-decoration:none">카카오톡 채널 추가하기</a>
+      <a class="lbtn" href="https://msjung75.github.io/sewangliquor/" target="_blank" rel="noopener">먼저 리포트부터 보기</a>
+      <a class="lbtn" href="https://www.instagram.com/sewangliquor" target="_blank" rel="noopener">인스타그램 @sewangliquor</a>
+      <div class="foot" style="margin-top:16px">문의 02-2203-5311</div>
+    </div>
+  </div>
+
+</div>
+
+<div class="toast" id="toast"></div>
+
+<script>
+// ── 설정 ─────────────────────────────────────────────
+var SCRIPT_URL  = "";  // 구글 Apps Script 웹앱 배포 URL(.../exec)
+var CHANNEL_URL = "http://pf.kakao.com/_ZGIMG/friend";
+// ────────────────────────────────────────────────────
+var $=function(i){return document.getElementById(i);};
+var params=new URLSearchParams(location.search);
+var SRC=params.get('src')||params.get('utm_source')||'직접';
+
+function toast(m){var t=$('toast');t.textContent=m;t.classList.add('show');setTimeout(function(){t.classList.remove('show');},2500);}
+
+$('go').addEventListener('click', function(){
+  var shop=$('shop').value.trim();
+  if(!shop){ toast('매장명을 입력해 주세요'); $('shop').classList.add('bad'); $('shop').focus();
+             setTimeout(function(){$('shop').classList.remove('bad');},2000); return; }
+  if(!$('ag1').checked || !$('ag2').checked){ toast('필수 동의 항목을 체크해 주세요'); return; }
+
+  var payload = {
+    type   : 'channel',            // ← 시트의 '인스타신청' 탭으로 기록
+    shop   : shop,
+    area   : $('area').value,
+    biz    : $('biz').value,
+    status : $('status').value,
+    src    : SRC,
+    agree  : 'O',
+    agreeAt: new Date().toISOString()
+  };
+
+  // 팝업 차단을 피하려고 클릭과 동시에 창을 먼저 엽니다
+  var w = window.open(CHANNEL_URL, '_blank');
+
+  if (SCRIPT_URL) {
+    fetch(SCRIPT_URL, { method:'POST', mode:'no-cors',
+      headers:{'Content-Type':'text/plain;charset=utf-8'}, body:JSON.stringify(payload) }).catch(function(){});
+  }
+  if (window.gtag) gtag('event','channel_signup',{ source: SRC, shop: shop });
+
+  $('form').style.display='none';
+  $('done').style.display='block';
+  window.scrollTo(0,0);
+  if (!w) toast('팝업이 차단되었습니다 — 아래 버튼을 눌러주세요');
+});
+</script>
+</body>
+</html>
