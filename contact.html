@@ -1,0 +1,171 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>담당 영업사원 연락처 · 세왕상사</title>
+<meta name="description" content="세왕상사 영업담당 연락처 — 지역·담당 분야로 찾아 바로 전화하세요.">
+<meta property="og:title" content="담당 영업사원 연락처 · 세왕상사">
+<meta property="og:description" content="지역이나 분야를 입력하면 담당자가 바로 나옵니다.">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Noto+Sans+KR:wght@400;500;700;900&display=swap" rel="stylesheet">
+<style>
+:root{
+  --ivory:#F7F0E2; --panel:#FDFAF2; --line:#E3D8C3; --ink:#2B2118;
+  --gold:#B8934F; --goldDeep:#8A6A2E; --muted:#8E7F6B; --dark:#241C14;
+}
+*{margin:0;padding:0;box-sizing:border-box}
+body{
+  font-family:"Noto Sans KR",-apple-system,BlinkMacSystemFont,sans-serif;
+  background:var(--ivory); color:var(--ink);
+  -webkit-font-smoothing:antialiased;
+}
+.wrap{max-width:560px;margin:0 auto;padding:0 18px 48px}
+
+/* ---------- header ---------- */
+header{
+  background:var(--dark); margin:0 -18px 0; padding:26px 18px 22px;
+  border-bottom:3px solid var(--gold);
+}
+.mast{font-size:20px;font-weight:900;color:#F4EDDF;letter-spacing:.04em}
+.mastsub{margin-top:6px;font-size:9px;font-weight:500;color:#C9B896;letter-spacing:.2em}
+h1{margin-top:16px;font-size:23px;font-weight:900;color:#FBF6EC;line-height:1.3;letter-spacing:-.02em}
+h1 span{color:#D9B478}
+.lede{margin-top:9px;font-size:13px;font-weight:400;color:#BFAE92;line-height:1.65}
+
+/* ---------- search ---------- */
+.searchbox{position:sticky;top:0;z-index:10;background:var(--ivory);padding:14px 0 10px;margin:0 -2px}
+.searchbox input{
+  width:100%;padding:13px 15px;font-size:15px;font-family:inherit;font-weight:500;
+  color:var(--ink);background:var(--panel);
+  border:1.5px solid var(--line);border-radius:10px;outline:none;
+}
+.searchbox input:focus{border-color:var(--gold)}
+.searchbox input::placeholder{color:#B3A893;font-weight:400}
+.hint{margin-top:7px;font-size:11.5px;color:var(--muted);line-height:1.5}
+
+/* ---------- cards ---------- */
+.group{margin-top:20px}
+.grouph{
+  font-size:10px;font-weight:900;color:var(--gold);letter-spacing:.24em;
+  padding-bottom:7px;border-bottom:1.5px solid #CDBB98;margin-bottom:4px;
+}
+a.card{
+  display:flex;align-items:center;gap:13px;
+  padding:14px 4px;border-bottom:1px solid var(--line);
+  text-decoration:none;color:inherit;
+}
+a.card:active{background:#F1E7D2}
+.who{flex:1;min-width:0}
+.nm{font-size:16px;font-weight:700;letter-spacing:-.01em}
+.nm em{font-style:normal;font-weight:500;font-size:12.5px;color:#5C4C39;margin-left:5px}
+.area{margin-top:4px;font-size:12px;font-weight:400;color:var(--muted);line-height:1.5}
+.tel{
+  flex:none;display:flex;align-items:center;gap:6px;
+  font-size:12.5px;font-weight:700;color:var(--goldDeep);
+  background:#EFE3CA;border-radius:999px;padding:8px 13px;white-space:nowrap;
+}
+.tel svg{width:12px;height:12px;fill:currentColor;flex:none}
+
+.empty{display:none;padding:30px 4px;text-align:center;font-size:13.5px;color:var(--muted);line-height:1.7}
+.empty b{color:var(--ink)}
+
+/* ---------- footer ---------- */
+footer{margin-top:30px;padding-top:20px;border-top:1.5px solid #CDBB98;text-align:center}
+.mainline{
+  display:inline-flex;align-items:center;gap:8px;
+  font-size:15px;font-weight:700;color:var(--ink);text-decoration:none;
+  background:var(--panel);border:1.5px solid var(--line);border-radius:10px;
+  padding:13px 22px;
+}
+.fmeta{margin-top:16px;font-size:11.5px;font-weight:400;color:var(--muted);line-height:1.9}
+.fmeta a{color:var(--goldDeep);text-decoration:none;font-weight:500}
+.sig{margin-top:14px;font-size:10px;color:#A9997F;letter-spacing:.14em}
+</style>
+</head>
+<body>
+<div class="wrap">
+
+  <header>
+    <div class="mast">주류동향</div>
+    <div class="mastsub">SEWANG LIQUOR · SINCE 1978</div>
+    <h1>담당 영업사원<br><span>연락처</span></h1>
+    <div class="lede">매장 지역이나 분야를 입력하시면 담당자가 바로 나옵니다. 이름을 누르면 전화가 걸립니다.</div>
+  </header>
+
+  <div class="searchbox">
+    <input id="q" type="search" autocomplete="off" placeholder="지역·분야 검색 (예: 강남, 분당, 호텔, 프랜차이즈)">
+    <div class="hint">추석 연휴 전 마지막 배송은 <b>9월 23일(수)</b>입니다. 발주 문의는 담당자에게 직접 주세요.</div>
+  </div>
+
+  <div id="list"></div>
+  <div class="empty" id="empty">검색 결과가 없습니다.<br>대표전화 <b>02-2203-5311</b> 로 문의 주시면 담당자를 연결해 드립니다.</div>
+
+  <footer>
+    <a class="mainline" href="tel:0222035311">
+      <svg viewBox="0 0 16 16"><path d="M3.6 1.2a1 1 0 0 1 1.3.3l1.6 2.3a1 1 0 0 1-.2 1.3l-1 .8a9 9 0 0 0 3.8 3.8l.8-1a1 1 0 0 1 1.3-.2l2.3 1.6a1 1 0 0 1 .3 1.3l-1 1.6a1.4 1.4 0 0 1-1.6.6C7.6 12.4 3.6 8.4 2 3.8a1.4 1.4 0 0 1 .6-1.6l1-1z"/></svg>
+      대표전화 02-2203-5311
+    </a>
+    <div class="fmeta">
+      세왕상사(주) · 서울 강동구 진황도로61길 60<br>
+      <a href="https://msjung75.github.io/sewangliquor/">시장동향 리포트센터</a> ·
+      <a href="https://www.instagram.com/sewangliquor">인스타그램 @sewangliquor</a>
+    </div>
+    <div class="sig">1978년 설립 · 종합주류도매</div>
+  </footer>
+
+</div>
+
+<script>
+const STAFF = [
+  {g:"영업 총괄", n:"이한우", r:"부사장", a:"영업 총괄", t:"010-5210-5449"},
+  {g:"서울 강남권", n:"임창수", r:"전무", a:"강남 역삼·논현·신사·청담 / 성동·광진", t:"010-3742-3054"},
+  {g:"서울 강남권", n:"박정언", r:"전무", a:"강남 대치·삼성 / 서초·방배 / 관악·동작", t:"010-3286-9489"},
+  {g:"서울 강북·도심", n:"이원철", r:"이사", a:"강북·종로·중구 / 동대문·중랑·노원·도봉", t:"010-3354-2101"},
+  {g:"서울 강북·도심", n:"성현우", r:"부장", a:"용산·이태원·한남 / 마포·서대문·은평", t:"010-3375-3646"},
+  {g:"서울 동·서남권", n:"오건훈", r:"이사", a:"송파·강동·잠실 / 일본주류", t:"010-3495-6515"},
+  {g:"서울 동·서남권", n:"배종환", r:"부장", a:"강서·양천·구로·금천·영등포 / 고양·파주·김포", t:"010-9209-6526"},
+  {g:"경기·인천", n:"김환", r:"이사", a:"인천 / 부천·시흥·안산", t:"010-4789-3282"},
+  {g:"경기·인천", n:"신홍철", r:"이사", a:"분당·판교·광교 / 수원·용인·안양", t:"010-9259-6474"},
+  {g:"경기·인천", n:"유광석", r:"부장", a:"하남·미사·구리·남양주·의정부", t:"010-4565-6039"},
+  {g:"분야별 담당", n:"채현용", r:"이사", a:"호텔·와인", t:"010-8889-3057"},
+  {g:"분야별 담당", n:"손승일", r:"상무", a:"프랜차이즈", t:"010-7539-3535"},
+  {g:"분야별 담당", n:"황현웅", r:"차장", a:"신규 거래처 발굴", t:"010-9123-4341"}
+];
+const PHONE = '<svg viewBox="0 0 16 16"><path d="M3.6 1.2a1 1 0 0 1 1.3.3l1.6 2.3a1 1 0 0 1-.2 1.3l-1 .8a9 9 0 0 0 3.8 3.8l.8-1a1 1 0 0 1 1.3-.2l2.3 1.6a1 1 0 0 1 .3 1.3l-1 1.6a1.4 1.4 0 0 1-1.6.6C7.6 12.4 3.6 8.4 2 3.8a1.4 1.4 0 0 1 .6-1.6l1-1z"/></svg>';
+const esc = s => s.replace(/[&<>"]/g, c => ({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[c]));
+
+function render(filter){
+  const f = (filter || "").trim().toLowerCase();
+  const hit = STAFF.filter(s => !f ||
+    (s.n + " " + s.a + " " + s.g + " " + s.r).toLowerCase().includes(f));
+  const list = document.getElementById("list");
+  const empty = document.getElementById("empty");
+  list.innerHTML = "";
+  if(!hit.length){ empty.style.display = "block"; return; }
+  empty.style.display = "none";
+  let cur = null, box = null;
+  hit.forEach(s => {
+    if(s.g !== cur){
+      cur = s.g;
+      box = document.createElement("div");
+      box.className = "group";
+      box.innerHTML = '<div class="grouph">' + esc(cur) + '</div>';
+      list.appendChild(box);
+    }
+    const a = document.createElement("a");
+    a.className = "card";
+    a.href = "tel:" + s.t.replace(/-/g, "");
+    a.innerHTML =
+      '<div class="who"><div class="nm">' + esc(s.n) + '<em>' + esc(s.r) + '</em></div>' +
+      '<div class="area">' + esc(s.a) + '</div></div>' +
+      '<div class="tel">' + PHONE + esc(s.t) + '</div>';
+    box.appendChild(a);
+  });
+}
+render("");
+document.getElementById("q").addEventListener("input", e => render(e.target.value));
+</script>
+</body>
+</html>
