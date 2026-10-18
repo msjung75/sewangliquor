@@ -49,3 +49,15 @@ RESEARCHING → DRAFTING → IN_REVIEW → PENDING_APPROVAL → APPROVED → PUB
 - 출처 정책 및 robots.txt/API 약관을 준수하고, 저작권 미확인 이미지는 외부 발행에 사용하지 않는다.
 - 주간 운영 지표: 신규 수집 건수, 검증 완료 건수, 중복률, 다음 주 후보 확보량, 오래된 후보 비율, 출처 오류율.
 - 조사 AI가 멈추거나 소스 수집에 실패하면 관리자에게 알리되 발행 승인과 조사 실행은 서로 독립적으로 유지한다.
+
+
+## Mac Worker 연동 설계 (2026-10-18)
+- Mac은 24시간 가동되는 선택적 Worker로 등록한다. 현재 원격 접속이나 에이전트 설치는 미완료.
+- 클라우드 제어 서버가 작업 큐에 task를 등록하고 Mac Worker는 TLS를 통한 outbound polling/long polling으로 허가된 작업만 수신한다. 인바운드 포트 개방과 공개 SSH는 기본적으로 금지한다.
+- 작업 스키마: task_id, type, input_ref, scope, priority, deadline, max_runtime, status, attempt, result_ref, error.
+- 허용 작업: 브라우저 조사, 승인된 Apify/API 호출, 로컬 테스트, 비밀정보가 없는 결과 업로드. 임의 쉘 명령과 사용자 개인 파일 접근은 기본 금지.
+- 워커는 별도 OS 사용자 또는 전용 작업 폴더, 최소 권한 토큰, macOS Keychain 비밀 저장, 구조화 로그 및 자동 재시작(launchd) 사용.
+- heartbeat와 lease/timeout을 이용해 중단 작업을 복구하며 task_id 멱등성으로 중복 실행 방지.
+- 결과는 원본 출처 URL, 시각, 수집 방법, 오류, 사용량을 함께 기록한다. 외부 발행/운영 배포는 워커에서 직접 실행하지 않는다.
+- 초기 구축: Mac 환경/CPU/OS/개발 도구 확인 → 전용 작업 폴더 및 인증 → 테스트 작업 1개 → 재부팅 자동 복구 → 조사 도구 단계적 연결.
+- 맥에서 직접 설치하거나 실행하기 위해서는 사용자의 로컬 실행/원격 작업 환경 연결이 필요하며, GitHub에 코드를 쓰는 것만으로 Mac에서 실행되지는 않는다.
