@@ -37,3 +37,15 @@ RESEARCHING → DRAFTING → IN_REVIEW → PENDING_APPROVAL → APPROVED → PUB
 ## 대표 결정 필요
 승인센터는 영업·내부 검수 데이터가 있으므로 공개 GitHub 저장소가 아닌 비공개 저장소에 구축 권장.
 기존 sewangliquor 저장소는 public이므로 이 브랜치에는 비밀정보를 저장하지 않음.
+
+
+## 상시 조사 파이프라인 (대표 운영 원칙 확정: 2026-10-18)
+- 조사 AI는 특정 주차의 발행 승인과 무관하게 정기적으로 자료 수집을 계속한다.
+- 수집 원본은 발행 주차에 종속되지 않는 research_items로 저장한다. 필드: id, category, title, source_url, source_published_at, collected_at, verified_at, summary, relevance_score, dedupe_key, status, provenance.
+- editorial_candidates는 research_item_id, target_week, editorial_status, assigned_at을 참조한다. 하나의 원본은 여러 주차에서 참조할 수 있으나 재사용 시 최신성·중복 발행 검증을 한다.
+- 주간 편집팀은 선정된 후보를 해당 주차의 스냅샷으로 고정하고 원고/디자인/검수/승인을 진행한다. 새로운 발견은 기본적으로 다음 주 후보로 분류한다.
+- 중대한 사실 오류나 법적 문제 발견 시 현재 승인 대기/발행 예정 건에 경고하고 발행 보류한다.
+- 조사 작업은 예약 실행+중복 방지+실패 재시도+실행 이력 기록으로 구현한다. 실행 간격과 소스별 허용 범위는 구현 시 확정한다.
+- 출처 정책 및 robots.txt/API 약관을 준수하고, 저작권 미확인 이미지는 외부 발행에 사용하지 않는다.
+- 주간 운영 지표: 신규 수집 건수, 검증 완료 건수, 중복률, 다음 주 후보 확보량, 오래된 후보 비율, 출처 오류율.
+- 조사 AI가 멈추거나 소스 수집에 실패하면 관리자에게 알리되 발행 승인과 조사 실행은 서로 독립적으로 유지한다.
