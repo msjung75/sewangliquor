@@ -100,6 +100,12 @@
     .info-grid{grid-template-columns:1fr;}
     .brand .sub{display:none;}
   }
+
+  .contact-actions{display:flex;flex-wrap:wrap;gap:10px;margin-top:18px}
+  .contact-actions a{display:inline-block;padding:12px 17px;border:1px solid #e7cf9c;border-radius:8px;font-size:14px;font-weight:700;color:#fff;min-height:46px}
+  .contact-actions a:first-child{background:#fee500;border-color:#fee500;color:#241c14}
+  .consult-guide{margin-top:14px;font-size:14px;color:#e7cf9c}
+  .promo-summary{display:inline-block;margin-top:17px;text-decoration:underline;color:#e7cf9c;font-size:14px}
 </style>
 </head>
 <body>
@@ -128,6 +134,14 @@
     <div class="meta" id="heroMeta"></div>
     <div class="desc" id="heroDesc"></div>
     <div class="dlrow" id="heroDownloads"></div>
+    <a class="promo-summary" href="w43-20261020.html" data-i18n="previewLink">이번 호 핵심 요약 읽기 (한국어)</a>
+    <p class="consult-guide" data-i18n="consultGuide">서울·경기 오픈 준비 중이신가요? 카카오톡에 ‘창업상담’과 지역·업종·오픈 예정일을 남겨주세요.</p>
+    <div class="contact-actions">
+      <a href="https://pf.kakao.com/_ZGIMG" data-contact="kakao" data-placement="hero" target="_blank" rel="noopener" data-i18n="kakaoCta">카카오톡 창업·납품 상담</a>
+      <a href="tel:+82222035311" data-contact="phone" data-placement="hero" data-i18n="phoneCta">전화 상담 02-2203-5311</a>
+      <a href="https://www.sewang.co.kr/" target="_blank" rel="noopener" data-i18n="officialCta">공식 홈페이지</a>
+    </div>
+    <p class="consult-guide" data-i18n="holidayNote">10/21(수) 임시휴무 · 휴무 중 문의는 이후 순차 확인합니다.</p>
   </div>
 </div>
 
@@ -155,12 +169,13 @@
         <b>세왕상사</b><br>
         <span data-i18n="addr">서울 강동구 진황도로61길 60</span><br>
         <span data-i18n="telLabel">대표 전화</span> <b style="color:var(--gold-soft);letter-spacing:.5px;">02-2203-5311</b><br>
-        <span data-i18n="contactNote">신규 거래·리포트 구독 문의는 담당 영업사원에게 연락 주세요.</span>
+        <span data-i18n="contactNote">처음 문의하셔도 괜찮습니다. 카카오톡에 지역·업종·오픈 예정일을 남겨주세요.</span>
       </p>
       <div class="flinks">
         <a href="https://www.sewang.co.kr" target="_blank" rel="noopener" data-i18n="linkWeb">웹사이트</a>
         <a href="https://www.instagram.com/sewangliquor" target="_blank" rel="noopener">Instagram</a>
-        <a href="tel:0222035311">02-2203-5311</a>
+        <a href="https://pf.kakao.com/_ZGIMG" data-contact="kakao" data-placement="footer" target="_blank" rel="noopener" data-i18n="kakaoCta">카카오톡 창업·납품 상담</a>
+        <a href="tel:+82222035311" data-contact="phone" data-placement="footer">02-2203-5311</a>
       </div>
     </div>
   </div>
@@ -623,28 +638,30 @@ const I18N = {
        aboutTitle:"리포트 안내",
        aboutBody:"세왕상사가 매주 발행하는 주류 시장동향 리포트입니다. 신제품 동향, 트렌드 키워드, 채널별 인사이트를 담아 거래처에 제공합니다. 한국어·영어·중국어·일본어로 제공됩니다.",
        contactTitle:"문의", addr:"서울 강동구 진황도로61길 60",
-       contactNote:"신규 거래·리포트 구독 문의는 담당 영업사원에게 연락 주세요.",
+       contactNote:"처음 문의하셔도 괜찮습니다. 카카오톡에 지역·업종·오픈 예정일을 남겨주세요.",
        footNote:"주류 도매 유통", download:"다운로드", soon:"준비중", reports:"개 리포트", linkWeb:"웹사이트", telLabel:"대표 전화" },
   en:{ brandSub:"Sewang Market Trends Report", latestLabel:"Latest", archiveTitle:"Past Reports",
        aboutTitle:"About",
        aboutBody:"A weekly beverage market trends report published by Sewang Sangsa. It covers new product trends, keywords, and channel insights for our partners. Available in Korean, English, Chinese and Japanese.",
        contactTitle:"Contact", addr:"60, Jinhwangdo-ro 61-gil, Gangdong-gu, Seoul",
-       contactNote:"For new partnerships or report subscriptions, please contact your sales representative.",
+       contactNote:"New enquiries are welcome. Send your area, business type and planned opening date via KakaoTalk.",
        footNote:"Beverage Wholesale Distribution", download:"Download", soon:"Coming soon", reports:"reports", linkWeb:"Website", telLabel:"Phone" },
   zh:{ brandSub:"世旺商社 市场动向报告", latestLabel:"最新", archiveTitle:"往期报告",
        aboutTitle:"关于报告",
        aboutBody:"世旺商社每周发布的酒类市场动向报告，涵盖新品动向、趋势关键词及各渠道洞察，提供给合作伙伴。提供韩语、英语、中文、日语版本。",
        contactTitle:"联系", addr:"首尔江东区辰煌岛路61街60号",
-       contactNote:"如需新合作或订阅报告，请联系您的销售负责人。",
+       contactNote:"欢迎首次咨询。请通过KakaoTalk告知地区、店铺类型和计划开业日期。",
        footNote:"酒类批发流通", download:"下载", soon:"准备中", reports:"份报告", linkWeb:"官网", telLabel:"代表电话" },
   ja:{ brandSub:"世旺商社 マーケットトレンドレポート", latestLabel:"最新号", archiveTitle:"過去のレポート",
        aboutTitle:"レポート案内",
        aboutBody:"世旺商社が毎週発行する酒類マーケットトレンドレポートです。新商品動向・トレンドキーワード・チャネル別インサイトを取引先にお届けします。韓国語・英語・中国語・日本語で提供します。",
        contactTitle:"お問い合わせ", addr:"ソウル特別市江東区辰煌島路61キル60",
-       contactNote:"新規取引・購読のお問い合わせは担当営業までご連絡ください。",
+       contactNote:"初めての方もご相談ください。KakaoTalkで地域・業態・開業予定日をお知らせください。",
        footNote:"酒類卸売流通", download:"ダウンロード", soon:"準備中", reports:"件のレポート", linkWeb:"ウェブサイト", telLabel:"代表電話" }
 };
 
+const PROMO_I18N = {"ko": {"previewLink": "이번 호 핵심 요약 읽기 (한국어)", "consultGuide": "서울·경기 오픈 준비 중이신가요? 카카오톡에 ‘창업상담’과 지역·업종·오픈 예정일을 남겨주세요.", "kakaoCta": "카카오톡 창업·납품 상담", "phoneCta": "전화 상담 02-2203-5311", "officialCta": "공식 홈페이지", "holidayNote": "10/21(수) 임시휴무 · 휴무 중 문의는 이후 순차 확인합니다."}, "en": {"previewLink": "Read this issue’s summary (Korean)", "consultGuide": "Opening in Seoul or Gyeonggi? Send your area, business type and planned opening date via KakaoTalk.", "kakaoCta": "Opening & supply enquiries", "phoneCta": "Call +82 2 2203 5311", "officialCta": "Official website", "holidayNote": "Closed Oct 21. Messages received during closure will be reviewed afterwards."}, "zh": {"previewLink": "阅读本期摘要（韩语）", "consultGuide": "准备在首尔或京畿开店？请通过KakaoTalk告知地区、店铺类型及开业计划。", "kakaoCta": "KakaoTalk 开店·供货咨询", "phoneCta": "电话 +82 2 2203 5311", "officialCta": "官方网站", "holidayNote": "10月21日临时休业，期间留言将在之后依次确认。"}, "ja": {"previewLink": "今号の要約を読む（韓国語）", "consultGuide": "ソウル・京畿で開業準備中ですか？KakaoTalkで地域・業態・開業予定日をお知らせください。", "kakaoCta": "KakaoTalk 開業・納品相談", "phoneCta": "電話 +82 2 2203 5311", "officialCta": "公式サイト", "holidayNote": "10月21日は臨時休業です。休業中のお問い合わせは後日順次確認します。"}};
+Object.keys(PROMO_I18N).forEach(lang=>Object.assign(I18N[lang],PROMO_I18N[lang]));
 const LANG_NAMES = { ko:"한국어", en:"English", zh:"中文", ja:"日本語" };
 let currentUI = "ko";
 
@@ -736,6 +753,11 @@ document.querySelectorAll('#langsel button').forEach(b=>{
 
 /* init */
 setUI('ko');
+</script>
+<script>
+document.querySelectorAll('[data-contact]').forEach(link=>link.addEventListener('click',()=>{
+ if(typeof gtag==='function') gtag('event','contact_click',{contact_method:link.dataset.contact,placement:link.dataset.placement,campaign:'w43_20261020'});
+}));
 </script>
 </body>
 </html>
