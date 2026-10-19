@@ -9,6 +9,19 @@
 <meta property="og:description" content="사장님용 3분 요약 · 세왕상사 주간 시장동향">
 <meta property="og:type" content="article">
 <meta name="theme-color" content="#1d211e">
+<link rel="alternate" hreflang="en" href="en/"><link rel="alternate" hreflang="ja" href="ja/"><link rel="alternate" hreflang="zh" href="zh/">
+<script>
+/* 휴대폰 언어 자동 감지: ko=한국어, ja=日本語, zh=中文, 그 외=English. ?lang= 또는 상단 버튼 선택이 우선 */
+(function(){try{
+  var q=new URLSearchParams(location.search), f=(q.get('lang')||'').toLowerCase(), s=null;
+  try{ s=localStorage.getItem('sw-lang'); }catch(e){}
+  if(f){ try{ localStorage.setItem('sw-lang',f); }catch(e){} }
+  var l=(f||s||((navigator.languages&&navigator.languages[0])||navigator.language||'ko')).toLowerCase();
+  var t=l.indexOf('ko')===0?'':l.indexOf('ja')===0?'ja':l.indexOf('zh')===0?'zh':'en';
+  if(t){ q.delete('lang'); var qs=q.toString(); location.replace(t+'/'+(qs?'?'+qs:'')+location.hash); }
+}catch(e){}})();
+</script>
+
 <link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/orioncactus/pretendard@v1.3.9/dist/web/static/pretendard.min.css">
 <script async src="https://www.googletagmanager.com/gtag/js?id=G-YVF4M8V5JD"></script>
 <script>
@@ -32,6 +45,10 @@ a{color:inherit}
 .bar b{letter-spacing:.14em;font-size:13px;color:var(--gold2)}
 .bar span{font-size:13px;opacity:.75}
 .prog{height:3px;background:var(--gold);width:0;transition:width .15s}
+.sw{display:flex;gap:3px}
+.sw a{font-size:12px;font-weight:800;padding:6px 8px;border-radius:8px;color:var(--cream);opacity:.62;text-decoration:none;border:1px solid transparent;line-height:1}
+.sw a.on{opacity:1;color:var(--gold2);border-color:var(--gold)}
+.bar b{letter-spacing:.1em}
 /* cover */
 .cover{background:var(--ink);color:var(--cream);padding:34px 0 30px}
 .cover .eyebrow{color:var(--gold2);font-size:13px;letter-spacing:.12em;font-weight:700}
@@ -86,6 +103,7 @@ svg text{font-family:var(--font)}
 .trio span{font-size:13px;color:var(--muted)}
 .point{display:flex;gap:10px;align-items:flex-start;background:var(--ink);color:var(--cream);border-radius:14px;padding:14px 14px;margin-top:12px;font-size:16px}
 .point b{color:var(--gold2);white-space:nowrap}
+.point span b{white-space:normal}
 /* checklist */
 .chk{display:flex;gap:12px;align-items:flex-start;background:var(--paper);border:1px solid var(--line);border-radius:14px;padding:14px;margin-bottom:10px;cursor:pointer;user-select:none}
 .chk .bx{flex:0 0 28px;height:28px;border-radius:8px;border:2px solid var(--gold);display:grid;place-items:center;color:#fff;font-weight:900}
@@ -124,10 +142,10 @@ footer b{color:var(--ink)}
 </style>
 </head>
 <body>
-<div class="bar"><div class="wrap"><b>SEWANG · 주류동향 W43</b><span>2026.10.21 · 3분</span></div><div class="prog" id="prog"></div></div>
+<div class="bar"><div class="wrap"><b>SEWANG · W43</b><nav class="sw" id="langsw" aria-label="언어 선택"><a href="./?lang=ko" data-l="ko" class="on" aria-current="true">한</a><a href="en/" data-l="en">EN</a><a href="ja/" data-l="ja">日</a><a href="zh/" data-l="zh">中</a></nav></div><div class="prog" id="prog"></div></div>
 
 <header class="cover"><div class="wrap">
-  <div class="eyebrow">SPECIAL · 12월을 미리 읽다</div>
+  <div class="eyebrow">SPECIAL · 12월을 미리 읽다</div><div class="eyebrow" style="opacity:.7;margin-top:4px">2026.10.21 · 3분</div>
   <h1>호프주점은 줄고,<br><em>연말 준비는</em><br>이미 시작됐다</h1>
   <p>지난 두 겨울의 게시글과 올해 공개 예약 안내에서 찾은 단서</p>
   <div class="chips">
@@ -273,8 +291,8 @@ footer b{color:var(--ink)}
 
 <script>
 (function(){
-  var WEEK="2026-W43";
-  function ev(name,p){ try{ gtag('event',name,Object.assign({report_week:WEEK},p||{})); }catch(e){} }
+  var WEEK="2026-W43", LANG="ko";
+  function ev(name,p){ try{ gtag('event',name,Object.assign({report_week:WEEK,page_lang:LANG},p||{})); }catch(e){} }
   // 진행 막대 + 읽은 깊이
   var marks={25:0,50:0,75:0,100:0}, prog=document.getElementById('prog');
   function onScroll(){
@@ -295,7 +313,6 @@ footer b{color:var(--ink)}
     var W=340,top=24,bot=144,max=32000,bw=32,gap=(W-d.length*bw)/(d.length+1);
     var y=function(v){ return bot-(v/max)*(bot-top); };
     var y2=y(20000); s.appendChild(el('line',{x1:0,x2:W,y1:y2,y2:y2,stroke:'#9a9384','stroke-dasharray':'4 4','stroke-width':1}));
-    s.appendChild(el('text',{x:W-2,y:y2-5,'text-anchor':'end','font-size':11,fill:'#9a9384'},'2만 곳'));
     d.forEach(function(r,i){
       var x=gap+i*(bw+gap), last=i===d.length-1;
       s.appendChild(el('rect',{x:x,y:y(r[1]),width:bw,height:bot-y(r[1]),rx:4,fill:last?'#b98a3e':'#ddd3bf'}));
@@ -365,6 +382,9 @@ footer b{color:var(--ink)}
     rb.appendChild(d);
   });
 
+  document.querySelectorAll('#langsw a').forEach(function(a){
+    a.addEventListener('click',function(){ try{ localStorage.setItem('sw-lang',a.dataset.l); }catch(e){} ev('report_web_lang',{to:a.dataset.l}); });
+  });
   // PDF 다운로드 — 리포트 센터와 같은 이벤트 이름
   document.querySelectorAll('.langs a').forEach(function(a){
     a.addEventListener('click',function(){ ev('report_download',{language:a.dataset.lang,from:'web'}); });
