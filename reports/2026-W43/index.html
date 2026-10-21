@@ -141,6 +141,15 @@ details[open] summary:after{content:"－"}
 .dock button{flex:1;max-width:260px;min-height:46px;border-radius:12px;font-weight:800;font-size:15px;border:0;font-family:var(--font);cursor:pointer}
 .dock .d1{background:var(--gold);color:#fff}
 .dock .d2{background:transparent;color:var(--cream);box-shadow:inset 0 0 0 1.5px #4a524c}
+.raffle-note{margin:12px 0 0;font-size:14px;color:var(--gold2);line-height:1.5}
+.rf-bg{position:fixed;inset:0;background:rgba(0,0,0,.55);z-index:50;display:grid;place-items:center;padding:20px}
+.rf-box{background:var(--paper);color:var(--ink);border-radius:20px;padding:24px 20px;max-width:380px;width:100%;text-align:center;box-shadow:0 20px 60px rgba(0,0,0,.35)}
+.rf-box .big{font-size:44px;margin:0}
+.rf-box h3{font-size:22px;margin:8px 0 6px}
+.rf-box p{margin:0 0 12px;color:var(--muted);font-size:15px}
+.rf-code{font-family:ui-monospace,Menlo,monospace;font-size:22px;font-weight:800;letter-spacing:.06em;background:var(--cream);border:1.5px dashed var(--gold);border-radius:12px;padding:12px;margin:8px 0 14px;word-break:break-all;user-select:all}
+.rf-box .btn{width:100%;margin-top:8px}
+.rf-toast{position:fixed;left:50%;transform:translateX(-50%);bottom:calc(84px + env(safe-area-inset-bottom));z-index:40;background:var(--gold);color:#fff;font-weight:800;border-radius:12px;padding:12px 16px;font-size:15px;max-width:calc(100% - 32px);text-align:center}
 footer{padding:28px 0 calc(110px + env(safe-area-inset-bottom));font-size:13px;color:var(--muted)}
 footer b{color:var(--ink)}
 @media (prefers-reduced-motion:no-preference){.hb .fi{transition:width .9s cubic-bezier(.2,.7,.2,1)}}
@@ -264,6 +273,7 @@ footer b{color:var(--ink)}
       <button class="btn g" id="shareBtn" type="button">주변 사장님께 공유</button>
       <a class="btn o" href="https://pf.kakao.com/_ZGIMG" target="_blank" rel="noopener" id="chBtn">채널 친구 추가</a>
     </div>
+    <p class="raffle-note" id="raffleNote"></p>
   </div>
 </section>
 
@@ -416,10 +426,73 @@ footer b{color:var(--ink)}
     a.addEventListener('click',function(){ ev('report_download',{language:a.dataset.lang,from:'web'}); });
   });
 
+  // ===== 공유 응모 추첨 =====
+  // 공유하면 이 폰에만 저장되는 열쇠(ECDH)와 응모번호를 만든다. 당첨 쿠폰은 그 열쇠로만 풀리게 잠가서 raffle/results.json에 올린다.
+  var RT={
+    ko:{note:'☕ 공유하면 자동 응모 · 매주 추첨 10분 아메리카노 (받은 분이 링크를 열어야 유효)',done:'자동 응모 완료 · 응모번호 ',win:'당첨을 축하드립니다!',winp:'공유 응모 추첨에 당첨되셨습니다. 아래 쿠폰 번호로 바로 사용하세요.',copy:'쿠폰 번호 복사',copied:'복사했습니다',send:'카톡으로 나에게 보내기',close:'닫기',lose:'지난 응모는 아쉽게도 당첨되지 않았습니다. 이번 호를 공유하면 다시 응모됩니다.',other:'공유하신 폰의 카톡에서 열면 결과를 볼 수 있습니다.',sendtxt:'세왕상사 공유 이벤트 당첨 · 아메리카노 쿠폰 번호: '},
+    en:{note:'☕ Share to enter automatically · 10 coffee vouchers drawn weekly (valid when someone opens your link)',done:'Entered · your number ',win:'Congratulations!',winp:'You won the share draw. Use the voucher code below.',copy:'Copy code',copied:'Copied',send:'Send to myself on KakaoTalk',close:'Close',lose:'Your last entry did not win this time. Share this issue to enter again.',other:'Open on the phone you shared from to see the result.',sendtxt:'Sewang share event · coffee voucher code: '},
+    ja:{note:'☕ 共有で自動応募 · 毎週10名にアメリカーノ（相手がリンクを開くと有効）',done:'応募完了 · 応募番号 ',win:'当選おめでとうございます！',winp:'共有応募の抽選に当選しました。下のクーポン番号をお使いください。',copy:'番号をコピー',copied:'コピーしました',send:'カカオトークで自分に送る',close:'閉じる',lose:'前回の応募は残念ながら外れました。今号を共有すると再応募できます。',other:'共有したスマホのカカオトークで開くと結果が見られます。',sendtxt:'セワン商事 共有イベント当選 · クーポン番号: '},
+    zh:{note:'☕ 分享即自动参与 · 每周抽10位送美式咖啡（对方打开链接才有效）',done:'已参与 · 抽奖号 ',win:'恭喜中奖！',winp:'您在分享抽奖中中奖，请使用下方券码。',copy:'复制券码',copied:'已复制',send:'用KakaoTalk发给自己',close:'关闭',lose:'上次抽奖未中奖。分享本期即可再次参与。',other:'请用分享时的手机KakaoTalk打开查看结果。',sendtxt:'世王商社分享活动中奖 · 咖啡券码: '}
+  }[LANG]||null;
+  var RAFFLE_URL='https://msjung75.github.io/sewangliquor/raffle/results.json';
+  function b64u(buf){ var b=new Uint8Array(buf),s=''; for(var i=0;i<b.length;i++) s+=String.fromCharCode(b[i]); return btoa(s).replace(/\+/g,'-').replace(/\//g,'_').replace(/=+$/,''); }
+  function ub64u(t){ t=t.replace(/-/g,'+').replace(/_/g,'/'); while(t.length%4) t+='='; var s=atob(t),b=new Uint8Array(s.length); for(var i=0;i<s.length;i++) b[i]=s.charCodeAt(i); return b; }
+  function getEnt(){ try{ var a=JSON.parse(localStorage.getItem('sw-raffle')||'[]'); return Array.isArray(a)?a:[]; }catch(e){ return []; } }
+  function setEnt(a){ try{ localStorage.setItem('sw-raffle',JSON.stringify(a.slice(-12))); }catch(e){} }
+  function newRef(){ var A='ABCDEFGHJKLMNPQRSTUVWXYZ23456789',r=crypto.getRandomValues(new Uint8Array(6)),o=''; for(var i=0;i<6;i++) o+=A[r[i]%A.length]; return o; }
+  var pending=null; // 미리 만들어 둔 응모(공유 버튼을 누르면 저장)
+  (async function(){ try{
+    if(!window.crypto||!crypto.subtle) return;
+    if(getEnt().some(function(e){return e.week===WEEK;})) return;
+    var kp=await crypto.subtle.generateKey({name:'ECDH',namedCurve:'P-256'},true,['deriveBits']);
+    pending={week:WEEK,ref:newRef(),pub:b64u(await crypto.subtle.exportKey('raw',kp.publicKey)),priv:await crypto.subtle.exportKey('jwk',kp.privateKey),ts:Date.now()};
+  }catch(e){} })();
+  function myEntry(){ var e=getEnt().filter(function(x){return x.week===WEEK;})[0]; if(e) return e; if(pending){ var a=getEnt(); a.push(pending); setEnt(a); ev('report_web_entry',{ref:pending.ref,pk:pending.pub}); e=pending; pending=null; return e; } return null; }
+  if(RT){ var rn=document.getElementById('raffleNote'); if(rn) rn.textContent=RT.note; }
+  // 받은 링크로 들어온 경우 — 응모번호별 열람 기록(자기 링크를 자기 폰에서 연 건 제외)
+  (function(){ var q=new URLSearchParams(location.search), ref=q.get('ref'); if(!ref) return; if(getEnt().some(function(e){return e.ref===ref;})) return; ev('report_web_refopen',{ref:ref}); })();
+  function rfToast(t){ var d=document.createElement('div'); d.className='rf-toast'; d.textContent=t; document.body.appendChild(d); setTimeout(function(){ d.remove(); },4000); }
+  // 지난 응모 결과 확인 → 당첨이면 쿠폰 번호를 풀어서 보여준다
+  (async function(){ try{
+    if(!RT||!window.crypto||!crypto.subtle) return;
+    var ents=getEnt().filter(function(e){ return e.week!==WEEK && !e.seen; }); if(!ents.length) return;
+    var res=await fetch(RAFFLE_URL,{cache:'no-store'}); if(!res.ok) return; var data=await res.json();
+    var draws=Array.isArray(data.draws)?data.draws:[];
+    for(var i=0;i<ents.length;i++){ var e=ents[i]; var d=draws.filter(function(x){return x.week===e.week;})[0]; if(!d) continue;
+      var w=(d.winners||[]).filter(function(x){return x.ref===e.ref;})[0]; var code=null;
+      if(w){ try{
+        var priv=await crypto.subtle.importKey('jwk',e.priv,{name:'ECDH',namedCurve:'P-256'},false,['deriveBits']);
+        var epk=await crypto.subtle.importKey('raw',ub64u(w.epk),{name:'ECDH',namedCurve:'P-256'},false,[]);
+        var bits=await crypto.subtle.deriveBits({name:'ECDH',public:epk},priv,256);
+        var hk=await crypto.subtle.importKey('raw',bits,'HKDF',false,['deriveKey']);
+        var key=await crypto.subtle.deriveKey({name:'HKDF',hash:'SHA-256',salt:new TextEncoder().encode(e.ref),info:new TextEncoder().encode('sewang-raffle-v1')},hk,{name:'AES-GCM',length:256},false,['decrypt']);
+        code=new TextDecoder().decode(await crypto.subtle.decrypt({name:'AES-GCM',iv:ub64u(w.iv)},key,ub64u(w.ct)));
+      }catch(x){ code=null; } }
+      var all=getEnt(); all.forEach(function(a){ if(a.ref===e.ref){ a.seen=true; a.won=!!w; } }); setEnt(all);
+      showResult(e,w,code); ev('report_web_raffle',{ref:e.ref,result:w?(code?'win':'win_nokey'):'lose'}); break;
+    }
+  }catch(x){} })();
+  function showResult(e,w,code){
+    if(!w){ rfToast(RT.lose); return; }
+    var bg=document.createElement('div'); bg.className='rf-bg';
+    bg.innerHTML='<div class="rf-box" role="dialog" aria-modal="true"><p class="big">🎉</p><h3></h3><p class="p1"></p><div class="rf-code"></div><button class="btn g b1" type="button"></button><button class="btn w b2" type="button"></button><button class="btn w b3" type="button" style="border:0;background:transparent;color:var(--muted)"></button></div>';
+    bg.querySelector('h3').textContent=RT.win; bg.querySelector('.p1').textContent=code?RT.winp:RT.other;
+    var c=bg.querySelector('.rf-code'); if(code) c.textContent=code; else c.textContent=e.ref;
+    var b1=bg.querySelector('.b1'), b2=bg.querySelector('.b2'), b3=bg.querySelector('.b3');
+    b1.textContent=RT.copy; b2.textContent=RT.send; b3.textContent=RT.close;
+    b1.onclick=function(){ var t=code||e.ref; if(navigator.clipboard) navigator.clipboard.writeText(t).then(function(){ b1.textContent=RT.copied; }); };
+    b2.onclick=function(){ var t=RT.sendtxt+(code||e.ref); ev('report_web_raffle_send',{ref:e.ref}); if(navigator.share){ navigator.share({text:t}).catch(function(){}); } else if(navigator.clipboard){ navigator.clipboard.writeText(t).then(function(){ b2.textContent=RT.copied; }); } };
+    b3.onclick=function(){ bg.remove(); }; bg.addEventListener('click',function(x){ if(x.target===bg) bg.remove(); });
+    if(!code) b2.style.display='none';
+    document.body.appendChild(bg);
+  }
+
   // 공유
   document.getElementById('shareBtn').addEventListener('click',function(){
-    var url=location.origin+location.pathname+'?from=share', title='주류동향 W43 — 호프주점은 줄고, 연말 준비는 이미 시작됐다';
-    ev('report_web_share',{});
+    var en=myEntry();
+    var url=location.origin+location.pathname+'?from=share'+(en?'&ref='+en.ref:''), title='주류동향 W43 — 호프주점은 줄고, 연말 준비는 이미 시작됐다';
+    ev('report_web_share',{ref:en?en.ref:''});
+    if(en&&RT) rfToast(RT.done+en.ref);
     if(navigator.share){ navigator.share({title:title,text:'세왕상사 주간 시장동향 · 3분 요약',url:url}).catch(function(){}); return; }
     var done=function(){ var b=document.getElementById('shareBtn'); b.textContent='링크를 복사했습니다'; setTimeout(function(){ b.textContent='주변 사장님께 공유'; },2500); };
     if(navigator.clipboard){ navigator.clipboard.writeText(url).then(done,function(){ prompt('링크를 복사하세요',url); }); } else { prompt('링크를 복사하세요',url); }
