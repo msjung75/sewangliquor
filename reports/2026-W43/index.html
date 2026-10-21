@@ -136,7 +136,12 @@ details[open] summary:after{content:"－"}
 .rep b{font-size:16px}
 .rep .r{grid-column:1/2;font-size:13px;color:var(--muted)}
 .rep a{grid-row:1/3;grid-column:2/3;align-self:center;text-decoration:none;background:var(--ink);color:var(--gold2);font-weight:800;font-size:14px;border-radius:10px;padding:10px 12px;white-space:nowrap}
-footer{padding:28px 0 calc(40px + env(safe-area-inset-bottom));font-size:13px;color:var(--muted)}
+.dock{position:fixed;left:0;right:0;bottom:0;z-index:30;background:rgba(29,33,30,.96);padding:10px max(16px,env(safe-area-inset-left)) calc(10px + env(safe-area-inset-bottom));display:flex;gap:8px;justify-content:center;transform:translateY(110%);transition:transform .25s}
+.dock.on{transform:none}
+.dock button{flex:1;max-width:260px;min-height:46px;border-radius:12px;font-weight:800;font-size:15px;border:0;font-family:var(--font);cursor:pointer}
+.dock .d1{background:var(--gold);color:#fff}
+.dock .d2{background:transparent;color:var(--cream);box-shadow:inset 0 0 0 1.5px #4a524c}
+footer{padding:28px 0 calc(110px + env(safe-area-inset-bottom));font-size:13px;color:var(--muted)}
 footer b{color:var(--ink)}
 @media (prefers-reduced-motion:no-preference){.hb .fi{transition:width .9s cubic-bezier(.2,.7,.2,1)}}
 </style>
@@ -144,7 +149,7 @@ footer b{color:var(--ink)}
 <body>
 <div class="bar"><div class="wrap"><b>SEWANG · W43</b><nav class="sw" id="langsw" aria-label="언어 선택"><a href="./?lang=ko" data-l="ko" class="on" aria-current="true">한</a><a href="en/" data-l="en">EN</a><a href="ja/" data-l="ja">日</a><a href="zh/" data-l="zh">中</a></nav></div><div class="prog" id="prog"></div></div>
 
-<header class="cover"><div class="wrap">
+<header class="cover" id="cover"><div class="wrap">
   <div class="eyebrow">SPECIAL · 12월을 미리 읽다</div><div class="eyebrow" style="opacity:.7;margin-top:4px">2026.10.21 · 3분</div>
   <h1>호프주점은 줄고,<br><em>연말 준비는</em><br>이미 시작됐다</h1>
   <p>지난 두 겨울의 게시글과 올해 공개 예약 안내에서 찾은 단서</p>
@@ -289,6 +294,8 @@ footer b{color:var(--ink)}
   인스타그램 @sewangliquor · 카카오톡 채널 세왕상사
 </div></footer>
 
+<div class="dock" id="dock"><button class="d1" id="dockCall" type="button">담당자에게 전화</button><button class="d2" id="dockShare" type="button">공유하기</button></div>
+
 <script>
 (function(){
   var WEEK="2026-W43", LANG="ko";
@@ -298,6 +305,7 @@ footer b{color:var(--ink)}
   function onScroll(){
     var h=document.documentElement, max=h.scrollHeight-h.clientHeight, p=max>0?Math.min(100,Math.round(h.scrollTop/max*100)):100;
     prog.style.width=p+'%';
+    var dk=document.getElementById('dock'); if(dk) dk.classList.toggle('on',p>=20&&p<98);
     [25,50,75,100].forEach(function(m){ if(p>=m&&!marks[m]){ marks[m]=1; ev('report_web_read',{percent:m}); } });
   }
   window.addEventListener('scroll',onScroll,{passive:true}); onScroll();
@@ -382,6 +390,24 @@ footer b{color:var(--ink)}
     rb.appendChild(d);
   });
 
+  // 섹션별 체류 시간 — 화면 가운데 줄에 걸쳐 있던 시간(초)을 페이지를 떠날 때 보낸다
+  (function(){
+    if(!('IntersectionObserver' in window)) return;
+    var secs=[].slice.call(document.querySelectorAll('#cover, main section'));
+    var acc={}, since={};
+    var io=new IntersectionObserver(function(es){ var t=Date.now(); es.forEach(function(e){ var k=e.target.id; if(e.isIntersecting){ if(!since[k]) since[k]=t; } else if(since[k]){ acc[k]=(acc[k]||0)+(t-since[k]); since[k]=0; } }); },{rootMargin:'-50% 0px -50% 0px',threshold:0});
+    secs.forEach(function(s){ io.observe(s); });
+    function flush(){ var t=Date.now(), total=0;
+      Object.keys(since).forEach(function(k){ if(since[k]){ acc[k]=(acc[k]||0)+(t-since[k]); since[k]=t; } });
+      Object.keys(acc).forEach(function(k){ var sec=Math.round(acc[k]/1000); if(sec>=1){ ev('report_web_section',{section:k, seconds:Math.min(sec,600), transport_type:'beacon'}); total+=sec; } acc[k]=0; });
+      if(total) ev('report_web_time',{seconds:Math.min(total,1800), transport_type:'beacon'});
+    }
+    document.addEventListener('visibilitychange',function(){ if(document.visibilityState==='hidden') flush(); });
+    window.addEventListener('pagehide',flush);
+  })();
+  // 하단 고정 버튼 — 담당자 전화 · 공유
+  document.getElementById('dockCall').addEventListener('click',function(){ var d=document.querySelector('#s9 details'); if(d){ d.open=true; d.scrollIntoView({behavior:'smooth',block:'start'}); } ev('report_web_dock',{action:'call'}); });
+  document.getElementById('dockShare').addEventListener('click',function(){ ev('report_web_dock',{action:'share'}); document.getElementById('shareBtn').click(); });
   document.querySelectorAll('#langsw a').forEach(function(a){
     a.addEventListener('click',function(){ try{ localStorage.setItem('sw-lang',a.dataset.l); }catch(e){} ev('report_web_lang',{to:a.dataset.l}); });
   });
