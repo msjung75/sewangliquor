@@ -137,6 +137,10 @@ details[open] summary:after{content:"－"}
 .rf-box p{margin:0 0 12px;color:var(--muted);font-size:15px}
 .rf-code{font-family:ui-monospace,Menlo,monospace;font-size:22px;font-weight:800;letter-spacing:.06em;background:var(--cream);border:1.5px dashed var(--gold);border-radius:12px;padding:12px;margin:8px 0 14px;word-break:break-all;user-select:all}
 .rf-box .btn{width:100%;margin-top:8px}
+.rf-in{width:100%;box-sizing:border-box;font-size:20px;font-weight:700;text-align:center;letter-spacing:.04em;border:1.5px solid var(--gold);border-radius:12px;padding:12px;margin:6px 0 10px;background:#fff;color:var(--ink)}
+.rf-ag{display:flex;gap:8px;align-items:flex-start;text-align:left;font-size:13px;color:var(--muted);line-height:1.45;margin:0 0 6px}
+.rf-ag input{width:20px;height:20px;flex:none;margin-top:1px;accent-color:var(--gold)}
+.rf-err{color:#c0392b;font-size:14px;font-weight:700;min-height:18px;margin:4px 0 0}
 .rf-toast{position:fixed;left:50%;transform:translateX(-50%);bottom:calc(84px + env(safe-area-inset-bottom));z-index:40;background:var(--gold);color:#fff;font-weight:800;border-radius:12px;padding:12px 16px;font-size:15px;max-width:calc(100% - 32px);text-align:center}
 footer{padding:28px 0 calc(110px + env(safe-area-inset-bottom));font-size:13px;color:var(--muted)}
 footer b{color:var(--ink)}
@@ -402,14 +406,15 @@ footer b{color:var(--ink)}
   });
 
   // ===== 공유 응모 추첨 =====
-  // 공유하면 이 폰에만 저장되는 열쇠(ECDH)와 응모번호를 만든다. 당첨 쿠폰은 그 열쇠로만 풀리게 잠가서 raffle/results.json에 올린다.
+  // 공유하면 이 폰에만 저장되는 열쇠(ECDH)와 응모번호를 만든다. 당첨자 접수코드는 그 열쇠로만 풀리게 잠가서 raffle/results.json에 올리고, 당첨자는 번호를 남겨 쿠폰을 받는다.
   var RT={
-    ko:{note:'☕ 공유하면 자동 응모 · 매주 추첨 10분 아메리카노 (받은 분이 링크를 열어야 유효)',done:'자동 응모 완료 · 응모번호 ',win:'당첨을 축하드립니다!',winp:'공유 응모 추첨에 당첨되셨습니다. 아래 쿠폰 번호로 바로 사용하세요.',copy:'쿠폰 번호 복사',copied:'복사했습니다',send:'카톡으로 나에게 보내기',close:'닫기',lose:'지난 응모는 아쉽게도 당첨되지 않았습니다. 이번 호를 공유하면 다시 응모됩니다.',other:'공유하신 폰의 카톡에서 열면 결과를 볼 수 있습니다.',sendtxt:'세왕상사 공유 이벤트 당첨 · 아메리카노 쿠폰 번호: '},
-    en:{note:'☕ Share to enter automatically · 10 coffee vouchers drawn weekly (valid when someone opens your link)',done:'Entered · your number ',win:'Congratulations!',winp:'You won the share draw. Use the voucher code below.',copy:'Copy code',copied:'Copied',send:'Send to myself on KakaoTalk',close:'Close',lose:'Your last entry did not win this time. Share this issue to enter again.',other:'Open on the phone you shared from to see the result.',sendtxt:'Sewang share event · coffee voucher code: '},
-    ja:{note:'☕ 共有で自動応募 · 毎週10名にアメリカーノ（相手がリンクを開くと有効）',done:'応募完了 · 応募番号 ',win:'当選おめでとうございます！',winp:'共有応募の抽選に当選しました。下のクーポン番号をお使いください。',copy:'番号をコピー',copied:'コピーしました',send:'カカオトークで自分に送る',close:'閉じる',lose:'前回の応募は残念ながら外れました。今号を共有すると再応募できます。',other:'共有したスマホのカカオトークで開くと結果が見られます。',sendtxt:'セワン商事 共有イベント当選 · クーポン番号: '},
-    zh:{note:'☕ 分享即自动参与 · 每周抽10位送美式咖啡（对方打开链接才有效）',done:'已参与 · 抽奖号 ',win:'恭喜中奖！',winp:'您在分享抽奖中中奖，请使用下方券码。',copy:'复制券码',copied:'已复制',send:'用KakaoTalk发给自己',close:'关闭',lose:'上次抽奖未中奖。分享本期即可再次参与。',other:'请用分享时的手机KakaoTalk打开查看结果。',sendtxt:'世王商社分享活动中奖 · 咖啡券码: '}
+    ko:{note:'☕ 공유하면 자동 응모 · 매주 추첨으로 아메리카노 (받은 분이 링크를 열어야 유효 · 당첨되면 다음 호에서 번호만 남기면 카톡으로 발송)',done:'자동 응모 완료 · 응모번호 ',win:'당첨을 축하드립니다!',winp:'공유 응모 추첨에 당첨되셨습니다. 쿠폰 받을 휴대폰 번호를 남겨 주시면 카카오톡으로 보내 드립니다.',ph:'010-0000-0000',agree:'경품 발송을 위해 휴대폰 번호를 수집합니다. 발송 후 파기하며 다른 용도로 쓰지 않습니다. 동의합니다.',submit:'쿠폰 받기',sending:'보내는 중…',ok:'접수되었습니다! 영업일 기준 1~2일 안에 카카오톡으로 쿠폰이 도착합니다.',bad:'휴대폰 번호를 확인해 주세요.',need:'동의에 체크해 주세요.',fail:'접수에 실패했습니다. 잠시 후 다시 열어 주세요.',close:'닫기',later:'나중에',lose:'지난 응모는 아쉽게도 당첨되지 않았습니다. 이번 호를 공유하면 다시 응모됩니다.',other:'공유하신 폰에서 열면 쿠폰 받기를 진행할 수 있습니다.',due:'접수 기한: '},
+    en:{note:'☕ Share to enter automatically · weekly coffee voucher draw (valid when someone opens your link · winners leave a phone number in the next issue)',done:'Entered · your number ',win:'Congratulations!',winp:'You won the share draw. Leave your mobile number and we will send the voucher by KakaoTalk.',ph:'010-0000-0000',agree:'We collect your number only to send the prize and delete it afterwards. I agree.',submit:'Get my voucher',sending:'Sending…',ok:'Received! The voucher will arrive by KakaoTalk within 1–2 business days.',bad:'Please check the phone number.',need:'Please tick the consent box.',fail:'Could not submit. Please reopen later.',close:'Close',later:'Later',lose:'Your last entry did not win this time. Share this issue to enter again.',other:'Open on the phone you shared from to claim.',due:'Claim by: '},
+    ja:{note:'☕ 共有で自動応募 · 毎週抽選でアメリカーノ（相手がリンクを開くと有効 · 当選したら次号で番号を入力）',done:'応募完了 · 応募番号 ',win:'当選おめでとうございます！',winp:'共有応募の抽選に当選しました。携帯番号を入力いただければカカオトークでクーポンをお送りします。',ph:'010-0000-0000',agree:'景品発送のためだけに番号を収集し、発送後に破棄します。同意します。',submit:'クーポンを受け取る',sending:'送信中…',ok:'受け付けました！1〜2営業日以内にカカオトークで届きます。',bad:'携帯番号をご確認ください。',need:'同意にチェックしてください。',fail:'送信できませんでした。後でもう一度開いてください。',close:'閉じる',later:'あとで',lose:'前回の応募は残念ながら外れました。今号を共有すると再応募できます。',other:'共有したスマホで開くと受け取り手続きができます。',due:'受付期限: '},
+    zh:{note:'☕ 分享即自动参与 · 每周抽奖送美式咖啡（对方打开链接才有效 · 中奖后在下一期留下手机号）',done:'已参与 · 抽奖号 ',win:'恭喜中奖！',winp:'您在分享抽奖中中奖。留下手机号，我们将通过KakaoTalk发送咖啡券。',ph:'010-0000-0000',agree:'手机号仅用于发送奖品，发送后即删除。我同意。',submit:'领取咖啡券',sending:'提交中…',ok:'已受理！1–2个工作日内通过KakaoTalk发送。',bad:'请检查手机号。',need:'请勾选同意。',fail:'提交失败，请稍后重新打开。',close:'关闭',later:'稍后',lose:'上次抽奖未中奖。分享本期即可再次参与。',other:'请用分享时的手机打开以领取。',due:'领取截止: '}
   }[LANG]||null;
   var RAFFLE_URL='https://msjung75.github.io/sewangliquor/raffle/results.json';
+  var CLAIM_URL='https://script.google.com/macros/s/AKfycbyJ8-w8S1LK9_lB36t-2oWgBCqki90PIE5ogTNfnQP5ffNTORRqfUyerlpsnYgDlW3B/exec';
   function b64u(buf){ var b=new Uint8Array(buf),s=''; for(var i=0;i<b.length;i++) s+=String.fromCharCode(b[i]); return btoa(s).replace(/\+/g,'-').replace(/\//g,'_').replace(/=+$/,''); }
   function ub64u(t){ t=t.replace(/-/g,'+').replace(/_/g,'/'); while(t.length%4) t+='='; var s=atob(t),b=new Uint8Array(s.length); for(var i=0;i<s.length;i++) b[i]=s.charCodeAt(i); return b; }
   function getEnt(){ try{ var a=JSON.parse(localStorage.getItem('sw-raffle')||'[]'); return Array.isArray(a)?a:[]; }catch(e){ return []; } }
@@ -427,10 +432,11 @@ footer b{color:var(--ink)}
   // 받은 링크로 들어온 경우 — 응모번호별 열람 기록(자기 링크를 자기 폰에서 연 건 제외)
   (function(){ var q=new URLSearchParams(location.search), ref=q.get('ref'); if(!ref) return; if(getEnt().some(function(e){return e.ref===ref;})) return; ev('report_web_refopen',{ref:ref}); })();
   function rfToast(t){ var d=document.createElement('div'); d.className='rf-toast'; d.textContent=t; document.body.appendChild(d); setTimeout(function(){ d.remove(); },4000); }
-  // 지난 응모 결과 확인 → 당첨이면 쿠폰 번호를 풀어서 보여준다
+  function markEnt(ref,patch){ var all=getEnt(); all.forEach(function(a){ if(a.ref===ref){ for(var k in patch) a[k]=patch[k]; } }); setEnt(all); }
+  // 지난 응모 결과 확인 → 당첨이면 이 폰의 열쇠로 접수코드를 풀고, 번호 입력 창을 띄운다(접수 전까지는 매번 다시 뜸)
   (async function(){ try{
     if(!RT||!window.crypto||!crypto.subtle) return;
-    var ents=getEnt().filter(function(e){ return e.week!==WEEK && !e.seen; }); if(!ents.length) return;
+    var ents=getEnt().filter(function(e){ return e.week!==WEEK && (!e.seen || (e.won && !e.claimed)); }); if(!ents.length) return;
     var res=await fetch(RAFFLE_URL,{cache:'no-store'}); if(!res.ok) return; var data=await res.json();
     var draws=Array.isArray(data.draws)?data.draws:[];
     for(var i=0;i<ents.length;i++){ var e=ents[i]; var d=draws.filter(function(x){return x.week===e.week;})[0]; if(!d) continue;
@@ -443,22 +449,35 @@ footer b{color:var(--ink)}
         var key=await crypto.subtle.deriveKey({name:'HKDF',hash:'SHA-256',salt:new TextEncoder().encode(e.ref),info:new TextEncoder().encode('sewang-raffle-v1')},hk,{name:'AES-GCM',length:256},false,['decrypt']);
         code=new TextDecoder().decode(await crypto.subtle.decrypt({name:'AES-GCM',iv:ub64u(w.iv)},key,ub64u(w.ct)));
       }catch(x){ code=null; } }
-      var all=getEnt(); all.forEach(function(a){ if(a.ref===e.ref){ a.seen=true; a.won=!!w; } }); setEnt(all);
-      showResult(e,w,code); ev('report_web_raffle',{ref:e.ref,result:w?(code?'win':'win_nokey'):'lose'}); break;
+      var expired=!!(w && d.claimBy && Date.now()>Date.parse(d.claimBy+'T23:59:59+09:00'));
+      markEnt(e.ref,{seen:true,won:!!w});
+      if(w && expired){ markEnt(e.ref,{claimed:true}); continue; }
+      if(!e.seen) ev('report_web_raffle',{ref:e.ref,result:w?(code?'win':'win_nokey'):'lose'});
+      if(!w){ if(!e.seen) rfToast(RT.lose); continue; }
+      showResult(e,d,code); break;
     }
   }catch(x){} })();
-  function showResult(e,w,code){
-    if(!w){ rfToast(RT.lose); return; }
+  function showResult(e,d,code){
     var bg=document.createElement('div'); bg.className='rf-bg';
-    bg.innerHTML='<div class="rf-box" role="dialog" aria-modal="true"><p class="big">🎉</p><h3></h3><p class="p1"></p><div class="rf-code"></div><button class="btn g b1" type="button"></button><button class="btn w b2" type="button"></button><button class="btn w b3" type="button" style="border:0;background:transparent;color:var(--muted)"></button></div>';
-    bg.querySelector('h3').textContent=RT.win; bg.querySelector('.p1').textContent=code?RT.winp:RT.other;
-    var c=bg.querySelector('.rf-code'); if(code) c.textContent=code; else c.textContent=e.ref;
-    var b1=bg.querySelector('.b1'), b2=bg.querySelector('.b2'), b3=bg.querySelector('.b3');
-    b1.textContent=RT.copy; b2.textContent=RT.send; b3.textContent=RT.close;
-    b1.onclick=function(){ var t=code||e.ref; if(navigator.clipboard) navigator.clipboard.writeText(t).then(function(){ b1.textContent=RT.copied; }); };
-    b2.onclick=function(){ var t=RT.sendtxt+(code||e.ref); ev('report_web_raffle_send',{ref:e.ref}); if(navigator.share){ navigator.share({text:t}).catch(function(){}); } else if(navigator.clipboard){ navigator.clipboard.writeText(t).then(function(){ b2.textContent=RT.copied; }); } };
+    bg.innerHTML='<div class="rf-box" role="dialog" aria-modal="true"><p class="big">🎉</p><h3></h3><p class="p1"></p><div class="frm"><input class="rf-in" type="tel" inputmode="tel" autocomplete="tel" maxlength="13"><label class="rf-ag"><input type="checkbox"><span></span></label><p class="rf-err"></p><button class="btn g b1" type="button"></button></div><p class="p2" style="display:none"></p><button class="btn w b3" type="button" style="border:0;background:transparent;color:var(--muted)"></button></div>';
+    bg.querySelector('h3').textContent=RT.win;
+    var p1=bg.querySelector('.p1'), frm=bg.querySelector('.frm'), inp=bg.querySelector('.rf-in'), ag=bg.querySelector('.rf-ag input'), err=bg.querySelector('.rf-err'), b1=bg.querySelector('.b1'), b3=bg.querySelector('.b3'), p2=bg.querySelector('.p2');
+    p1.textContent=code?(RT.winp+(d.claimBy?' '+RT.due+d.claimBy:'')):RT.other;
+    inp.placeholder=RT.ph; bg.querySelector('.rf-ag span').textContent=RT.agree; b1.textContent=RT.submit; b3.textContent=code?RT.later:RT.close;
+    if(!code) frm.style.display='none';
+    inp.addEventListener('input',function(){ var v=inp.value.replace(/\D/g,'').slice(0,11); inp.value=v.length>7?v.slice(0,3)+'-'+v.slice(3,v.length-4)+'-'+v.slice(-4):(v.length>3?v.slice(0,3)+'-'+v.slice(3):v); });
+    b1.onclick=function(){
+      var ph=inp.value.replace(/\D/g,'');
+      if(!/^01[016789]\d{7,8}$/.test(ph)){ err.textContent=RT.bad; return; }
+      if(!ag.checked){ err.textContent=RT.need; return; }
+      err.textContent=''; b1.disabled=true; b1.textContent=RT.sending;
+      var body=new URLSearchParams({action:'raffle_claim',week:e.week,ref:e.ref,code:code,phone:ph,agree:'O',lang:LANG});
+      fetch(CLAIM_URL,{method:'POST',mode:'no-cors',body:body}).then(function(){
+        markEnt(e.ref,{claimed:true}); ev('report_web_raffle_claim',{ref:e.ref});
+        frm.style.display='none'; p1.style.display='none'; p2.style.display='block'; p2.textContent=RT.ok; b3.textContent=RT.close;
+      }).catch(function(){ b1.disabled=false; b1.textContent=RT.submit; err.textContent=RT.fail; });
+    };
     b3.onclick=function(){ bg.remove(); }; bg.addEventListener('click',function(x){ if(x.target===bg) bg.remove(); });
-    if(!code) b2.style.display='none';
     document.body.appendChild(bg);
   }
 
