@@ -134,15 +134,14 @@
     <div class="meta" id="heroMeta"></div>
     <div class="desc" id="heroDesc"></div>
     <div class="dlrow" id="heroDownloads"></div>
-    <a class="promo-summary" href="w43-20261020.html" data-i18n="previewLink">이번 호 핵심 요약 읽기 (한국어)</a>
+    <a class="promo-summary" href="w44-20261028.html" data-i18n="previewLink">이번 호 핵심 요약 읽기 (한국어)</a>
     <p class="consult-guide" data-i18n="consultGuide">서울·경기 오픈 준비 중이신가요? 카카오톡에 ‘창업상담’과 지역·업종·오픈 예정일을 남겨주세요.</p>
     <div class="contact-actions">
       <a href="https://pf.kakao.com/_ZGIMG" data-contact="kakao" data-placement="hero" target="_blank" rel="noopener" data-i18n="kakaoCta">카카오톡 창업·납품 상담</a>
       <a href="tel:+82222035311" data-contact="phone" data-placement="hero" data-i18n="phoneCta">전화 상담 02-2203-5311</a>
       <a href="https://www.sewang.co.kr/" target="_blank" rel="noopener" data-i18n="officialCta">공식 홈페이지</a>
     </div>
-    <p class="consult-guide" data-i18n="holidayNote">10/21(수) 임시휴무 · 휴무 중 문의는 이후 순차 확인합니다.</p>
-  </div>
+    </div>
 </div>
 
 <!-- ===================== ARCHIVE ===================== -->
@@ -194,6 +193,29 @@
    매주 새 리포트를 추가할 땐 이 배열 맨 위에 객체 하나만 추가하면 됩니다.
    ============================================================ */
 const REPORTS = [
+  {
+    week: "2026-W44",
+    issue: { ko:"2026년 10월 4주차", en:"Week 4, October 2026", zh:"2026年10月第4周", ja:"2026年10月第4週" },
+    date: "2026-10-28",
+    title: {
+      ko:"주류동향 W44 (핼러윈 특집 — 2년 만의 토요일, 매장 25곳이 준비한 것)",
+      en:"Sewang Liquor Trends W44 (Halloween Special — First Saturday in 2 Years, What 25 Bars Prepared)",
+      zh:"酒类动向 W44（万圣节特辑 — 时隔2年的周六，25家店铺的准备）",
+      ja:"酒類動向 W44（ハロウィン特集 — 2年ぶりの土曜、25店の準備）"
+    },
+    desc: {
+      ko:"10/31(토) 핼러윈이 2020년 이후 처음으로 토요일에 옵니다. 주말 술집 성수기와 겹칩니다. 서울시가 관리하는 14곳 안·밖 × 입장형·테이블형 네 칸으로 매장 25곳의 준비를 실측했습니다. 메뉴로 한 일은 세 갈래 — 품목 서비스·패키지·색 바꾸기, 한정 음료를 새로 만든 술집은 0곳. 금요일 전 발주 체크리스트와 칸별 할 것·안 할 것, 영업담당 14명 연락처를 담았습니다.",
+      en:"Oct 31 (Sat) is the first Saturday Halloween since 2020, overlapping the weekend bar peak. We split Seoul's 14 crowd-managed zones (inside/outside) × entry/table-type into 4 cells and surveyed 25 bars. Three menu plays — item giveaway, package, color swap. Not one bar invented a new limited drink. Also inside: a Friday-first ordering checklist, per-cell do's and don'ts, and the full 14-person sales rep roster.",
+      zh:"10/31（周六）万圣节 — 2020年以来首个周六万圣节，与周末酒馆旺季重叠。将首尔市管控14处（内/外）×入场型/餐桌型分为4格，实测25家店铺的准备。菜单做法分为3类 — 品项赠送·套餐·换颜色，无店铺新开发限定饮品。另附周五前订货清单、按格该做·不该做、14位业务员联系方式。",
+      ja:"10/31（土）ハロウィン — 2020年以来初の土曜ハロウィンで、週末飲食店の繁忙期と重なります。ソウル市管理14か所（内／外）×入場型／テーブル型の4マスで、25店の準備を実測。メニューの打ち手は3通り — 品目サービス・パッケージ・色替え。限定ドリンクを新作した酒場は0店。金曜前の発注チェックリスト、マス別の可否、営業担当14名の連絡先も収録。"
+    },
+    files: {
+      ko:"reports/2026-W44/Sewang_MarketReport_2026-10-4w_KO.pdf",
+      en:"reports/2026-W44/Sewang_MarketReport_2026-10-4w_EN.pdf",
+      zh:"reports/2026-W44/Sewang_MarketReport_2026-10-4w_ZH.pdf",
+      ja:"reports/2026-W44/Sewang_MarketReport_2026-10-4w_JP.pdf"
+    }
+  },
   {
     week: "2026-W43",
     issue: { ko:"2026년 10월 3주차", en:"Week 3, October 2026", zh:"2026年10月第3周", ja:"2026年10月第3週" },
@@ -660,7 +682,7 @@ const I18N = {
        footNote:"酒類卸売流通", download:"ダウンロード", soon:"準備中", reports:"件のレポート", linkWeb:"ウェブサイト", telLabel:"代表電話" }
 };
 
-const PROMO_I18N = {"ko": {"previewLink": "이번 호 핵심 요약 읽기 (한국어)", "consultGuide": "서울·경기 오픈 준비 중이신가요? 카카오톡에 ‘창업상담’과 지역·업종·오픈 예정일을 남겨주세요.", "kakaoCta": "카카오톡 창업·납품 상담", "phoneCta": "전화 상담 02-2203-5311", "officialCta": "공식 홈페이지", "holidayNote": "10/21(수) 임시휴무 · 휴무 중 문의는 이후 순차 확인합니다."}, "en": {"previewLink": "Read this issue’s summary (Korean)", "consultGuide": "Opening in Seoul or Gyeonggi? Send your area, business type and planned opening date via KakaoTalk.", "kakaoCta": "Opening & supply enquiries", "phoneCta": "Call +82 2 2203 5311", "officialCta": "Official website", "holidayNote": "Closed Oct 21. Messages received during closure will be reviewed afterwards."}, "zh": {"previewLink": "阅读本期摘要（韩语）", "consultGuide": "准备在首尔或京畿开店？请通过KakaoTalk告知地区、店铺类型及开业计划。", "kakaoCta": "KakaoTalk 开店·供货咨询", "phoneCta": "电话 +82 2 2203 5311", "officialCta": "官方网站", "holidayNote": "10月21日临时休业，期间留言将在之后依次确认。"}, "ja": {"previewLink": "今号の要約を読む（韓国語）", "consultGuide": "ソウル・京畿で開業準備中ですか？KakaoTalkで地域・業態・開業予定日をお知らせください。", "kakaoCta": "KakaoTalk 開業・納品相談", "phoneCta": "電話 +82 2 2203 5311", "officialCta": "公式サイト", "holidayNote": "10月21日は臨時休業です。休業中のお問い合わせは後日順次確認します。"}};
+const PROMO_I18N = {"ko": {"previewLink": "이번 호 핵심 요약 읽기 (한국어)", "consultGuide": "서울·경기 오픈 준비 중이신가요? 카카오톡에 ‘창업상담’과 지역·업종·오픈 예정일을 남겨주세요.", "kakaoCta": "카카오톡 창업·납품 상담", "phoneCta": "전화 상담 02-2203-5311", "officialCta": "공식 홈페이지"}, "en": {"previewLink": "Read this issue’s summary (Korean)", "consultGuide": "Opening in Seoul or Gyeonggi? Send your area, business type and planned opening date via KakaoTalk.", "kakaoCta": "Opening & supply enquiries", "phoneCta": "Call +82 2 2203 5311", "officialCta": "Official website"}, "zh": {"previewLink": "阅读本期摘要（韩语）", "consultGuide": "准备在首尔或京畿开店？请通过KakaoTalk告知地区、店铺类型及开业计划。", "kakaoCta": "KakaoTalk 开店·供货咨询", "phoneCta": "电话 +82 2 2203 5311", "officialCta": "官方网站"}, "ja": {"previewLink": "今号の要約を読む（韓国語）", "consultGuide": "ソウル・京畿で開業準備中ですか？KakaoTalkで地域・業態・開業予定日をお知らせください。", "kakaoCta": "KakaoTalk 開業・納品相談", "phoneCta": "電話 +82 2 2203 5311", "officialCta": "公式サイト"}};
 Object.keys(PROMO_I18N).forEach(lang=>Object.assign(I18N[lang],PROMO_I18N[lang]));
 const LANG_NAMES = { ko:"한국어", en:"English", zh:"中文", ja:"日本語" };
 let currentUI = "ko";
@@ -756,7 +778,7 @@ setUI('ko');
 </script>
 <script>
 document.querySelectorAll('[data-contact]').forEach(link=>link.addEventListener('click',()=>{
- if(typeof gtag==='function') gtag('event','contact_click',{contact_method:link.dataset.contact,placement:link.dataset.placement,campaign:'w43_20261020'});
+ if(typeof gtag==='function') gtag('event','contact_click',{contact_method:link.dataset.contact,placement:link.dataset.placement,campaign:'w44_20261028'});
 }));
 </script>
 </body>
