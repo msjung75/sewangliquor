@@ -4,113 +4,72 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>세왕상사 시장동향 리포트 센터</title>
-<meta name="description" content="세왕상사 주간 주류 시장동향 리포트 · 최신호 및 지난호 다운로드">
-
-<!-- ====================================================================== -->
-<!-- [트래킹] Google Analytics 4 — 익명 다운로드 집계용                       -->
-<!-- 설정: 아래 G-YVF4M8V5JD 를 본인 GA4 측정 ID로 교체하세요 (가이드 참고)   -->
-<!-- ====================================================================== -->
+<meta name="description" content="세왕상사 주간 주류 시장동향 리포트 · 전부 바로보기 (PDF 다운로드 없음)">
 <script async src="https://www.googletagmanager.com/gtag/js?id=G-YVF4M8V5JD"></script>
 <script>
-  window.dataLayer = window.dataLayer || [];
+  window.dataLayer=window.dataLayer||[];
   function gtag(){dataLayer.push(arguments);}
-  gtag('js', new Date());
-  gtag('config', 'G-YVF4M8V5JD', { anonymize_ip: true });
+  gtag('js',new Date()); gtag('config','G-YVF4M8V5JD',{anonymize_ip:true});
 </script>
-
 <style>
-  :root{
-    --navy-900:#0a1426; --navy-800:#112440; --navy-700:#1b3460; --navy-600:#1c3868;
-    --ink:#0f1d3a; --gold:#c8a96a; --gold-soft:#e7cf9c; --red:#8b1a1a;
-    --text:#1e2026; --muted:#6a6f78; --line:#ececec; --bg:#f6f7f9; --card:#ffffff;
-  }
-  *{box-sizing:border-box;margin:0;padding:0;}
-  body{
-    font-family:'Apple SD Gothic Neo','Noto Sans KR','Malgun Gothic',sans-serif;
-    color:var(--text);background:var(--bg);line-height:1.6;-webkit-font-smoothing:antialiased;
-  }
-  a{color:inherit;text-decoration:none;}
-  .wrap{max-width:1040px;margin:0 auto;padding:0 22px;}
-
-  /* ---------- Top bar ---------- */
-  .topbar{background:var(--navy-900);color:#fff;}
-  .topbar-inner{display:flex;align-items:center;justify-content:space-between;height:64px;}
-  .brand{display:flex;align-items:center;gap:14px;}
-  .logo-chip{background:#fff;border-radius:9px;padding:8px 13px;display:flex;align-items:center;box-shadow:0 1px 4px rgba(0,0,0,.18);}
-  .logo-chip img{height:26px;display:block;}
-  .brand .sub{font-size:12px;color:rgba(255,255,255,.62);letter-spacing:1px;border-left:1px solid rgba(255,255,255,.2);padding-left:14px;}
-  @media(max-width:640px){ .brand .sub{display:none;} }
-  .langsel{display:flex;gap:4px;background:rgba(255,255,255,.08);border-radius:999px;padding:4px;}
-  .langsel button{border:0;background:transparent;color:rgba(255,255,255,.7);font-size:12.5px;font-weight:700;
-    padding:6px 12px;border-radius:999px;cursor:pointer;transition:.15s;}
-  .langsel button:hover{color:#fff;}
-  .langsel button.active{background:var(--gold);color:var(--navy-900);}
-
-  /* ---------- Hero (latest) ---------- */
-  .hero{background:linear-gradient(180deg,var(--navy-800) 0%,var(--navy-600) 100%);color:#fff;padding:48px 0 54px;}
-  .hero .eyebrow{display:flex;align-items:center;gap:10px;font-size:12px;letter-spacing:3px;color:var(--gold-soft);font-weight:700;text-transform:uppercase;}
-  .hero .eyebrow .dot{width:7px;height:7px;border-radius:50%;background:var(--gold);box-shadow:0 0 0 4px rgba(200,169,106,.25);}
-  .hero h1{font-size:34px;font-weight:900;letter-spacing:-.02em;line-height:1.25;margin:14px 0 10px;}
-  .hero .meta{font-size:14px;color:rgba(255,255,255,.7);}
-  .hero .desc{font-size:15px;color:rgba(255,255,255,.82);margin-top:14px;max-width:620px;}
-  .dlrow{display:flex;flex-wrap:wrap;gap:10px;margin-top:26px;}
-  .dlbtn{display:inline-flex;align-items:center;gap:8px;background:var(--gold);color:var(--navy-900);
-    font-weight:800;font-size:14px;padding:12px 20px;border-radius:10px;border:0;cursor:pointer;transition:.15s;}
-  .dlbtn:hover{transform:translateY(-1px);background:var(--gold-soft);}
-  .dlbtn svg{width:16px;height:16px;}
-  .dlbtn.disabled{background:rgba(255,255,255,.12);color:rgba(255,255,255,.45);cursor:not-allowed;pointer-events:none;}
-  .dlbtn small{font-weight:600;opacity:.7;font-size:11px;}
-
-  /* ---------- Sections ---------- */
-  section{padding:42px 0;}
-  .sec-head{display:flex;align-items:baseline;gap:14px;border-bottom:2px solid var(--navy-700);padding-bottom:10px;margin-bottom:22px;}
-  .sec-head h2{font-size:22px;font-weight:900;color:var(--ink);letter-spacing:-.01em;}
-  .sec-head .count{font-size:13px;color:var(--muted);font-weight:700;}
-
-  /* archive list */
-  .arc{display:grid;gap:12px;}
-  .arc-item{background:var(--card);border:1px solid var(--line);border-radius:12px;padding:18px 20px;
-    display:flex;align-items:center;justify-content:space-between;gap:18px;flex-wrap:wrap;transition:.15s;}
-  .arc-item:hover{box-shadow:0 6px 22px rgba(15,29,58,.07);border-color:#dfe3ea;}
-  .arc-left{min-width:240px;}
-  .arc-issue{font-size:11px;font-weight:800;letter-spacing:2px;color:var(--gold);text-transform:uppercase;}
-  .arc-title{font-size:16px;font-weight:800;color:var(--ink);margin:3px 0 2px;}
-  .arc-date{font-size:12.5px;color:var(--muted);}
-  .arc-langs{display:flex;gap:7px;flex-wrap:wrap;}
-  .langpill{display:inline-flex;align-items:center;gap:5px;font-size:12.5px;font-weight:700;
-    padding:7px 13px;border-radius:8px;background:#eef1f6;color:var(--navy-700);cursor:pointer;border:1px solid #e2e7ef;transition:.15s;}
-  .langpill:hover{background:var(--navy-700);color:#fff;border-color:var(--navy-700);}
-  .langpill.off{background:#f4f5f7;color:#bcc1ca;cursor:not-allowed;border-style:dashed;pointer-events:none;}
-
-  /* ---------- Subscribe / contact ---------- */
-  .info{background:var(--navy-900);color:rgba(255,255,255,.8);padding:40px 0;}
-  .info-grid{display:grid;grid-template-columns:1fr 1fr;gap:30px;}
-  .info h3{color:#fff;font-size:15px;font-weight:800;letter-spacing:1px;margin-bottom:10px;}
-  .info p{font-size:13.5px;line-height:1.9;}
-  .info b{color:var(--gold);}
-  .flinks{display:flex;flex-wrap:wrap;gap:10px;margin-top:14px;}
-  .flinks a{display:inline-flex;align-items:center;gap:6px;font-size:12.5px;font-weight:700;color:var(--gold-soft);
-    border:1px solid rgba(200,169,106,.4);border-radius:999px;padding:7px 15px;transition:.15s;}
-  .flinks a:hover{background:var(--gold);color:var(--navy-900);border-color:var(--gold);}
-  .foot{background:var(--navy-900);border-top:1px solid rgba(255,255,255,.1);padding:18px 0;
-    font-size:12px;color:rgba(255,255,255,.45);text-align:center;letter-spacing:.5px;}
-
-  @media(max-width:640px){
-    .hero h1{font-size:26px;}
-    .info-grid{grid-template-columns:1fr;}
-    .brand .sub{display:none;}
-  }
-
-  .contact-actions{display:flex;flex-wrap:wrap;gap:10px;margin-top:18px}
-  .contact-actions a{display:inline-block;padding:12px 17px;border:1px solid #e7cf9c;border-radius:8px;font-size:14px;font-weight:700;color:#fff;min-height:46px}
+  :root{--navy-900:#0a1426;--navy-800:#112440;--navy-700:#1b3460;--navy-600:#1c3868;--ink:#0f1d3a;--gold:#c8a96a;--gold-soft:#e7cf9c;--pumpkin:#e67a2f;--text:#1e2026;--muted:#6a6f78;--line:#ececec;--bg:#f6f7f9;--card:#ffffff}
+  *{box-sizing:border-box;margin:0;padding:0}
+  body{font-family:'Apple SD Gothic Neo','Noto Sans KR','Malgun Gothic',sans-serif;color:var(--text);background:var(--bg);line-height:1.6;-webkit-font-smoothing:antialiased;font-size:17px}
+  a{color:inherit;text-decoration:none}
+  .wrap{max-width:1040px;margin:0 auto;padding:0 22px}
+  .topbar{background:var(--navy-900);color:#fff}
+  .topbar-inner{display:flex;align-items:center;justify-content:space-between;height:64px}
+  .brand{display:flex;align-items:center;gap:14px}
+  .logo-chip{background:#fff;border-radius:9px;padding:8px 13px;display:flex;align-items:center;box-shadow:0 1px 4px rgba(0,0,0,.18)}
+  .logo-chip img{height:26px;display:block}
+  .brand .sub{font-size:12px;color:rgba(255,255,255,.62);letter-spacing:1px;border-left:1px solid rgba(255,255,255,.2);padding-left:14px}
+  @media(max-width:640px){.brand .sub{display:none}}
+  .langsel{display:flex;gap:4px;background:rgba(255,255,255,.08);border-radius:999px;padding:4px}
+  .langsel button{border:0;background:transparent;color:rgba(255,255,255,.7);font-size:13px;font-weight:700;padding:7px 13px;border-radius:999px;cursor:pointer;transition:.15s}
+  .langsel button:hover{color:#fff}
+  .langsel button.active{background:var(--gold);color:var(--navy-900)}
+  .hero{background:linear-gradient(180deg,var(--navy-800) 0%,var(--navy-600) 100%);color:#fff;padding:52px 0 58px}
+  .hero .eyebrow{display:flex;align-items:center;gap:10px;font-size:13px;letter-spacing:3px;color:var(--gold-soft);font-weight:700;text-transform:uppercase}
+  .hero .eyebrow .dot{width:8px;height:8px;border-radius:50%;background:var(--pumpkin);box-shadow:0 0 0 4px rgba(230,122,47,.25)}
+  .hero h1{font-size:36px;font-weight:900;letter-spacing:-.02em;line-height:1.22;margin:14px 0 10px}
+  .hero .meta{font-size:15px;color:rgba(255,255,255,.72)}
+  .hero .desc{font-size:16px;color:rgba(255,255,255,.86);margin-top:16px;max-width:640px;line-height:1.65}
+  .viewrow{display:flex;flex-wrap:wrap;gap:10px;margin-top:28px}
+  .viewbtn{display:inline-flex;align-items:center;gap:8px;background:var(--pumpkin);color:#fff;font-weight:800;font-size:15px;padding:14px 22px;border-radius:12px;border:0;cursor:pointer;transition:.15s;text-decoration:none}
+  .viewbtn:hover{transform:translateY(-1px);background:#d9641e}
+  .viewbtn svg{width:16px;height:16px}
+  section{padding:44px 0}
+  .sec-head{display:flex;align-items:baseline;gap:14px;border-bottom:2px solid var(--navy-700);padding-bottom:10px;margin-bottom:22px}
+  .sec-head h2{font-size:24px;font-weight:900;color:var(--ink);letter-spacing:-.01em}
+  .sec-head .count{font-size:14px;color:var(--muted);font-weight:700}
+  .arc{display:grid;gap:12px}
+  .arc-item{background:var(--card);border:1px solid var(--line);border-radius:14px;padding:20px 22px;display:flex;align-items:center;justify-content:space-between;gap:18px;flex-wrap:wrap;transition:.15s}
+  .arc-item:hover{box-shadow:0 6px 22px rgba(15,29,58,.07);border-color:#dfe3ea}
+  .arc-left{min-width:240px;flex:1}
+  .arc-issue{font-size:12px;font-weight:800;letter-spacing:2px;color:var(--pumpkin);text-transform:uppercase}
+  .arc-title{font-size:17px;font-weight:800;color:var(--ink);margin:4px 0 3px;line-height:1.4}
+  .arc-date{font-size:13px;color:var(--muted)}
+  .arc-view{display:inline-flex;align-items:center;gap:6px;font-size:14px;font-weight:800;padding:10px 16px;border-radius:10px;background:var(--navy-700);color:#fff;cursor:pointer;border:0;transition:.15s;text-decoration:none;white-space:nowrap}
+  .arc-view:hover{background:var(--navy-900)}
+  .arc-view.soon{background:#eef1f6;color:#9aa0ad;cursor:not-allowed;pointer-events:none}
+  .info{background:var(--navy-900);color:rgba(255,255,255,.82);padding:42px 0}
+  .info-grid{display:grid;grid-template-columns:1fr 1fr;gap:30px}
+  .info h3{color:#fff;font-size:16px;font-weight:800;letter-spacing:1px;margin-bottom:12px}
+  .info p{font-size:14px;line-height:1.9}
+  .info b{color:var(--gold)}
+  .flinks{display:flex;flex-wrap:wrap;gap:10px;margin-top:14px}
+  .flinks a{display:inline-flex;align-items:center;gap:6px;font-size:13px;font-weight:700;color:var(--gold-soft);border:1px solid rgba(200,169,106,.4);border-radius:999px;padding:8px 15px;transition:.15s}
+  .flinks a:hover{background:var(--gold);color:var(--navy-900);border-color:var(--gold)}
+  .foot{background:var(--navy-900);border-top:1px solid rgba(255,255,255,.1);padding:18px 0;font-size:12px;color:rgba(255,255,255,.45);text-align:center}
+  @media(max-width:640px){.hero h1{font-size:28px}.info-grid{grid-template-columns:1fr}}
+  .contact-actions{display:flex;flex-wrap:wrap;gap:10px;margin-top:20px}
+  .contact-actions a{display:inline-block;padding:13px 18px;border:1px solid #e7cf9c;border-radius:10px;font-size:14px;font-weight:700;color:#fff;min-height:46px}
   .contact-actions a:first-child{background:#fee500;border-color:#fee500;color:#241c14}
-  .consult-guide{margin-top:14px;font-size:14px;color:#e7cf9c}
-  .promo-summary{display:inline-block;margin-top:17px;text-decoration:underline;color:#e7cf9c;font-size:14px}
+  .consult-guide{margin-top:16px;font-size:14px;color:#e7cf9c;line-height:1.65}
 </style>
 </head>
 <body>
 
-<!-- ===================== TOP BAR ===================== -->
 <div class="topbar">
   <div class="wrap topbar-inner">
     <div class="brand">
@@ -126,25 +85,22 @@
   </div>
 </div>
 
-<!-- ===================== HERO (LATEST) ===================== -->
 <div class="hero">
   <div class="wrap">
     <div class="eyebrow"><span class="dot"></span><span data-i18n="latestLabel">최신호</span></div>
     <h1 id="heroTitle"></h1>
     <div class="meta" id="heroMeta"></div>
     <div class="desc" id="heroDesc"></div>
-    <div class="dlrow" id="heroDownloads"></div>
-    <a class="promo-summary" href="w44-20261028.html" data-i18n="previewLink">이번 호 핵심 요약 읽기 (한국어)</a>
-    <p class="consult-guide" data-i18n="consultGuide">서울·경기 오픈 준비 중이신가요? 카카오톡에 ‘창업상담’과 지역·업종·오픈 예정일을 남겨주세요.</p>
+    <div class="viewrow" id="heroView"></div>
+    <p class="consult-guide" data-i18n="consultGuide">서울·경기 오픈 준비 중이신가요? 카카오톡에 '창업상담'과 지역·업종·오픈 예정일을 남겨주세요.</p>
     <div class="contact-actions">
-      <a href="https://pf.kakao.com/_ZGIMG" data-contact="kakao" data-placement="hero" target="_blank" rel="noopener" data-i18n="kakaoCta">카카오톡 창업·납품 상담</a>
-      <a href="tel:+82222035311" data-contact="phone" data-placement="hero" data-i18n="phoneCta">전화 상담 02-2203-5311</a>
+      <a href="https://pf.kakao.com/_ZGIMG" target="_blank" rel="noopener" data-i18n="kakaoCta">카카오톡 창업·납품 상담</a>
+      <a href="tel:+82222035311" data-i18n="phoneCta">전화 상담 02-2203-5311</a>
       <a href="https://www.sewang.co.kr/" target="_blank" rel="noopener" data-i18n="officialCta">공식 홈페이지</a>
     </div>
-    </div>
+  </div>
 </div>
 
-<!-- ===================== ARCHIVE ===================== -->
 <section>
   <div class="wrap">
     <div class="sec-head">
@@ -155,12 +111,11 @@
   </div>
 </section>
 
-<!-- ===================== INFO / CONTACT ===================== -->
 <div class="info">
   <div class="wrap info-grid">
     <div>
       <h3 data-i18n="aboutTitle">리포트 안내</h3>
-      <p data-i18n="aboutBody">세왕상사가 매주 발행하는 주류 시장동향 리포트입니다. 신제품 동향, 트렌드 키워드, 채널별 인사이트를 담아 거래처에 제공합니다. 한국어·영어·중국어·일본어로 제공됩니다.</p>
+      <p data-i18n="aboutBody">세왕상사가 매주 발행하는 주류 시장동향 리포트입니다. 신제품 동향·트렌드 키워드·채널별 인사이트를 담아 거래처에 제공합니다. 한국어·영어·중국어·일본어로 바로 보실 수 있습니다.</p>
     </div>
     <div>
       <h3 data-i18n="contactTitle">문의</h3>
@@ -173,8 +128,8 @@
       <div class="flinks">
         <a href="https://www.sewang.co.kr" target="_blank" rel="noopener" data-i18n="linkWeb">웹사이트</a>
         <a href="https://www.instagram.com/sewangliquor" target="_blank" rel="noopener">Instagram</a>
-        <a href="https://pf.kakao.com/_ZGIMG" data-contact="kakao" data-placement="footer" target="_blank" rel="noopener" data-i18n="kakaoCta">카카오톡 창업·납품 상담</a>
-        <a href="tel:+82222035311" data-contact="phone" data-placement="footer">02-2203-5311</a>
+        <a href="https://pf.kakao.com/_ZGIMG" target="_blank" rel="noopener" data-i18n="kakaoCta">카카오톡 창업·납품 상담</a>
+        <a href="tel:+82222035311">02-2203-5311</a>
       </div>
     </div>
   </div>
@@ -182,604 +137,184 @@
 <div class="foot">© 2026 SEWANG SANGSA · <span data-i18n="footNote">주류 도매 유통</span></div>
 
 <script>
-/* ============================================================
-   리포트 데이터
-   - week      : 내부 식별자(ISO 주차 등)
-   - issue     : 화면에 표시되는 발행호 라벨
-   - date      : 발행일 (YYYY-MM-DD)
-   - title     : 4개 언어 제목
-   - desc      : 최신호 요약 (4개 언어) — 최신호에만 사용
-   - files     : 언어별 PDF 경로. 값이 null 이면 "준비중"으로 표시
-   매주 새 리포트를 추가할 땐 이 배열 맨 위에 객체 하나만 추가하면 됩니다.
-   ============================================================ */
+/* 웹뷰 지원 주차 — 이 리스트에 있는 주차만 "바로보기" 활성화 */
+const WEB_VIEW_WEEKS = ['2026-W43','2026-W44'];
+
 const REPORTS = [
-  {
-    week: "2026-W44",
-    issue: { ko:"2026년 10월 4주차", en:"Week 4, October 2026", zh:"2026年10月第4周", ja:"2026年10月第4週" },
-    date: "2026-10-28",
-    title: {
-      ko:"주류동향 W44 (할로윈 특집 — 2년 만의 토요일, 매장 25곳이 준비한 것)",
-      en:"Sewang Liquor Trends W44 (Halloween Special — First Saturday in 2 Years, What 25 Bars Prepared)",
-      zh:"酒类动向 W44（万圣节特辑 — 时隔2年的周六，25家店铺的准备）",
-      ja:"酒類動向 W44（ハロウィン特集 — 2年ぶりの土曜、25店の準備）"
-    },
-    desc: {
-      ko:"10/31(토) 할로윈이 2020년 이후 처음으로 토요일에 옵니다. 주말 술집 성수기와 겹칩니다. 서울시가 관리하는 14곳 안·밖 × 입장형·테이블형 네 칸으로 매장 25곳의 준비를 실측했습니다. 메뉴로 한 일은 세 갈래 — 품목 서비스·패키지·색 바꾸기, 한정 음료를 새로 만든 술집은 0곳. 금요일 전 발주 체크리스트와 칸별 할 것·안 할 것, 영업담당 14명 연락처를 담았습니다.",
-      en:"Oct 31 (Sat) is the first Saturday Halloween since 2020, overlapping the weekend bar peak. We split Seoul's 14 crowd-managed zones (inside/outside) × entry/table-type into 4 cells and surveyed 25 bars. Three menu plays — item giveaway, package, color swap. Not one bar invented a new limited drink. Also inside: a Friday-first ordering checklist, per-cell do's and don'ts, and the full 14-person sales rep roster.",
-      zh:"10/31（周六）万圣节 — 2020年以来首个周六万圣节，与周末酒馆旺季重叠。将首尔市管控14处（内/外）×入场型/餐桌型分为4格，实测25家店铺的准备。菜单做法分为3类 — 品项赠送·套餐·换颜色，无店铺新开发限定饮品。另附周五前订货清单、按格该做·不该做、14位业务员联系方式。",
-      ja:"10/31（土）ハロウィン — 2020年以来初の土曜ハロウィンで、週末飲食店の繁忙期と重なります。ソウル市管理14か所（内／外）×入場型／テーブル型の4マスで、25店の準備を実測。メニューの打ち手は3通り — 品目サービス・パッケージ・色替え。限定ドリンクを新作した酒場は0店。金曜前の発注チェックリスト、マス別の可否、営業担当14名の連絡先も収録。"
-    },
-    files: {
-      ko:"reports/2026-W44/Sewang_MarketReport_2026-10-4w_KO.pdf",
-      en:"reports/2026-W44/Sewang_MarketReport_2026-10-4w_EN.pdf",
-      zh:"reports/2026-W44/Sewang_MarketReport_2026-10-4w_ZH.pdf",
-      ja:"reports/2026-W44/Sewang_MarketReport_2026-10-4w_JP.pdf"
-    }
+  { week:"2026-W44", date:"2026-10-28",
+    issue:{ko:"2026년 10월 4주차",en:"Week 4, October 2026",zh:"2026年10月第4周",ja:"2026年10月第4週"},
+    title:{ko:"주류동향 W44 — 2년 만의 토요일 할로윈, 매장이 확인할 3가지",en:"Market Weekly W44 — Saturday Halloween: 3 Things to Check",zh:"酒类周报 W44 — 周六万圣节,门店要确认的3件事",ja:"酒類ウィークリー W44 — 土曜のハロウィン、店が確認する3つのこと"},
+    desc:{ko:"서울시 관리 14곳 안·밖, 매장 25곳 실측에서 찾은 단서. 10/31 토요일 할로윈 — 금요일 전 발주 마감, 혜택은 품목 하나, 입구 포토존 하나로 사진 자리 만들기.",en:"Signals from 14 Seoul-managed districts and 25 surveyed venues. Oct 31 is a Saturday — be done ordering by Friday, keep perks to one item, make the entrance photo spot the Halloween moment.",zh:"来自首尔市管辖14地区内外、25家门店实测的信号。10月31日周六万圣节 — 周五前订货,优惠就一个品项,门口拍照角创造拍照位。",ja:"ソウル市管理14エリア内外、店舗25件の実測から見えた手がかり。10月31日は土曜ハロウィン — 金曜までに発注、特典は品目ひとつ、入口のフォトスポットで写真の場を。"}
   },
-  {
-    week: "2026-W43",
-    issue: { ko:"2026년 10월 3주차", en:"Week 3, October 2026", zh:"2026年10月第3周", ja:"2026年10月第3週" },
-    date: "2026-10-20",
-    title: {
-      ko:"주류동향 W43 (연말 특집 — 호프주점은 줄고, 연말 준비는 이미 시작됐다)",
-      en:"Sewang Liquor Trends W43 (Year-End Special — Fewer Hof Pubs, Year-End Prep Already Under Way)",
-      zh:"酒类动向 W43（年末特辑 — 啤酒屋在减少，年末准备已经开始）",
-      ja:"酒類動向 W43（年末特集 — ホプは減り、年末の準備はもう始まった）"
-    },
-    desc: {
-      ko:"전국 호프주점이 8월 기준 19,057곳으로 처음 2만 곳 아래로 내려갔습니다. 지난 두 겨울 연말 모임 글은 12월 중순에 몰렸고, 올해 일부 매장은 10월 초부터 최대 인원·주차·룸 정보를 앞세워 연말 예약을 받고 있습니다. 연말 글에 함께 나온 말과 술 이름, 토요일 할로윈 대비, 이번 주 점검 3가지를 담았습니다(10/21 수 세왕상사 임시휴무로 화요일 발행).",
-      en:"Korea's hof pubs fell to 19,057 in August, below 20,000 for the first time. Over the last two winters, year-end gathering posts peaked in mid-December, and some venues began taking year-end bookings in early October, leading with group size, parking and private rooms. Also inside: words and drinks that appear in year-end posts, preparing for a Saturday Halloween, and three checks for this week (published Tuesday as Sewang is closed Wed, Oct 21).",
-      zh:"截至8月，全国啤酒屋降至19,057家，首次跌破2万家。过去两个冬天，年末聚会相关帖子集中在12月中旬；今年部分门店10月初就以最多人数、停车和包间信息开始接受年末预订。本期还收录年末帖子中常见的词与酒名、周六万圣节的准备，以及本周三项检查（10月21日周三世王商社临时休息，本期提前于周二发行）。",
-      ja:"全国のホプは8月時点で19,057店となり、初めて2万店を下回りました。過去2回の冬、年末の集まりに関する投稿は12月中旬に集中し、今年は一部の店が10月初めから最大人数・駐車・個室の情報を前面に年末予約を受け付けています。年末投稿に出てくる言葉と酒の名前、土曜日のハロウィン対策、今週の点検3つも収録（10月21日（水）はセワン商事臨時休業のため火曜日発行）。"
-    },
-    files: {
-      ko:"reports/2026-W43/Sewang_MarketReport_2026-10-3w_KO.pdf",
-      en:"reports/2026-W43/Sewang_MarketReport_2026-10-3w_EN.pdf",
-      zh:"reports/2026-W43/Sewang_MarketReport_2026-10-3w_ZH.pdf",
-      ja:"reports/2026-W43/Sewang_MarketReport_2026-10-3w_JP.pdf"
-    }
+  { week:"2026-W43", date:"2026-10-20",
+    issue:{ko:"2026년 10월 3주차",en:"Week 3, October 2026",zh:"2026年10月第3周",ja:"2026年10月第3週"},
+    title:{ko:"주류동향 W43 — 호프주점은 줄고, 연말 준비는 이미 시작됐다",en:"Sewang Liquor Trends W43 — Fewer Hof Pubs, Year-End Prep Already Under Way",zh:"酒类动向 W43 — 啤酒屋在减少,年末准备已经开始",ja:"酒類動向 W43 — ホフは減り、年末の準備はもう始まった"},
+    desc:{ko:"전국 호프주점이 8월 기준 19,057곳으로 처음 2만 곳 아래. 지난 두 겨울 연말 모임 글은 12월 중순에 몰렸고, 올해 일부 매장은 10월 초부터 연말 예약을 받고 있습니다.",en:"Korea's hof pubs fell to 19,057 in August — below 20,000 for the first time. Year-end gathering posts peaked mid-December in the last two winters, and some venues began taking year-end bookings in early October.",zh:"截至8月,全国啤酒屋降至19,057家,首次跌破2万家。过去两个冬天年末聚会帖子集中在12月中旬,今年部分门店10月初就开始接受年末预订。",ja:"全国のホフは8月時点で19,057店となり、初めて2万店を下回りました。過去2回の冬の年末投稿は12月中旬に集中、今年は一部の店が10月初めから年末予約を受付中。"}
   },
-  {
-    week: "2026-W42",
-    issue: { ko:"2026년 10월 2주차", en:"Week 2, October 2026", zh:"2026年10月第2周", ja:"2026年10月第2週" },
-    date: "2026-10-14",
-    title: {
-      ko:"주류동향 W42 (SNS 특집 — 로제 마라, 야장 자리, 매장 경험)",
-      en:"Sewang Liquor Trends W42 (Social Special — Rose Mala, Patio Seats, Store Experience)",
-      zh:"酒类动向 W42（SNS特辑 — 玫瑰麻辣、露天座位、门店体验）",
-      ja:"酒類動向 W42（SNS特集 — ロゼ麻辣、テラス席、店の体験）"
-    },
-    desc: {
-      ko:"최근 2주 SNS 게시물에서 가을 술자리 신호 셋을 골랐습니다. 용용선생 로제투도우펀과 꼬량주 토닉, 달맞이광장의 야장·소금구이·생맥주와 대기 경험, 유메오뎅의 100ml 잔술 과일사케와 혼술바(야화·곁·헤르츠·또랑)의 첫 잔 고르기. 블로그·인스타그램 반응 추이, 우리 매장 적용 세 가지, 오비맥주 제로슈거 소주 ‘찰랑’ 소식까지 담았습니다.",
-      en:"Three autumn drinking signals picked from the last two weeks of social posts: Yongyong Seonsaeng’s rose tudoufen with kaoliang tonic, Dalmaji Gwangjang’s patio, salt grill and draft beer with the wait that comes with them, and how Yume Oden (100ml fruit sake) and the solo bars Yahwa, Gyeot, Hertz and Ttorang help guests pick a first glass. Plus blog and Instagram response curves, three things to try in your store, and OB’s zero-sugar soju Charlang.",
-      zh:"从最近两周的SNS帖子中挑出三个秋季酒局信号：龙龙先生的玫瑰土豆粉与高粱汤力，达麻吉广场的露天座、盐烤与生啤以及排队体验，梦关东煮的100ml单杯果味清酒和独酌酒吧（夜花·Gyeot·Hertz·Ttorang）的第一杯怎么选。另有博客与Instagram反应走势、门店可用的三件事，以及OB啤酒零糖烧酒Charlang的消息。",
-      ja:"直近2週間のSNS投稿から秋の酒席のサインを三つ選びました。ヨンヨンソンセンのロゼ土豆粉と高粱酒トニック、タルマジ広場のテラス席・塩焼き・生ビールと待ち時間の体験、ゆめおでんの100mlグラス果実酒と、ひとり飲みバー（ヤファ・キョッ・ヘルツ・トラン）の最初の一杯の選び方。ブログ・Instagramの反応推移、自店で取り入れる三つ、OBビールのゼロシュガー焼酎「チャルラン」の話題も収録。"
-    },
-    files: {
-      ko:"reports/2026-W42/Sewang_MarketReport_2026-10-2w_KO.pdf",
-      en:"reports/2026-W42/Sewang_MarketReport_2026-10-2w_EN.pdf",
-      zh:"reports/2026-W42/Sewang_MarketReport_2026-10-2w_ZH.pdf",
-      ja:"reports/2026-W42/Sewang_MarketReport_2026-10-2w_JP.pdf"
-    }
+  { week:"2026-W42", date:"2026-10-14",
+    issue:{ko:"2026년 10월 2주차",en:"Week 2, October 2026",zh:"2026年10月第2周",ja:"2026年10月第2週"},
+    title:{ko:"주류동향 W42 (SNS 특집 — 로제 마라, 야장 자리, 매장 경험)",en:"Sewang Liquor Trends W42 (Social Special — Rose Mala, Patio Seats, Store Experience)",zh:"酒类动向 W42(SNS特辑 — 玫瑰麻辣、露天座位、门店体验)",ja:"酒類動向 W42(SNS特集 — ロゼ麻辣、テラス席、店の体験)"},
+    desc:{ko:"최근 2주 SNS에서 가을 술자리 신호 셋 — 용용선생 로제투도우펀+꼬량주 토닉, 달맞이광장 야장·소금구이·생맥주, 유메오뎅 100ml 잔술 과일사케와 혼술바들의 첫 잔.",en:"Three autumn drinking signals from two weeks of social posts — Yongyong Seonsaeng's rose tudoufen with kaoliang tonic, Dalmaji Gwangjang's patio/salt-grill/draft beer, Yume Oden 100ml fruit sake and solo bars' first glass.",zh:"最近两周SNS中三个秋季酒局信号 — 龙龙先生玫瑰土豆粉+高粱汤力,达麻吉广场露天盐烤生啤,梦关东煮100ml单杯果味清酒与独酌酒吧第一杯。",ja:"直近2週間のSNSから秋のサイン三つ — ヨンヨンソンセンのロゼ土豆粉+高粱酒トニック、タルマジ広場のテラス・塩焼き・生ビール、ゆめおでん100ml果実酒と一人飲みバーの最初の一杯。"}
   },
-  {
-    week: "2026-W41",
-    issue: { ko:"2026년 10월 1주차", en:"Week 1, October 2026", zh:"2026年10月第1周", ja:"2026年10月第1週" },
-    date: "2026-10-07",
-    title: {
-      ko:"주류동향 W41 (생맥주 특집 — 의자보다 거품, 따르는 법이 간판이 됐다)",
-      en:"Sewang Liquor Trends W41 (Draft Beer Special — Foam over Chairs: the Pour Is the Sign)",
-      zh:"酒类动向 W41（生啤特辑 — 泡沫胜过椅子，注酒方式成了招牌）",
-      ja:"酒類動向 W41（生ビール特集 — 椅子より泡、注ぎ方が看板になった）"
-    },
-    desc: {
-      ko:"'따르는 법'을 간판으로 내건 생맥주 전문점을 수도권 39지점에서 다시 대조하고, 입식 운영 4곳을 추가 확인했습니다. 퍼펙트·밀코·우스하리 관련 인스타그램 게시물은 1~8월 기준 작년 대비 4.7배로 늘었습니다. 여섯 가지 따르는 법, 여섯 브랜드의 차별점과 확인 메뉴 가격, 인증패와 민간자격의 구분, 우리 매장 적용 3단계를 정리했습니다. ※ 10/9 한글날·10/21 임시휴무, 다음 호 10/14.",
-      en:"We re-checked 39 metro-area draft-beer specialists that put the pour on the sign and confirmed four more standing bars. Instagram posts on perfect pour, Milko and usuhari rose 4.7x year on year for Jan–Aug. Six pouring styles, six brands with checked menu prices, plaques vs private licences, and three steps for your bar. Closed Oct 9 and Oct 21; next issue Oct 14.",
-      zh:"在首都圈39家门店重新核对了把「注酒方式」当招牌的生啤专门店，并新增确认4家站立式门店。Perfect pour、Milko、usuhari相关Instagram帖子1~8月同比增至4.7倍。整理了六种注酒方式、六个品牌的差异与核实菜单价格、认证牌与民间资格的区分、门店落地三步。※10/9、10/21休业，下期10/14。",
-      ja:"「注ぎ方」を看板に掲げた生ビール専門店を首都圏39店舗で再照合し、立ち飲み運営4店を追加確認しました。パーフェクト・ミルコ・うすはり関連のInstagram投稿は1〜8月で前年比4.7倍。注ぎ方六種、六ブランドの差別化点と確認メニュー価格、認証プレートと民間資格の区別、自店での実行3段階を整理しました。※10/9・10/21休業、次号10/14。"
-    },
-    files: {
-      ko:"reports/2026-W41/Sewang_MarketReport_2026-10-1w_KO.pdf",
-      en:"reports/2026-W41/Sewang_MarketReport_2026-10-1w_EN.pdf",
-      zh:"reports/2026-W41/Sewang_MarketReport_2026-10-1w_ZH.pdf",
-      ja:"reports/2026-W41/Sewang_MarketReport_2026-10-1w_JP.pdf"
-    }
+  { week:"2026-W41", date:"2026-10-07",
+    issue:{ko:"2026년 10월 1주차",en:"Week 1, October 2026",zh:"2026年10月第1周",ja:"2026年10月第1週"},
+    title:{ko:"주류동향 W41 (생맥주 특집 — 의자보다 거품, 따르는 법이 간판이 됐다)",en:"Sewang Liquor Trends W41 (Draft Beer Special — The Pour Is the Sign)",zh:"酒类动向 W41(生啤特辑 — 泡沫胜过椅子,注酒方式成了招牌)",ja:"酒類動向 W41(生ビール特集 — 椅子より泡、注ぎ方が看板)"},
+    desc:{ko:"수도권 39지점 재대조 + 입식 운영 4곳 추가 확인. 퍼펙트·밀코·우스하리 인스타 게시물 1~8월 작년 대비 4.7배. 여섯 가지 따르는 법과 매장 적용 3단계.",en:"39 metro-area draft specialists re-checked + 4 standing bars added. Instagram posts on perfect pour/Milko/usuhari rose 4.7× YoY for Jan–Aug. Six pouring styles and three steps for your bar.",zh:"首都圈39家门店重新核对+新增4家站立式。Perfect pour/Milko/usuhari相关Instagram帖子1~8月同比4.7倍。六种注酒方式与门店落地三步。",ja:"首都圏39店再照合+立ち飲み4店追加。パーフェクト/ミルコ/うすはり関連Instagram投稿が1〜8月で前年比4.7倍。注ぎ方六種と実行3段階。"}
   },
-  {
-    week: "2026-W40",
-    issue: { ko:"2026년 9월 5주차", en:"Week 5, September 2026", zh:"2026年9月第5周", ja:"2026年9月第5週" },
-    date: "2026-09-30",
-    title: {
-      ko:"주류동향 W40 (브랜드 특집 — 밥집과 술집 사이, 거래처가 늘었다)",
-      en:"Sewang Liquor Trends W40 (Brand Special — Between Diner and Bar, Accounts Grew)",
-      zh:"酒类动向 W40（品牌特辑 — 餐馆与酒馆之间，客户在增加）",
-      ja:"酒類動向 W40（ブランド特集 — 食堂と酒場のあいだ、取引先が増えた）"
-    },
-    desc: {
-      ko:"밥집이면서 술집인 혼합형 브랜드가 올해 세왕 원장에서 4곳→54곳으로 늘었습니다. 술집 글 속 '식사·반주' 언급은 작년 21.0%에서 28.5%로 올랐고, 손님은 저녁·고기·맥주 순으로 찾습니다. 우이락·표주·할머니의부뚜막·망부석·탄막 다섯 브랜드의 대표 메뉴와 술 구성(생맥주 16~25%, 위스키·하이볼 5~16%)을 실측으로 정리했습니다. ※ 10/9 한글날 휴무, 다음 호 10/7.",
-      en:"Hybrid diner-bar brands grew from 4 to 54 accounts in Sewang's ledger this year. Mentions of 'a meal with drinks' in bar posts rose from 21.0% to 28.5%, and guests search for dinner, meat and beer in that order. Signature dishes and drink mix (draft beer 16–25%, whisky and highball 5–16%) for five brands — Uirak, Pyoju, Halmeoni-ui Buttumak, Mangbuseok and Tanmak. Closed Oct 9 (Hangul Day); next issue Oct 7.",
-      zh:"既是餐馆又是酒馆的混合型品牌，今年在世王台账中从4家增至54家。酒馆帖子里「用餐·佐餐饮酒」的提及从去年21.0%升至28.5%，客人按晚餐、肉类、啤酒的顺序寻找。实测整理了友二乐、瓢酒、奶奶的灶台、望夫石、弹幕五个品牌的招牌菜与酒类构成（生啤16~25%、威士忌·高球5~16%）。※10/9韩文日休息，下期10/7。",
-      ja:"食堂でもあり酒場でもある混合型ブランドが、今年セワンの台帳で4店→54店に増えました。酒場投稿の「食事・晩酌」言及は昨年21.0%から28.5%に上がり、客は夕食・肉・ビールの順に探しています。ウイラク・ピョジュ・ハルモニのプットゥマク・マンブソク・タンマク5ブランドの看板メニューと酒構成（生ビール16~25%、ウイスキー・ハイボール5~16%）を実測で整理しました。※10/9ハングルの日休業、次号10/7。"
-    },
-    files: {
-      ko:"reports/2026-W40/Sewang_MarketReport_2026-09-5w_KO.pdf",
-      en:"reports/2026-W40/Sewang_MarketReport_2026-09-5w_EN.pdf",
-      zh:"reports/2026-W40/Sewang_MarketReport_2026-09-5w_ZH.pdf",
-      ja:"reports/2026-W40/Sewang_MarketReport_2026-09-5w_JP.pdf"
-    }
+  { week:"2026-W40", date:"2026-09-30",
+    issue:{ko:"2026년 9월 5주차",en:"Week 5, September 2026",zh:"2026年9月第5周",ja:"2026年9月第5週"},
+    title:{ko:"주류동향 W40 (브랜드 특집 — 밥집과 술집 사이, 거래처가 늘었다)",en:"Sewang Liquor Trends W40 (Brand Special — Between Diner and Bar)",zh:"酒类动向 W40(品牌特辑 — 餐馆与酒馆之间,客户在增加)",ja:"酒類動向 W40(ブランド特集 — 食堂と酒場のあいだ)"},
+    desc:{ko:"혼합형 브랜드가 세왕 원장에서 4→54곳. '식사·반주' 언급 21.0%→28.5%. 다섯 브랜드의 대표 메뉴와 술 구성(생맥 16~25%, 위스키·하이볼 5~16%).",en:"Hybrid diner-bars grew 4→54 in Sewang's ledger. 'Meal+drinks' mentions rose 21.0%→28.5%. Five brands' signatures and drink mix (draft 16-25%, whisky/highball 5-16%).",zh:"混合型品牌从4家增至54家。'用餐·佐餐饮酒'提及21.0%→28.5%。五个品牌招牌与酒类构成(生啤16~25%,威士忌·高球5~16%)。",ja:"混合型ブランドが4店→54店に。「食事·晩酌」言及21.0%→28.5%。五ブランドの看板と酒構成(生16~25%、ウイスキー·ハイボール5~16%)。"}
   },
-  {
-    week: "2026-W38",
-    issue: { ko:"2026년 9월 3주차", en:"Week 3, September 2026", zh:"2026年9月第3周", ja:"2026年9月第3週" },
-    date: "2026-09-16",
-    title: {
-      ko:"주류동향 W38 (상권 특집 — 을지로만 술 얘기가 늘었다)",
-      en:"Sewang Liquor Trends W38 (District Special — Only Eulji-ro's Drink Talk Grew)",
-      zh:"酒类动向 W38（商圈特辑 — 只有乙支路酒的话题多了）",
-      ja:"酒類動向 W38（商圏特集 — 乙支路だけ酒の話が増えた）"
-    },
-    desc: {
-      ko:"서울 술 상권 여섯 곳의 인스타그램 술 언급을 20개월 되짚었습니다. 늘어난 곳은 을지로 하나(+18.4%), 축은 골목·야외 자리·노포 안주입니다. 세왕상사 출고 실측으로 본 연휴 전후 흐름(올해 설: 직전 주 164 · 연휴 주 45 · 다음 주 111), 추석 발주 캘린더(마지막 배송 9/23), 9/14 선정된 서울 달빛야장 6곳과 야장 없는 매장의 대응, 이번 주 실행 요약 3가지. ※ 9/23 휴간, 다음 호 9/30.",
-      en:"Twenty months of Instagram drink mentions across six Seoul districts: only Eulji-ro grew (+18.4%), on an axis of alleys, outdoor seats and old-shop dishes. Also inside: Sewang's own shipment index around a holiday (this Seollal: 164 the week before, 45 during, 111 after), the Chuseok order calendar (last delivery Sep 23), Seoul's six Moonlight Yajang districts named Sep 14 and what venues without outdoor seating can do, plus three actions for this week. No issue Sep 23; next issue Sep 30.",
-      zh:"回看首尔六个酒类商圈20个月的Instagram酒类提及：只有乙支路在增长（+18.4%），轴线是小巷、户外座位与老铺下酒菜。另附世旺商社出货实测的节前后走势（今年春节：节前一周164、假期周45、次周111）、中秋订货日历（最后配送9/23）、9/14选定的首尔月光夜场6处与无夜场门店的对策，以及本周三项执行要点。※9/23停刊，下期9/30。",
-      ja:"ソウル六商圏の酒言及20か月を振り返ると、増えたのは乙支路だけ（+18.4%）。軸は路地・屋外席・老舗のつまみです。セワン商事の出荷実測で見た連休前後の流れ（今年の旧正月：直前週164・連休週45・翌週111）、秋夕の発注カレンダー（最終配送9/23）、9/14に選ばれたソウル月光ヤジャン6か所とヤジャンのない店の対応、今週の実行ポイント3つも収録。※9/23休刊、次号9/30。"
-    },
-    files: {
-      ko:"reports/2026-W38/Sewang_MarketReport_2026-09-3w_KO_revised.pdf",
-      en:"reports/2026-W38/Sewang_MarketReport_2026-09-3w_EN_revised.pdf",
-      zh:"reports/2026-W38/Sewang_MarketReport_2026-09-3w_ZH_revised.pdf",
-      ja:"reports/2026-W38/Sewang_MarketReport_2026-09-3w_JP_revised.pdf"
-    }
+  { week:"2026-W38", date:"2026-09-16",
+    issue:{ko:"2026년 9월 3주차",en:"Week 3, September 2026",zh:"2026年9月第3周",ja:"2026年9月第3週"},
+    title:{ko:"주류동향 W38 (상권 특집 — 을지로만 술 얘기가 늘었다)",en:"Sewang Liquor Trends W38 (District Special — Only Eulji-ro's Drink Talk Grew)",zh:"酒类动向 W38(商圈特辑 — 只有乙支路酒的话题多了)",ja:"酒類動向 W38(商圏特集 — 乙支路だけ酒の話が増えた)"},
+    desc:{ko:"서울 술 상권 6곳 20개월 인스타 추적 — 늘어난 곳은 을지로 하나(+18.4%). 추석 발주 캘린더(마지막 배송 9/23), 서울 달빛야장 6곳 대응.",en:"20 months of drink mentions across 6 Seoul districts — only Eulji-ro grew (+18.4%). Chuseok order calendar (last delivery Sep 23), Seoul's 6 Moonlight Yajang districts.",zh:"首尔六个酒类商圈20个月Instagram追踪 — 只有乙支路增长(+18.4%)。中秋订货日历(最后配送9/23)、首尔月光夜场6处对策。",ja:"ソウル六商圏の酒言及20か月 — 増えたのは乙支路だけ(+18.4%)。秋夕発注カレンダー(最終配送9/23)、ソウル月光ヤジャン6か所の対応。"}
   },
-  {
-    week: "2026-W37",
-    issue: { ko:"2026년 9월 2주차", en:"Week 2, September 2026", zh:"2026年9月第2周", ja:"2026年9月第2週" },
-    date: "2026-09-09",
-    title: {
-      ko:"주류동향 W37 (시즌 특집 — 가을은 밖에서 시작된다)",
-      en:"Sewang Liquor Trends W37 (Season Special — Autumn Starts Outside)",
-      zh:"酒类动向 W37（季节特辑 — 秋天从户外开始）",
-      ja:"酒類動向 W37（シーズン特集 — 秋は外から始まる）"
-    },
-    desc: {
-      ko:"야장은 여름 장사가 아니었다. 작년 실측에서 야외 좌석 언급은 7월 말 4.6%로 바닥을 찍고 9월 마지막 주 18.1%까지 3.9배로 뛰었다 — 진짜 시즌은 9월 둘째 주~10월 마지막 주 7주, 골든존은 일평균 15~23도. 올해 8월 수치는 작년 같은 주의 1.75배다. 여기에 추석·개천절·한글날 연휴 3연타(9/24~10/11 열흘 휴일) 역산 발주 캘린더와, 신규 오픈 실측(이자카야 +31%, 하이볼 −38%)까지.",
-      en:"Yajang — the outdoor street-side seating bars put out front — is not a summer business. Last year's data bottomed at 4.6% in late July and peaked at 18.1% in the last week of September, a 3.9x swing. The real season runs seven weeks from the second week of September, inside a Golden Zone of 15–23°C daily mean. This year's August reading is 1.75x last year's. Plus a backward order calendar for three consecutive holidays (Chuseok, Foundation Day, Hangul Day — ten days off between Sep 24 and Oct 11) and new-opening data: izakayas +31%, highball bars −38%.",
-      zh:"夜场席不是夏天的生意。去年实测中，户外座位提及率在7月末触底4.6%，到9月最后一周升至18.1%，相差3.9倍 — 真正的旺季是9月第二周到10月最后一周共7周，黄金期为日均15~23度。今年8月的数值是去年同周的1.75倍。另附中秋节·开天节·韩文日三连休(9/24~10/11共十天假日)的倒推订货日历，以及新开业实测：居酒屋+31%、高球酒−38%。",
-      ja:"ヤジャン(店先の路上・屋外席)は夏の商売ではなかった。昨年の実測では屋外席の言及は7月末に4.6%で底を打ち、9月最終週に18.1%まで3.9倍に跳ね上がった — 本当のシーズンは9月第2週から10月最終週までの7週間、ゴールデンゾーンは日平均15~23度。今年8月の数値は昨年同週の1.75倍だ。さらに秋夕・開天節・ハングルの日の3連休(9/24~10/11で休日10日)の逆算発注カレンダーと、新規オープン実測(居酒屋+31%、ハイボール−38%)も。"
-    },
-    files: {
-      ko:"reports/2026-W37/Sewang_MarketReport_2026-09-2w_KO.pdf",
-      en:"reports/2026-W37/Sewang_MarketReport_2026-09-2w_EN.pdf",
-      zh:"reports/2026-W37/Sewang_MarketReport_2026-09-2w_ZH.pdf",
-      ja:"reports/2026-W37/Sewang_MarketReport_2026-09-2w_JP.pdf"
-    }
+  { week:"2026-W37", date:"2026-09-09",
+    issue:{ko:"2026년 9월 2주차",en:"Week 2, September 2026",zh:"2026年9月第2周",ja:"2026年9月第2週"},
+    title:{ko:"주류동향 W37 (시즌 특집 — 가을은 밖에서 시작된다)",en:"Sewang Liquor Trends W37 (Season Special — Autumn Starts Outside)",zh:"酒类动向 W37(季节特辑 — 秋天从户外开始)",ja:"酒類動向 W37(シーズン特集 — 秋は外から始まる)"},
+    desc:{ko:"야장은 여름 장사가 아니었다. 야외 좌석 언급 7월 말 4.6% → 9월 마지막 주 18.1%(3.9배). 추석·개천절·한글날 열흘 연휴 역산 발주.",en:"Yajang isn't summer business. Outdoor seat mentions bottomed at 4.6% late July, peaked at 18.1% in Sept's last week (3.9×). Backward calendar for the 10-day holiday block.",zh:"夜场席不是夏天的生意。户外座位提及7月末4.6%→9月最后一周18.1%(3.9倍)。中秋·开天节·韩文日十日连休倒推订货。",ja:"ヤジャンは夏の商売ではなかった。屋外席言及7月末4.6%→9月最終週18.1%(3.9倍)。秋夕·開天節·ハングルの日10日連休の逆算発注。"}
   },
-  {
-    week: "2026-W36",
-    issue: { ko:"2026년 9월 1주차", en:"Week 1, September 2026", zh:"2026年9月第1周", ja:"2026年9月第1週" },
-    date: "2026-09-02",
-    title: {
-      ko:"주류동향 W36 (데이터 특집 — 총량의 시대는 끝났다)",
-      en:"Sewang Liquor Trends W36 (Data Special — The Age of Volume Is Over)",
-      zh:"酒类动向 W36（数据特辑 — 总量时代结束了）",
-      ja:"酒類動向 W36（データ特集 — 総量の時代は終わった）"
-    },
-    desc: {
-      ko:"주류 출고량 298만8천㎘, 27년 만에 300만㎘ 붕괴 — 하지만 숫자를 끝까지 읽으면 공포가 아니라 지도가 나온다. 줄어드는 물량의 술(맥주·소주·막걸리) vs 커지는 취향의 술(증류식 소주 +18.6%, 일본 맥주 수입 +33.5% 10년 만의 최대, 무알코올 SNS +41%) + '선택적 프리미엄화' 인사이트 + 강남대로 외식대전 + 우리 매장 메뉴판 3문항 점검 + FOLLOW-UP: 가을의 첫 신호, 비 뒤에 온다.",
-      en:"Liquor shipments at 2.988M kL — below 3M for the first time in 27 years. Read the numbers to the end and you get a map, not a scare: shrinking volume drinks (beer, soju, makgeolli) vs growing taste drinks (distilled soju +18.6%, Japanese beer imports +33.5%, non-alcoholic mentions +41%) + the 'selective premiumization' insight + the Gangnam-daero dining war + a 3-question menu check + FOLLOW-UP: autumn's first signal comes after the rain.",
-      zh:"酒类出货量298.8万千升，27年来首次跌破300万 — 但把数字读到最后，看到的不是恐慌而是地图：缩小的走量酒(啤酒·烧酒·马格利) vs 增长的品味酒(蒸馏式烧酒+18.6%、日本啤酒进口+33.5%创10年新高、无酒精社媒+41%) + '选择性高端化'洞察 + 江南大路餐饮大战 + 菜单3问自检 + FOLLOW-UP：秋天的第一个信号，在雨后到来。",
-      ja:"酒類出荷量298万8千kL、27年ぶりに300万kL割れ — だが数字を最後まで読めば、恐怖ではなく地図が見える。縮む物量の酒(ビール・焼酎・マッコリ) vs 伸びる嗜好の酒(蒸留式焼酎+18.6%、日本ビール輸入+33.5%で10年ぶり最大、ノンアルSNS+41%) + 「選択的プレミアム化」インサイト + 江南大路の外食大戦 + メニュー3問チェック + FOLLOW-UP：秋の最初のシグナルは雨の後に来る。"
-    },
-    files: {
-      ko:"reports/2026-W36/Sewang_MarketReport_2026-09-1w_KO.pdf",
-      en:"reports/2026-W36/Sewang_MarketReport_2026-09-1w_EN.pdf",
-      zh:"reports/2026-W36/Sewang_MarketReport_2026-09-1w_ZH.pdf",
-      ja:"reports/2026-W36/Sewang_MarketReport_2026-09-1w_JP.pdf"
-    }
+  { week:"2026-W36", date:"2026-09-02",
+    issue:{ko:"2026년 9월 1주차",en:"Week 1, September 2026",zh:"2026年9月第1周",ja:"2026年9月第1週"},
+    title:{ko:"주류동향 W36 (데이터 특집 — 총량의 시대는 끝났다)",en:"Sewang Liquor Trends W36 (Data Special — The Age of Volume Is Over)",zh:"酒类动向 W36(数据特辑 — 总量时代结束了)",ja:"酒類動向 W36(データ特集 — 総量の時代は終わった)"},
+    desc:{ko:"주류 출고량 298만8천㎘, 27년 만에 300만 붕괴. 줄어드는 물량 vs 커지는 취향(증류식 소주+18.6%, 일본 맥주+33.5%, 무알콜 SNS+41%).",en:"Liquor shipments at 2.988M kL — below 3M for first time in 27 years. Shrinking volume vs growing taste (distilled soju +18.6%, Japanese beer +33.5%, non-alc mentions +41%).",zh:"酒类出货量298.8万千升,27年来首次跌破300万。缩小的走量 vs 增长的品味(蒸馏式烧酒+18.6%、日本啤酒+33.5%、无酒精社媒+41%)。",ja:"酒類出荷量298万8千kL、27年ぶりに300万kL割れ。縮む物量 vs 伸びる嗜好(蒸留式焼酎+18.6%、日本ビール+33.5%、ノンアルSNS+41%)。"}
   },
-  {
-    week: "2026-W35",
-    issue: { ko:"2026년 8월 4주차", en:"Week 4, August 2026", zh:"2026年8月第4周", ja:"2026年8月第4週" },
-    date: "2026-08-26",
-    title: {
-      ko:"주류동향 W35 (추석 특집 — 나흘의 연휴, 계산은 끝났다)",
-      en:"Sewang Liquor Trends W35 (Chuseok Special — Four Days Off, The Math Is Done)",
-      zh:"酒类动向 W35（秋夕特辑 — 四天连休，账已经算完了）",
-      ja:"酒類動向 W35（秋夕特集 — 4日間の連休、計算は済んだ）"
-    },
-    desc: {
-      ko:"매거진 전면 리뉴얼 첫 호. 9/24~27 추석 나흘, 감이 아니라 계산으로 — 상권별 4상한 판정표(오피스가 휴무·역세권 후반 압축·주택가 당일 저녁·관광지 증량) + 하루 손익 30초 공식(휴일 가산수당 포함) + 유통이 멈추는 나흘의 발주 역산 캘린더(9/23 마지막 배송·연휴 당직 운영) + FOLLOW-UP: 처서에 폭염주의보, 처서매직 불발과 늦어지는 가을 전환.",
-      en:"First issue of the full magazine redesign. The 4-day Chuseok holiday (Sep 24–27) decided by arithmetic, not instinct — a 4-quadrant verdict chart by neighborhood + a 30-second daily P&L formula with holiday pay + an order-backwards calendar for four days without deliveries (last delivery Sep 23, duty staff on call) + FOLLOW-UP: a heat advisory on Cheoseo day and the autumn switch running late.",
-      zh:"杂志全面改版第一期。9/24~27秋夕四天连休，用计算代替直觉 — 分商圈四象限判定表 + 含节假日加班费的单日损益30秒公式 + 物流停摆四天的倒推订货日历(9/23最后配送·连休值班机制) + FOLLOW-UP：处暑遇上高温预警，处暑魔法失灵、秋季转换推迟。",
-      ja:"マガジン全面リニューアル第1号。9/24〜27の秋夕4連休を勘ではなく計算で — 商圏別4象限判定表 + 休日割増込みの一日損益30秒公式 + 物流が止まる4日間の発注逆算カレンダー(9/23最終配送・連休当直体制) + FOLLOW-UP：処暑に猛暑注意報、処暑マジック不発と遅れる秋への転換。"
-    },
-    files: {
-      ko:"reports/2026-W35/Sewang_MarketReport_2026-08-4w_KO.pdf",
-      en:"reports/2026-W35/Sewang_MarketReport_2026-08-4w_EN.pdf",
-      zh:"reports/2026-W35/Sewang_MarketReport_2026-08-4w_ZH.pdf",
-      ja:"reports/2026-W35/Sewang_MarketReport_2026-08-4w_JP.pdf"
-    }
+  { week:"2026-W35", date:"2026-08-26",
+    issue:{ko:"2026년 8월 4주차",en:"Week 4, August 2026",zh:"2026年8月第4周",ja:"2026年8月第4週"},
+    title:{ko:"주류동향 W35 (추석 특집 — 나흘의 연휴, 계산은 끝났다)",en:"Sewang Liquor Trends W35 (Chuseok Special — Four Days Off, The Math Is Done)",zh:"酒类动向 W35(秋夕特辑 — 四天连休,账已经算完了)",ja:"酒類動向 W35(秋夕特集 — 4日間の連휴、計算は済んだ)"},
+    desc:{ko:"매거진 전면 리뉴얼 첫 호. 9/24~27 추석, 감이 아니라 계산 — 상권별 4상한 판정표, 하루 손익 30초 공식, 발주 역산(9/23 마지막 배송).",en:"First issue of the magazine redesign. The 4-day Chuseok decided by arithmetic — 4-quadrant verdict chart, 30-second P&L formula with holiday pay, order-backwards calendar.",zh:"杂志全面改版第一期。9/24~27秋夕用计算代替直觉 — 分商圈四象限判定表、含假日加班费的单日损益30秒公式、倒推订货日历。",ja:"マガジン全面リニューアル第1号。9/24〜27秋夕を計算で — 商圏別4象限判定表、休日割増込みの一日損益30秒公式、発注逆算カレンダー。"}
   },
-  {
-    week: "2026-W34",
-    issue: { ko:"2026년 8월 3주차", en:"Week 3, August 2026", zh:"2026年8月第3周", ja:"2026年8月第3週" },
-    date: "2026-08-19",
-    title: {
-      ko:"세왕상사 시장동향 리포트 (처서매직 — 그날 이후, 손님의 술이 바뀝니다)",
-      en:"Sewang Market Trends (Cheoseo Magic — After That Day, What Guests Drink Changes)",
-      zh:"世旺商社 市场动向报告（处暑魔法 — 那天之后，客人点的酒就变了）",
-      ja:"世旺商社 マーケットトレンド（処暑マジック — その日を境に、客の飲む酒が変わる）"
-    },
-    desc: {
-      ko:"8/23 처서를 기점으로 위스키 -12%·무알콜 +33% 흐름이 뒤집히는 반전 신호 + 이번 주 발주 체크리스트 3(온더락 위스키·하이볼 재편·야장→실내) + 대표가 직접 다녀온 도쿄 신주쿠 3곳 딥다이브(나키자카나·토로마사·사케를 1°C 단위로 파는 원가주장) + 처서 이후 비어있는 '뜨거운 사케' 카테고리 + 토리키조쿠 을지로·잔잔 이천 + 다음 호: 추석 4일 연휴 쉴까 열까.",
-      en:"The reversal signal at Cheoseo (Aug 23) flipping whisky -12% and non-alc +33% + a 3-point ordering checklist (on-the-rocks whisky, highball reshuffle, patio-to-indoor) + a deep dive on 3 Shinjuku spots our CEO visited (Nakizakana, Toromasa, and Genka Sakagura selling sake by the degree) + the wide-open 'hot sake' category after Cheoseo + Torikizoku Euljiro & Zanzan Icheon + next issue: the 4-day Chuseok close-or-open math.",
-      zh:"以8/23处暑为界，威士忌-12%·无酒精+33%趋势反转的信号 + 本周订货清单3条(加冰威士忌·Highball重组·露天转室内) + 代表亲访的新宿三店深度报道(Nakizakana·Toromasa·按1°C卖清酒的原价酒藏) + 处暑之后空白的'热清酒'品类 + 鸟贵族乙支路·灿灿利川 + 下期：中秋4天连休歇还是开。",
-      ja:"8/23処暑を境にウイスキー-12%・ノンアル+33%の流れが反転するシグナル + 今週の発注チェックリスト3(ロックのウイスキー・ハイボール再編・野外→店内) + 代表が直接訪れた新宿3店のディープダイブ(なきざかな・トロマサ・日本酒を1°C単位で売る原価酒蔵) + 処暑以降空白の「熱燗」カテゴリー + トリキ族乙支路・ザンザン利川 + 次号：秋夕4連休、休むか開けるか。"
-    },
-    files: {
-      ko:"reports/2026-W34/Sewang_MarketReport_2026-08-3w_KO.pdf",
-      en:"reports/2026-W34/Sewang_MarketReport_2026-08-3w_EN.pdf",
-      zh:"reports/2026-W34/Sewang_MarketReport_2026-08-3w_ZH.pdf",
-      ja:"reports/2026-W34/Sewang_MarketReport_2026-08-3w_JP.pdf"
-    }
+  { week:"2026-W34", date:"2026-08-19",
+    issue:{ko:"2026년 8월 3주차",en:"Week 3, August 2026",zh:"2026年8月第3周",ja:"2026年8月第3週"},
+    title:{ko:"시장동향 (처서매직 — 그날 이후, 손님의 술이 바뀝니다)",en:"Market Trends (Cheoseo Magic — After That Day, What Guests Drink Changes)",zh:"市场动向(处暑魔法 — 那天之后,客人点的酒就变了)",ja:"マーケットトレンド(処暑マジック — その日を境に、客の飲む酒が変わる)"},
+    desc:{ko:"8/23 처서 기점 위스키 -12%·무알콜 +33% 반전 신호. 도쿄 신주쿠 3곳 딥다이브, 처서 이후 '뜨거운 사케' 카테고리.",en:"Reversal signal at Cheoseo (Aug 23): whisky -12%, non-alc +33%. Deep dive on 3 Shinjuku spots, the open 'hot sake' category after Cheoseo.",zh:"8/23处暑为界,威士忌-12%·无酒精+33%反转信号。新宿三店深度报道,处暑之后'热清酒'空白品类。",ja:"8/23処暑を境にウイスキー-12%・ノンアル+33%の反転。新宿3店ディープダイブ、処暑以降「熱燗」カテゴリー。"}
   },
-  {
-    week: "2026-W33",
-    issue: { ko:"2026년 8월 2주차", en:"Week 2, August 2026", zh:"2026年8月第2周", ja:"2026年8月第2週" },
-    date: "2026-08-12",
-    title: {
-      ko:"세왕상사 시장동향 리포트 (돌아오는 손님, 사흘의 연휴 — 8월 후반전 준비)",
-      en:"Sewang Market Trends (Guests Are Coming Back, and a Three-Day Holiday)",
-      zh:"世旺商社 市场动向报告（回流的客人，三天的连假 — 备战八月下半场）",
-      ja:"世旺商社 マーケットトレンド（戻ってくるお客様、三日間の連休 — 8月後半の準備）"
-    },
-    desc: {
-      ko:"이자카야 검색 15주 만의 최고점(+29%)·혼술 +51% 15주 내내 우상향 + 8/15~17 사흘 연휴인데 술집 게시물 100건 중 연휴 언급 0건 + 혼술바가 3개월 만에 90호점으로 '업종'이 된 현장 + 생마차×야화 잠실새내 교차 프로모션 + 이자카야의 해외여행 대체 + 스탠딩펍 29곳 실사(일본계 21곳 7,900~11,900원 vs 국산계 10곳 3,800~6,000원) + 연휴 전 체크리스트.",
-      en:"Izakaya searches at a 15-week high (+29%) & solo drinking +51% rising for 15 straight weeks + a three-day holiday on Aug 15-17 yet 0 of 100 bar posts mention it + solo bars became a category, 90 stores in 3 months + a cross promotion between a beer hall and a solo bar in Jamsilsaenae + izakayas as a substitute for overseas travel + a field count of 29 standing pubs (21 Japanese-beer venues at KRW 7,900-11,900 vs 10 domestic at 3,800-6,000) + a pre-holiday checklist.",
-      zh:"居酒屋搜索创15周新高(+29%)·独饮+51%连续15周走高 + 8/15~17三天连假，但100条酒馆帖子中提及连假者为0 + 独饮吧三个月内开出90家成为一个业态 + 生马车×夜花蚕室新村交叉推广 + 居酒屋成为出境旅行替代品 + 实地清点29家站立酒馆(日系21家7,900~11,900韩元 对 国产10家3,800~6,000韩元) + 连假前检查表。",
-      ja:"居酒屋検索が15週ぶりの最高値(+29%)・一人飲み+51%が15週連続で上昇 + 8/15~17の三連休なのに飲食店投稿100件中、連休への言及は0件 + 一人飲みバーが3か月で90号店に達し「業種」となった現場 + センマチャ×ヤファ 蚕室セネの相互プロモーション + 海外旅行の代替となる居酒屋 + 立ち飲み店29軒の実地調査(日本ビール系21軒 7,900~11,900ウォン 対 国産系10軒 3,800~6,000ウォン) + 連休前チェックリスト。"
-    },
-    files: {
-      ko:"reports/2026-W33/Sewang_MarketReport_2026-08-2w_KO.pdf",
-      en:"reports/2026-W33/Sewang_MarketReport_2026-08-2w_EN.pdf",
-      zh:"reports/2026-W33/Sewang_MarketReport_2026-08-2w_ZH.pdf",
-      ja:"reports/2026-W33/Sewang_MarketReport_2026-08-2w_JP.pdf"
-    }
+  { week:"2026-W33", date:"2026-08-12",
+    issue:{ko:"2026년 8월 2주차",en:"Week 2, August 2026",zh:"2026年8月第2周",ja:"2026年8月第2週"},
+    title:{ko:"시장동향 (돌아오는 손님, 사흘의 연휴 — 8월 후반전 준비)",en:"Market Trends (Guests Are Coming Back, and a Three-Day Holiday)",zh:"市场动向(回流的客人,三天的连假 — 备战八月下半场)",ja:"マーケットトレンド(戻ってくるお客様、三日間の連休)"},
+    desc:{ko:"이자카야 검색 15주 최고(+29%)·혼술 +51% 지속 상승. 8/15~17 사흘 연휴 언급은 0건. 혼술바 90호점으로 '업종' 등극.",en:"Izakaya searches at 15-week high (+29%), solo drinking +51% rising for 15 weeks straight. Zero mentions of the Aug 15-17 holiday. Solo bars became a category — 90 stores in 3 months.",zh:"居酒屋搜索15周新高(+29%)·独饮+51%连续走高。8/15~17三连假提及0件。独饮吧3个月90家成为业态。",ja:"居酒屋検索が15週最高(+29%)、一人飲み+51%連続上昇。8/15~17連休言及0件。一人飲みバー3か月で90号店。"}
   },
-  {
-    week: "2026-W32",
-    issue: { ko:"2026년 8월 1주차", en:"Week 1, August 2026", zh:"2026年8月第1周", ja:"2026年8月第1週" },
-    date: "2026-08-05",
-    title: {
-      ko:"세왕상사 시장동향 리포트 (혼자, 가볍게, 늦게 — 8월 손님의 세 얼굴)",
-      en:"Sewang Market Trends (Alone, Light, Late — 3 Faces of August Guests)",
-      zh:"世旺商社 市场动向报告（独酌、轻饮、夜归 — 8月客人的三副面孔）",
-      ja:"世旺商社 マーケットトレンド（ひとりで、軽く、遅くまで — 8月の客・三つの顔）"
-    },
-    desc: {
-      ko:"이자카야 검색 3개월 최고치·혼술 +36% + 무알콜 +33% vs 위스키 -12% 교차 진단 + 소주 15.7도 저도수 전쟁 + 인스타 무알콜 협찬 게시물 14건 중 13건 관찰 + 밤 2차를 노리는 이업종과 매장의 방어전 + 8월 매장 체크리스트.",
-      en:"Izakaya searches at a 3-month high & solo drinking +36% + non-alc +33% vs whisky -12% + the 15.7% soju ABV war + 13 of the 14 latest non-alc Instagram posts are sponsored + cross-industry raids on the late-night round + an August venue checklist.",
-      zh:"居酒屋搜索3个月新高·独饮+36% + 无酒精+33%对威士忌-12%交叉诊断 + 烧酒15.7度低度之战 + 无酒精Instagram最新14帖中13帖为赞助 + 异业抢夺深夜第二摊与门店防守 + 8月门店检查清单。",
-      ja:"居酒屋検索3か月最高値・ひとり酒+36% + ノンアル+33%対ウイスキー-12% + 焼酎15.7度の低アル戦争 + ノンアルInstagram最新14件中13件が協賛 + 夜の2軒目を狙う異業種と店の防衛戦 + 8月の店舗チェックリスト。"
-    },
-    files: {
-      ko:"reports/2026-W32/Sewang_MarketReport_2026-08-1w_KO.pdf",
-      en:"reports/2026-W32/Sewang_MarketReport_2026-08-1w_EN.pdf",
-      zh:"reports/2026-W32/Sewang_MarketReport_2026-08-1w_ZH.pdf",
-      ja:"reports/2026-W32/Sewang_MarketReport_2026-08-1w_JP.pdf"
-    }
+  { week:"2026-W32", date:"2026-08-05",
+    issue:{ko:"2026년 8월 1주차",en:"Week 1, August 2026",zh:"2026年8月第1周",ja:"2026年8月第1週"},
+    title:{ko:"시장동향 (혼자, 가볍게, 늦게 — 8월 손님의 세 얼굴)",en:"Market Trends (Alone, Light, Late — 3 Faces of August Guests)",zh:"市场动向(独酌、轻饮、夜归 — 8月客人的三副面孔)",ja:"マーケットトレンド(ひとりで、軽く、遅くまで — 8月の客・三つの顔)"},
+    desc:{ko:"이자카야 검색 3개월 최고치, 혼술 +36%. 무알콜 +33% vs 위스키 -12% 교차. 소주 15.7도 저도수 전쟁.",en:"Izakaya searches at 3-month high, solo drinking +36%. Non-alc +33% vs whisky -12%. The 15.7% soju ABV war.",zh:"居酒屋搜索3个月新高、独饮+36%。无酒精+33%对威士忌-12%。烧酒15.7度低度之战。",ja:"居酒屋検索3か月最高、一人酒+36%。ノンアル+33%対ウイスキー-12%。焼酎15.7度の低アル戦争。"}
   },
-  {
-    week: "2026-W30",
-    issue: { ko:"2026년 7월 3주차", en:"Week 3, July 2026", zh:"2026年7月第3周", ja:"2026年7月第3週" },
-    date: "2026-07-22",
-    title: {
-      ko:"세왕상사 시장동향 리포트 (손님의 검색창이 바뀌었다 — 여름 성수기 주류 키워드)",
-      en:"Sewang Market Trends (The Search Bar Has Changed — Summer Peak Liquor Keywords)",
-      zh:"世旺商社 市场动向报告（客人的搜索框变了 — 夏季旺季酒类关键词）",
-      ja:"世旺商社 マーケットトレンド（客の検索窓が変わった — 夏の最盛期・酒キーワード）"
-    },
-    desc: {
-      ko:"생맥주 검색 +61% 상승, 하이볼은 '검색은 줄고 주문은 늘었다'(편의점 매출 3년 연속 증가)를 데이터로 진단 + 과일향·저도수·논알코올 신제품 러시 + 논알코올 입점 6만 4천 매장 + 우리 가게 여름 메뉴판 5가지와 날씨×발주 메모.",
-      en:"Draft-beer searches +61% and the highball paradox (searches halved, CVS sales up 3 straight years) + the fruit/low-ABV/non-alc release rush + non-alc already in 64,000 venues + a 5-point summer menu and a weather-based ordering memo.",
-      zh:"扎啤搜索+61%、Highball“搜索降、下单涨”（便利店销售连增3年）的数据诊断 + 水果风味·低度·无酒精新品潮 + 无酒精已进驻6.4万家门店 + 本店夏季菜单5件事与看天订货备忘。",
-      ja:"生ビール検索+61%とハイボールの逆説（検索半減・コンビニ売上3年連続増）をデータで診断 + 果実味・低アル・ノンアルの新商品ラッシュ + ノンアル導入6万4千店 + 夏メニュー5項目と天気×発注メモ。"
-    },
-    files: {
-      ko:"reports/2026-W30/Sewang_MarketReport_2026-07-3w_KO.pdf",
-      en:"reports/2026-W30/Sewang_MarketReport_2026-07-3w_EN.pdf",
-      zh:"reports/2026-W30/Sewang_MarketReport_2026-07-3w_ZH.pdf",
-      ja:"reports/2026-W30/Sewang_MarketReport_2026-07-3w_JP.pdf"
-    }
+  { week:"2026-W30", date:"2026-07-22",
+    issue:{ko:"2026년 7월 3주차",en:"Week 3, July 2026",zh:"2026年7月第3周",ja:"2026年7月第3週"},
+    title:{ko:"시장동향 (손님의 검색창이 바뀌었다 — 여름 성수기)",en:"Market Trends (The Search Bar Has Changed — Summer Peak)",zh:"市场动向(客人的搜索框变了 — 夏季旺季)",ja:"マーケットトレンド(客の検索窓が変わった — 夏の最盛期)"},
+    desc:{ko:"생맥주 검색 +61%, 하이볼은 '검색은 줄고 주문은 늘었다'. 과일향·저도수·논알코올 신제품 러시. 논알코올 입점 6만 4천 매장.",en:"Draft-beer searches +61% and the highball paradox (searches halved, CVS sales up 3 straight years). Fruit/low-ABV/non-alc release rush, 64,000 venues now stocking non-alc.",zh:"扎啤搜索+61%、Highball'搜索降下单涨'(便利店销售连增3年)。水果风味·低度·无酒精新品潮,无酒精进驻6.4万家。",ja:"生ビール検索+61%とハイボールの逆説(検索半減、コンビニ売上3年連続増)。果実味·低アル·ノンアル新商品ラッシュ、ノンアル導入6万4千店。"}
   },
-  {
-    week: "2026-W29",
-    issue: { ko:"2026년 7월 2주차", en:"Week 2, July 2026", zh:"2026年7月第2周", ja:"2026年7月第2週" },
-    date: "2026-07-15",
-    title: {
-      ko:"세왕상사 시장동향 리포트 (뜨는 주점의 조건 — 2026 외식시장 진단과 대응)",
-      en:"Sewang Market Trends (What Makes a Thriving Bar — 2026 F&B Market Diagnosis)",
-      zh:"世旺商社 市场动向报告（爆火酒馆的条件 — 2026餐饮市场诊断与应对）",
-      ja:"世旺商社 マーケットトレンド（伸びる酒場の条件 — 2026外食市場診断と対応）"
-    },
-    desc: {
-      ko:"외식업 폐업률 역대 최고치(외식업 6곳 중 1곳↓)와 서울 자치구별 격차를 데이터로 진단 + 상반기 매장수 급증 브랜드·업종전환 사례로 본 '뜨는 가게'의 공통점 + 세왕 거래처 3,014곳 실데이터로 본 개시·이탈 회전율 + 사장님이 바로 적용할 수 있는 생존 전략.",
-      en:"Data diagnosis of record-high F&B closures (1 in 6 shuts down yearly) and Seoul district gaps + what thriving venues have in common, drawn from H1's fastest-growing brands and pivot cases + real churn data from Sewang's 3,014 active partners + survival strategies owners can apply now.",
-      zh:"以数据诊断餐饮业创纪录的高关店率（每6家关1家）及首尔各区差距 + 从上半年门店数激增品牌与转型案例看“爆红店铺”的共同点 + 世旺3,014家合作门店的开闭店实际数据 + 老板可立即应用的生存策略。",
-      ja:"外食業の過去最高水準の廃業率（6軒に1軒が閉店）とソウル区別格差をデータで診断 + 上半期に店舗数を急増させたブランド・業態転換事例から見る「伸びる店」の共通点 + 世旺の取引先3,014店の実データで見る開廃店の回転率 + 店主がすぐ使える生存戦略。"
-    },
-    files: {
-      ko:"reports/2026-W29/Sewang_MarketReport_2026-07-2w_KO.pdf",
-      en:"reports/2026-W29/Sewang_MarketReport_2026-07-2w_EN.pdf",
-      zh:"reports/2026-W29/Sewang_MarketReport_2026-07-2w_ZH.pdf",
-      ja:"reports/2026-W29/Sewang_MarketReport_2026-07-2w_JP.pdf"
-    }
+  { week:"2026-W29", date:"2026-07-15",
+    issue:{ko:"2026년 7월 2주차",en:"Week 2, July 2026",zh:"2026年7月第2周",ja:"2026年7月第2週"},
+    title:{ko:"시장동향 (뜨는 주점의 조건 — 2026 외식시장)",en:"Market Trends (What Makes a Thriving Bar — 2026 F&B)",zh:"市场动向(爆火酒馆的条件 — 2026餐饮市场)",ja:"マーケットトレンド(伸びる酒場の条件 — 2026外食市場)"},
+    desc:{ko:"외식업 폐업률 역대 최고(6곳 중 1곳↓), 서울 자치구 격차. 세왕 거래처 3,014곳 회전율. 사장님 즉시 적용 생존 전략.",en:"Record-high F&B closures (1 in 6), Seoul district gaps. Real churn from Sewang's 3,014 active partners. Survival strategies.",zh:"餐饮业创纪录高关店率(每6家关1家)、首尔各区差距。世旺3,014家合作门店周转率。老板可立即应用的生存策略。",ja:"外食業の過去最高廃業率(6軒に1軒)、ソウル区別格差。世旺取引先3,014店の回転率。すぐ使える生存戦略。"}
   },
-  {
-    week: "2026-W28",
-    issue: { ko:"2026년 7월 1주차", en:"Week 1, July 2026", zh:"2026年7月第1周", ja:"2026年7月第1週" },
-    date: "2026-07-08",
-    title: {
-      ko:"세왕상사 시장동향 리포트 (성수기 발주 가이드 — 여름, 소비자는 무엇을 원하나)",
-      en:"Sewang Market Trends (Peak-Season Ordering Guide — What Guests Really Want)",
-      zh:"世旺商社 市场动向报告（旺季订货指南 — 夏日，顾客究竟想要什么）",
-      ja:"世旺商社 マーケットトレンド（最盛期発注ガイド — 夏、客が本当に求めるもの）"
-    },
-    desc: {
-      ko:"SNS 4만 건이 말한 소비자 5대 니즈(시원함·안주조합·분위기·다양함·함께) + 세왕 유통 실데이터(생맥주 반년 +55%, 기본기 76%) 기반 채널별 발주 가이드 + 이번 여름 신제품(효케츠·보드카 크루저·에스파·오크소맥) + 색감 시그니처 하이볼 레시피.",
-      en:"5 consumer needs from 40,000 social posts (refreshing·food pairing·vibe·variety·together) + channel-by-channel ordering guide grounded in Sewang's own data (draft +55% in six months, basics = 76%) + this summer's new arrivals + color-signature highball recipes.",
-      zh:"4万条社媒说出的5大需求（清爽·下酒搭配·氛围·多样·共饮）+ 基于世旺自有流通数据（扎啤半年+55%、基本盘76%）的分渠道订货指南 + 今夏新品 + 彩色招牌嗨棒配方。",
-      ja:"SNS4万件が語る5つのニーズ（爽快·つまみの相性·雰囲気·多様·一緒に）+ 世旺の流通データ（生ビール半年+55%、基本76%）に基づくチャネル別発注ガイド + 今夏の新商品 + 色で魅せるシグネチャーハイボールのレシピ。"
-    },
-    files: {
-      ko:"reports/2026-W28/Sewang_MarketReport_2026-07-1w_KO.pdf",
-      en:"reports/2026-W28/Sewang_MarketReport_2026-07-1w_EN.pdf",
-      zh:"reports/2026-W28/Sewang_MarketReport_2026-07-1w_ZH.pdf",
-      ja:"reports/2026-W28/Sewang_MarketReport_2026-07-1w_JP.pdf"
-    }
+  { week:"2026-W28", date:"2026-07-08",
+    issue:{ko:"2026년 7월 1주차",en:"Week 1, July 2026",zh:"2026年7月第1周",ja:"2026年7月第1週"},
+    title:{ko:"시장동향 (성수기 발주 가이드 — 여름 소비자 니즈)",en:"Market Trends (Peak-Season Ordering Guide)",zh:"市场动向(旺季订货指南 — 夏日消费者)",ja:"マーケットトレンド(最盛期発注ガイド — 夏の消費者)"},
+    desc:{ko:"SNS 4만 건 분석 5대 니즈(시원함·안주조합·분위기·다양함·함께). 세왕 실데이터 기반 채널별 발주. 시그니처 하이볼 레시피.",en:"5 consumer needs from 40,000 social posts (refreshing·food pairing·vibe·variety·together). Channel-by-channel orders grounded in Sewang data. Signature highball recipes.",zh:"4万条社媒5大需求(清爽·下酒·氛围·多样·共饮)。世旺实数据分渠道订货。彩色招牌嗨棒配方。",ja:"SNS4万件分析5つのニーズ(爽快·つまみ·雰囲気·多様·一緒に)。世旺データでチャネル別発注。シグネチャーハイボールのレシピ。"}
   },
-  {
-    week: "2026-W27",
-    issue: { ko:"2026년 6월 결산 · 상반기 결산", en:"June 2026 Closing · First-Half Review", zh:"2026年6月总结 · 上半年总结", ja:"2026年6月総括 · 上半期総括" },
-    date: "2026-06-29",
-    title: {
-      ko:"세왕상사 시장동향 6월 결산 리포트 (무알콜 특집 — 일본 전문매장 & 한국 제품 가이드)",
-      en:"Sewang June Closing Report (Non-Alcoholic Special — Japan's Specialty Venues & Korea Product Guide)",
-      zh:"世旺商社 6月总结报告（无酒精特辑 — 日本专门店 & 韩国产品指南）",
-      ja:"世旺商社 6月総括レポート（ノンアル特集 — 日本の専門店 & 韓国製品ガイド）"
-    },
-    desc: {
-      ko:"여름 4대 카테고리 결산(생맥+21%·무알콜+102%·하이볼+4%·사케-19%) + 상반기 SNS가 줄 세운 매장 분석(야장·와인바·노포·콘셉트형) + 특집: 일본 무알콜 전문 매장 3곳(스마도리·LOW-NON-BAR·0%)과 한국에서 잘 팔리는 무알콜 제품 종목별(맥주~와인) 가이드.",
-      en:"Closing review of 4 summer categories (draft +21%, non-alc +102%, highball +4%, sake -19%) + H1 trending venues + Special: 3 Japanese non-alcoholic specialty venues & Korea's best-selling non-alc products by category.",
-      zh:"夏季4类品类总结（扎啤+21%·无酒精+102%·嗨棒+4%·清酒-19%）+ 上半年热门店铺分析 + 特辑：日本3家无酒精专门店与韩国畅销无酒精产品分品类指南。",
-      ja:"夏の4カテゴリ総括（生+21%·ノンアル+102%·ハイボール+4%·日本酒-19%）+ 上半期の注目店分析 + 特集：日本のノンアル専門店3軒と韓国で売れるノンアル製品の品目別ガイド。"
-    },
-    files: {
-      ko:"reports/2026-W27/Sewang_MarketReport_2026-06-Closing_KO.pdf",
-      en:"reports/2026-W27/Sewang_MarketReport_2026-06-Closing_EN.pdf",
-      zh:"reports/2026-W27/Sewang_MarketReport_2026-06-Closing_ZH.pdf",
-      ja:"reports/2026-W27/Sewang_MarketReport_2026-06-Closing_JP.pdf"
-    }
+  { week:"2026-W27", date:"2026-06-29",
+    issue:{ko:"2026년 6월 결산",en:"June 2026 Closing",zh:"2026年6月总结",ja:"2026年6月総括"},
+    title:{ko:"6월 결산 (무알콜 특집 — 일본 전문매장 & 한국 제품)",en:"June Closing (Non-Alc Special — Japan Venues & Korea Products)",zh:"6月总结(无酒精特辑 — 日本专门店 & 韩国产品)",ja:"6月総括(ノンアル特集 — 日本専門店 & 韓国製品)"},
+    desc:{ko:"생맥+21%·무알콜+102%·하이볼+4%·사케-19% 결산. 일본 무알콜 전문 매장 3곳과 한국 베스트셀러 종목별 가이드.",en:"Draft +21%, non-alc +102%, highball +4%, sake -19%. 3 Japanese non-alc venues & Korea's best-selling non-alc by category.",zh:"扎啤+21%·无酒精+102%·嗨棒+4%·清酒-19%。日本3家无酒精专门店与韩国畅销无酒精分品类指南。",ja:"生+21%·ノンアル+102%·ハイボール+4%·日本酒-19%。日本ノンアル専門3店と韓国で売れるノンアル製品の品目別ガイド。"}
   },
-  {
-    week: "2026-W26",
-    issue: { ko:"2026년 6월 4주차 · 여름특집", en:"Week 4, June 2026 (Summer Special)", zh:"2026年6月第4周（夏季特辑）", ja:"2026年6月第4週（夏特集）" },
-    date: "2026-06-18",
-    title: {
-      ko:"세왕상사 시장동향 리포트 (여름특집 — 올여름, 술잔은 가볍게)",
-      en:"Sewang Market Trends (Summer Special — A Lighter Glass)",
-      zh:"世旺商社 市场动向报告（夏季特辑 — 今夏，杯轻饮畅）",
-      ja:"世旺商社 マーケットトレンド (夏特集 — 今夏、グラスは軽く)"
-    },
-    desc: {
-      ko:"썸트렌드 4개 카테고리 실측(생맥+21%·무알콜+102%·하이볼+4%·사케-19%) + 뜨는 매장 3곳(야화 혼술바·굽네 비어펍 숙대점·생마차 거여점 리뉴얼) + 세왕 거래처 성공 사례 2곳 + 3채널 공략(호텔/이자카야/주점).",
-      en:"Sumtrend 4-category insta data + 3 trending stores + 2 Sewang customer success + 3-channel strategy.",
-      zh:"Sumtrend 4 类品类实测 + 3 家热门店铺 + 世旺客户成功案例 2 家 + 3 渠道策略。",
-      ja:"Sumtrend 4カテゴリ実測 + 注目店3軒 + 世旺取引先成功事例2軒 + 3チャネル攻略。"
-    },
-    files: {
-      ko:"reports/2026-W26/Sewang_MarketReport_2026-06-4w_KO.pdf",
-      en:"reports/2026-W26/Sewang_MarketReport_2026-06-4w_EN.pdf",
-      zh:"reports/2026-W26/Sewang_MarketReport_2026-06-4w_ZH.pdf",
-      ja:"reports/2026-W26/Sewang_MarketReport_2026-06-4w_JP.pdf"
-    }
+  { week:"2026-W26", date:"2026-06-18",
+    issue:{ko:"2026년 6월 4주차",en:"Week 4, June 2026",zh:"2026年6月第4周",ja:"2026年6月第4週"},
+    title:{ko:"여름특집 — 올여름, 술잔은 가볍게",en:"Summer Special — A Lighter Glass",zh:"夏季特辑 — 今夏,杯轻饮畅",ja:"夏特集 — 今夏、グラスは軽く"},
+    desc:{ko:"썸트렌드 4개 카테고리 실측. 뜨는 매장 3곳(야화·굽네 비어펍·생마차 거여점). 호텔/이자카야/주점 3채널 공략.",en:"Sumtrend 4-category data. 3 trending stores. 3-channel strategy (hotel/izakaya/pub).",zh:"Sumtrend 4类品类实测。3家热门店铺。酒店/居酒屋/酒馆3渠道策略。",ja:"Sumtrend 4カテゴリ実測。注目店3軒。ホテル/居酒屋/酒場3チャネル攻略。"}
   },
-  {
-    week: "2026-W25",
-    issue: { ko:"2026년 6월 3주차", en:"Week 3, June 2026", zh:"2026年6月第3周", ja:"2026年6月第3週" },
-    date: "2026-06-16",
-    title: {
-      ko:"세왕상사 시장동향 리포트 (🎵 도쿄 리스닝바 특집)",
-      en:"Sewang Market Trends (Tokyo Listening Bar Special)",
-      zh:"世旺商社 市场动向报告（东京聆听吧特辑）",
-      ja:"世旺商社 マーケットトレンド (🎵 東京リスニングバー特集)"
-    },
-    desc: {
-      ko:"한국 리스닝/레코드 바 트렌드와 도쿄 긴자·시부야 원조 매장 벤치마크 — Ginza Music Bar & Shibuya Record Bar Analog 분석 및 세왕 라인업 패키지 제안.",
-      en:"Korea's listening/record bar trend and Tokyo Ginza·Shibuya benchmark — Ginza Music Bar & Shibuya Record Bar Analog analysis with Sewang lineup package.",
-      zh:"韩国聆听吧/唱片吧趋势与东京银座·涩谷元祖店铺基准 — Ginza Music Bar 与 Shibuya Record Bar Analog 分析及世旺产品组合提案。",
-      ja:"韓国のリスニング/レコードバートレンドと東京 銀座·渋谷の元祖店ベンチマーク — Ginza Music Bar & Shibuya Record Bar Analog 分析と世旺ラインアップパッケージ提案。"
-    },
-    files: {
-      ko:"reports/2026-W25/시장동향리포트_2026-06-3w.pdf",
-      en:"reports/2026-W25/Sewang_MarketReport_2026-06-3w_EN.pdf",
-      zh:"reports/2026-W25/Sewang_MarketReport_2026-06-3w_ZH.pdf",
-      ja:"reports/2026-W25/Sewang_MarketReport_2026-06-3w_JP.pdf"
-    }
+  { week:"2026-W25", date:"2026-06-16",
+    issue:{ko:"2026년 6월 3주차",en:"Week 3, June 2026",zh:"2026年6月第3周",ja:"2026年6月第3週"},
+    title:{ko:"🎵 도쿄 리스닝바 특집",en:"Tokyo Listening Bar Special",zh:"东京聆听吧特辑",ja:"🎵 東京リスニングバー特集"},
+    desc:{ko:"한국 리스닝/레코드 바 트렌드와 도쿄 긴자·시부야 원조 매장 벤치마크 — Ginza Music Bar & Shibuya Record Bar Analog.",en:"Korea's listening bar trend and Tokyo benchmarks — Ginza Music Bar & Shibuya Record Bar Analog.",zh:"韩国聆听吧趋势与东京银座·涩谷元祖店铺基准 — Ginza Music Bar 与 Shibuya Record Bar Analog。",ja:"韓国のリスニングバートレンドと東京の元祖店ベンチマーク — Ginza Music Bar & Shibuya Record Bar Analog。"}
   },
-  {
-    week: "2026-W24",
-    issue: { ko:"2026년 6월 2주차", en:"Week 2, June 2026", zh:"2026年6月第2周", ja:"2026年6月第2週" },
-    date: "2026-06-08",
-    title: {
-      ko:"세왕상사 시장동향 리포트", en:"Sewang Market Trends Report",
-      zh:"世旺商社 市场动向报告", ja:"世旺商社 マーケットトレンドレポート"
-    },
-    files: {
-      ko:"reports/2026-W24/시장동향리포트_2026-06-2w.pdf",
-      en:"reports/2026-W24/Sewang_MarketReport_2026-06-2w_EN.pdf",
-      zh:"reports/2026-W24/Sewang_MarketReport_2026-06-2w_ZH.pdf",
-      ja:"reports/2026-W24/Sewang_MarketReport_2026-06-2w_JP.pdf"
-    }
+  { week:"2026-W24", date:"2026-06-08",
+    issue:{ko:"2026년 6월 2주차",en:"Week 2, June 2026",zh:"2026年6月第2周",ja:"2026年6月第2週"},
+    title:{ko:"세왕상사 시장동향 리포트",en:"Sewang Market Trends Report",zh:"世旺商社 市场动向报告",ja:"世旺商社 マーケットトレンドレポート"},
+    desc:{ko:"6월 2주차 시장동향.",en:"Week 2 of June market trends.",zh:"6月第2周市场动向。",ja:"6月第2週の市場動向。"}
   },
-  {
-    week: "2026-W23",
-    issue: { ko:"2026년 6월 1주차", en:"Week 1, June 2026", zh:"2026年6月第1周", ja:"2026年6月第1週" },
-    date: "2026-06-01",
-    title: {
-      ko:"세왕상사 시장동향 리포트 (무알콜 특집)", en:"Sewang Market Trends (Non-Alcoholic Special)",
-      zh:"世旺商社 市场动向报告（无酒精特辑）", ja:"世旺商社 マーケットトレンド（ノンアル特集）"
-    },
-    files: {
-      ko:"reports/2026-W23/시장동향리포트_2026-06-1w.pdf",
-      en:"reports/2026-W23/Sewang_MarketReport_2026-06-1w_EN.pdf",
-      zh:"reports/2026-W23/Sewang_MarketReport_2026-06-1w_ZH.pdf",
-      ja:"reports/2026-W23/시장동향리포트_2026-06-1w_JP.pdf"
-    }
+  { week:"2026-W23", date:"2026-06-01",
+    issue:{ko:"2026년 6월 1주차",en:"Week 1, June 2026",zh:"2026年6月第1周",ja:"2026年6月第1週"},
+    title:{ko:"시장동향 (무알콜 특집)",en:"Market Trends (Non-Alcoholic Special)",zh:"市场动向(无酒精特辑)",ja:"マーケットトレンド(ノンアル特集)"},
+    desc:{ko:"무알콜 카테고리 전환 신호와 한국 베스트셀러 제품.",en:"Non-alcoholic category shift signals and Korea's best-sellers.",zh:"无酒精品类转换信号与韩国畅销产品。",ja:"ノンアルカテゴリー転換のシグナルと韓国のベストセラー。"}
   },
-  {
-    week: "2026-W22",
-    issue: { ko:"2026년 5월 5주차", en:"Week 5, May 2026", zh:"2026年5月第5周", ja:"2026年5月第5週" },
-    date: "2026-05-25",
-    title: {
-      ko:"세왕상사 시장동향 리포트", en:"Sewang Market Trends Report",
-      zh:"世旺商社 市场动向报告", ja:"世旺商社 マーケットトレンドレポート"
-    },
-    files: {
-      ko:"reports/2026-W22/세왕상사_시장동향리포트_2026-W22.pdf",
-      en:null, zh:null, ja:null
-    }
+  { week:"2026-W22", date:"2026-05-25",
+    issue:{ko:"2026년 5월 5주차",en:"Week 5, May 2026",zh:"2026年5月第5周",ja:"2026年5月第5週"},
+    title:{ko:"세왕상사 시장동향 리포트",en:"Sewang Market Trends Report",zh:"世旺商社 市场动向报告",ja:"世旺商社 マーケットトレンドレポート"},
+    desc:{ko:"5월 5주차 시장동향.",en:"Week 5 of May market trends.",zh:"5月第5周市场动向。",ja:"5月第5週の市場動向。"}
   }
 ];
 
-/* ============================================================
-   UI 다국어 (페이지 골격 텍스트)
-   ============================================================ */
 const I18N = {
-  ko:{ brandSub:"세왕상사 시장동향 리포트", latestLabel:"최신호", archiveTitle:"지난 리포트",
-       aboutTitle:"리포트 안내",
-       aboutBody:"세왕상사가 매주 발행하는 주류 시장동향 리포트입니다. 신제품 동향, 트렌드 키워드, 채널별 인사이트를 담아 거래처에 제공합니다. 한국어·영어·중국어·일본어로 제공됩니다.",
-       contactTitle:"문의", addr:"서울 강동구 진황도로61길 60",
-       contactNote:"처음 문의하셔도 괜찮습니다. 카카오톡에 지역·업종·오픈 예정일을 남겨주세요.",
-       footNote:"주류 도매 유통", download:"다운로드", soon:"준비중", reports:"개 리포트", linkWeb:"웹사이트", telLabel:"대표 전화" },
-  en:{ brandSub:"Sewang Market Trends Report", latestLabel:"Latest", archiveTitle:"Past Reports",
-       aboutTitle:"About",
-       aboutBody:"A weekly beverage market trends report published by Sewang Sangsa. It covers new product trends, keywords, and channel insights for our partners. Available in Korean, English, Chinese and Japanese.",
-       contactTitle:"Contact", addr:"60, Jinhwangdo-ro 61-gil, Gangdong-gu, Seoul",
-       contactNote:"New enquiries are welcome. Send your area, business type and planned opening date via KakaoTalk.",
-       footNote:"Beverage Wholesale Distribution", download:"Download", soon:"Coming soon", reports:"reports", linkWeb:"Website", telLabel:"Phone" },
-  zh:{ brandSub:"世旺商社 市场动向报告", latestLabel:"最新", archiveTitle:"往期报告",
-       aboutTitle:"关于报告",
-       aboutBody:"世旺商社每周发布的酒类市场动向报告，涵盖新品动向、趋势关键词及各渠道洞察，提供给合作伙伴。提供韩语、英语、中文、日语版本。",
-       contactTitle:"联系", addr:"首尔江东区辰煌岛路61街60号",
-       contactNote:"欢迎首次咨询。请通过KakaoTalk告知地区、店铺类型和计划开业日期。",
-       footNote:"酒类批发流通", download:"下载", soon:"准备中", reports:"份报告", linkWeb:"官网", telLabel:"代表电话" },
-  ja:{ brandSub:"世旺商社 マーケットトレンドレポート", latestLabel:"最新号", archiveTitle:"過去のレポート",
-       aboutTitle:"レポート案内",
-       aboutBody:"世旺商社が毎週発行する酒類マーケットトレンドレポートです。新商品動向・トレンドキーワード・チャネル別インサイトを取引先にお届けします。韓国語・英語・中国語・日本語で提供します。",
-       contactTitle:"お問い合わせ", addr:"ソウル特別市江東区辰煌島路61キル60",
-       contactNote:"初めての方もご相談ください。KakaoTalkで地域・業態・開業予定日をお知らせください。",
-       footNote:"酒類卸売流通", download:"ダウンロード", soon:"準備中", reports:"件のレポート", linkWeb:"ウェブサイト", telLabel:"代表電話" }
+  ko:{brandSub:"세왕상사 시장동향 리포트",latestLabel:"최신호",archiveTitle:"지난 리포트",aboutTitle:"리포트 안내",aboutBody:"세왕상사가 매주 발행하는 주류 시장동향 리포트입니다. 신제품 동향·트렌드 키워드·채널별 인사이트를 담아 거래처에 제공합니다. 한국어·영어·중국어·일본어로 바로 보실 수 있습니다.",contactTitle:"문의",addr:"서울 강동구 진황도로61길 60",contactNote:"처음 문의하셔도 괜찮습니다. 카카오톡에 지역·업종·오픈 예정일을 남겨주세요.",footNote:"주류 도매 유통",view:"바로보기",soon:"웹뷰 준비중",reports:"개 리포트",linkWeb:"웹사이트",telLabel:"대표 전화",consultGuide:"서울·경기 오픈 준비 중이신가요? 카카오톡에 '창업상담'과 지역·업종·오픈 예정일을 남겨주세요.",kakaoCta:"카카오톡 창업·납품 상담",phoneCta:"전화 상담 02-2203-5311",officialCta:"공식 홈페이지"},
+  en:{brandSub:"Sewang Market Trends",latestLabel:"Latest",archiveTitle:"Past Reports",aboutTitle:"About",aboutBody:"A weekly beverage market trends report by Sewang. New product trends, keywords, and channel insights, delivered in Korean, English, Chinese and Japanese — all viewable instantly online.",contactTitle:"Contact",addr:"60, Jinhwangdo-ro 61-gil, Gangdong-gu, Seoul",contactNote:"New enquiries welcome. Send your area, business type and opening date via KakaoTalk.",footNote:"Beverage Wholesale",view:"Read now",soon:"Web view coming",reports:"reports",linkWeb:"Website",telLabel:"Phone",consultGuide:"Opening in Seoul or Gyeonggi? Send your area, business type and planned opening date via KakaoTalk.",kakaoCta:"Opening & supply enquiries",phoneCta:"Call +82 2 2203 5311",officialCta:"Official website"},
+  zh:{brandSub:"世旺商社 市场动向报告",latestLabel:"最新",archiveTitle:"往期报告",aboutTitle:"关于报告",aboutBody:"世旺每周发布的酒类市场动向报告,涵盖新品动向、趋势关键词及各渠道洞察。提供韩语、英语、中文、日语版本,可直接在线阅读。",contactTitle:"联系",addr:"首尔江东区辰煌岛路61街60号",contactNote:"欢迎首次咨询。请通过KakaoTalk告知地区、店铺类型和计划开业日期。",footNote:"酒类批发流通",view:"立即阅读",soon:"网页版准备中",reports:"份报告",linkWeb:"官网",telLabel:"代表电话",consultGuide:"准备在首尔或京畿开店?请通过KakaoTalk告知地区、店铺类型及开业计划。",kakaoCta:"KakaoTalk 开店·供货咨询",phoneCta:"电话 +82 2 2203 5311",officialCta:"官方网站"},
+  ja:{brandSub:"世旺商社 マーケットトレンド",latestLabel:"最新号",archiveTitle:"過去のレポート",aboutTitle:"レポート案内",aboutBody:"世旺が毎週発行する酒類マーケットトレンドレポート。新商品動向·トレンドキーワード·チャネル別インサイトを韓国語·英語·中国語·日本語でそのままオンライン閲覧できます。",contactTitle:"お問い合わせ",addr:"ソウル特別市江東区辰煌島路61キル60",contactNote:"初めての方もご相談ください。KakaoTalkで地域·業態·開業予定日をお知らせください。",footNote:"酒類卸売流通",view:"今すぐ読む",soon:"ウェブ版準備中",reports:"件のレポート",linkWeb:"ウェブサイト",telLabel:"代表電話",consultGuide:"ソウル·京畿で開業準備中ですか?KakaoTalkで地域·業態·開業予定日をお知らせください。",kakaoCta:"KakaoTalk 開業·納品相談",phoneCta:"電話 +82 2 2203 5311",officialCta:"公式サイト"}
 };
+const LANG_NAMES={ko:"한국어",en:"English",zh:"中文",ja:"日本語"};
+let currentUI="ko";
 
-const PROMO_I18N = {"ko": {"previewLink": "이번 호 핵심 요약 읽기 (한국어)", "consultGuide": "서울·경기 오픈 준비 중이신가요? 카카오톡에 ‘창업상담’과 지역·업종·오픈 예정일을 남겨주세요.", "kakaoCta": "카카오톡 창업·납품 상담", "phoneCta": "전화 상담 02-2203-5311", "officialCta": "공식 홈페이지"}, "en": {"previewLink": "Read this issue’s summary (Korean)", "consultGuide": "Opening in Seoul or Gyeonggi? Send your area, business type and planned opening date via KakaoTalk.", "kakaoCta": "Opening & supply enquiries", "phoneCta": "Call +82 2 2203 5311", "officialCta": "Official website"}, "zh": {"previewLink": "阅读本期摘要（韩语）", "consultGuide": "准备在首尔或京畿开店？请通过KakaoTalk告知地区、店铺类型及开业计划。", "kakaoCta": "KakaoTalk 开店·供货咨询", "phoneCta": "电话 +82 2 2203 5311", "officialCta": "官方网站"}, "ja": {"previewLink": "今号の要約を読む（韓国語）", "consultGuide": "ソウル・京畿で開業準備中ですか？KakaoTalkで地域・業態・開業予定日をお知らせください。", "kakaoCta": "KakaoTalk 開業・納品相談", "phoneCta": "電話 +82 2 2203 5311", "officialCta": "公式サイト"}};
-Object.keys(PROMO_I18N).forEach(lang=>Object.assign(I18N[lang],PROMO_I18N[lang]));
-const LANG_NAMES = { ko:"한국어", en:"English", zh:"中文", ja:"日本語" };
-let currentUI = "ko";
-
-/* ---------- 다운로드 + 트래킹 ---------- */
-function trackAndDownload(week, lang, url){
-  // GA4 익명 이벤트 전송 (누가 받았는지는 수집 안 함, 횟수만 집계)
-  if (typeof gtag === "function"){
-    gtag('event', 'report_download', {
-      report_week: week,
-      language: lang
-    });
-  }
-  // 실제 파일 다운로드
-  window.open(url, '_blank');
+function webviewUrl(week,lang){
+  if(!WEB_VIEW_WEEKS.includes(week)) return null;
+  return 'reports/'+week+'/'+(lang==='ko'?'':lang+'/');
 }
-
-/* ---------- 렌더링 ---------- */
-function iconDownload(){
-  return '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 3v12m0 0l-4-4m4 4l4-4M4 21h16"/></svg>';
-}
+function iconEye(){ return '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M1 12s4-7 11-7 11 7 11 7-4 7-11 7-11-7-11-7z"/><circle cx="12" cy="12" r="3"/></svg>'; }
+function trackView(week,lang){ if(typeof gtag==='function') gtag('event','report_view',{report_week:week,language:lang}); }
 
 function renderHero(){
-  const t = I18N[currentUI];
-  const r = REPORTS[0];
-  document.documentElement.lang = currentUI;
-  document.getElementById('heroTitle').textContent = r.title[currentUI];
-  document.getElementById('heroMeta').textContent = r.issue[currentUI] + " · " + r.date;
-  document.getElementById('heroDesc').textContent = r.desc ? r.desc[currentUI] : "";
-  const box = document.getElementById('heroDownloads');
-  box.innerHTML = "";
+  const t=I18N[currentUI], r=REPORTS[0];
+  document.documentElement.lang=currentUI;
+  document.getElementById('heroTitle').textContent=r.title[currentUI];
+  document.getElementById('heroMeta').textContent=r.issue[currentUI]+" · "+r.date;
+  document.getElementById('heroDesc').textContent=r.desc[currentUI];
+  const box=document.getElementById('heroView'); box.innerHTML="";
   ["ko","en","zh","ja"].forEach(lang=>{
-    const url = r.files[lang];
-    const btn = document.createElement(url ? 'button' : 'div');
-    btn.className = 'dlbtn' + (url ? '' : ' disabled');
-    btn.innerHTML = (url ? iconDownload() : '') +
-      '<span>'+LANG_NAMES[lang]+' PDF</span>' +
-      (url ? '' : ' <small>'+t.soon+'</small>');
-    if (url) btn.onclick = ()=>trackAndDownload(r.week, lang, url);
-    box.appendChild(btn);
+    const url=webviewUrl(r.week,lang);
+    if(!url) return;
+    const a=document.createElement('a');
+    a.className='viewbtn'; a.href=url;
+    a.innerHTML=iconEye()+'<span>'+LANG_NAMES[lang]+'</span>';
+    a.onclick=()=>trackView(r.week,lang);
+    box.appendChild(a);
   });
 }
 
 function renderArchive(){
-  const t = I18N[currentUI];
-  const past = REPORTS.slice(1);
-  document.getElementById('archiveCount').textContent = past.length + " " + t.reports;
-  const box = document.getElementById('archive');
-  box.innerHTML = "";
+  const t=I18N[currentUI], past=REPORTS.slice(1);
+  document.getElementById('archiveCount').textContent=past.length+" "+t.reports;
+  const box=document.getElementById('archive'); box.innerHTML="";
   past.forEach(r=>{
-    const item = document.createElement('div');
-    item.className = 'arc-item';
-    const langPills = ["ko","en","zh","ja"].map(lang=>{
-      const url = r.files[lang];
-      if (url){
-        return '<span class="langpill" onclick="trackAndDownload(\''+r.week+'\',\''+lang+'\',\''+url+'\')">'+LANG_NAMES[lang]+'</span>';
-      }
-      return '<span class="langpill off">'+LANG_NAMES[lang]+'</span>';
-    }).join("");
-    item.innerHTML =
+    const item=document.createElement('div'); item.className='arc-item';
+    const url=webviewUrl(r.week,currentUI);
+    const btn=url
+      ? '<a class="arc-view" href="'+url+'" onclick="trackView(\''+r.week+'\',\''+currentUI+'\')">'+iconEye()+'<span>'+t.view+'</span></a>'
+      : '<span class="arc-view soon">'+t.soon+'</span>';
+    item.innerHTML=
       '<div class="arc-left">'+
         '<div class="arc-issue">'+r.issue[currentUI]+'</div>'+
         '<div class="arc-title">'+r.title[currentUI]+'</div>'+
         '<div class="arc-date">'+r.date+'</div>'+
-      '</div>'+
-      '<div class="arc-langs">'+langPills+'</div>';
+      '</div>'+btn;
     box.appendChild(item);
   });
 }
 
 function applyI18n(){
-  const t = I18N[currentUI];
+  const t=I18N[currentUI];
   document.querySelectorAll('[data-i18n]').forEach(el=>{
-    const key = el.getAttribute('data-i18n');
-    if (t[key]) el.textContent = t[key];
+    const key=el.getAttribute('data-i18n'); if(t[key]) el.textContent=t[key];
   });
 }
-
 function setUI(lang){
-  currentUI = lang;
-  document.querySelectorAll('#langsel button').forEach(b=>{
-    b.classList.toggle('active', b.getAttribute('data-ui')===lang);
-  });
+  currentUI=lang;
+  document.querySelectorAll('#langsel button').forEach(b=>{ b.classList.toggle('active',b.getAttribute('data-ui')===lang); });
   applyI18n(); renderHero(); renderArchive();
 }
-
-document.querySelectorAll('#langsel button').forEach(b=>{
-  b.addEventListener('click', ()=>setUI(b.getAttribute('data-ui')));
-});
-
-/* init */
+document.querySelectorAll('#langsel button').forEach(b=>{ b.addEventListener('click',()=>setUI(b.getAttribute('data-ui'))); });
 setUI('ko');
-</script>
-<script>
-document.querySelectorAll('[data-contact]').forEach(link=>link.addEventListener('click',()=>{
- if(typeof gtag==='function') gtag('event','contact_click',{contact_method:link.dataset.contact,placement:link.dataset.placement,campaign:'w44_20261028'});
-}));
 </script>
 </body>
 </html>
