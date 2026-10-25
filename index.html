@@ -24,8 +24,8 @@
   .logo-chip img{height:26px;display:block}
   .brand .sub{font-size:12px;color:rgba(255,255,255,.62);letter-spacing:1px;border-left:1px solid rgba(255,255,255,.2);padding-left:14px}
   @media(max-width:640px){.brand .sub{display:none}}
-  .langsel{display:flex;gap:4px;background:rgba(255,255,255,.08);border-radius:999px;padding:4px}
-  .langsel button{border:0;background:transparent;color:rgba(255,255,255,.7);font-size:13px;font-weight:700;padding:7px 13px;border-radius:999px;cursor:pointer;transition:.15s}
+  .langsel{display:flex;flex-wrap:nowrap;gap:2px;background:rgba(255,255,255,.08);border-radius:999px;padding:3px;white-space:nowrap}
+  .langsel button{border:0;background:transparent;color:rgba(255,255,255,.7);font-size:13px;font-weight:700;padding:7px 10px;border-radius:999px;cursor:pointer;transition:.15s;white-space:nowrap;min-width:34px}
   .langsel button:hover{color:#fff}
   .langsel button.active{background:var(--gold);color:var(--navy-900)}
   .hero{background:linear-gradient(180deg,var(--navy-800) 0%,var(--navy-600) 100%);color:#fff;padding:52px 0 58px}
@@ -34,8 +34,8 @@
   .hero h1{font-size:36px;font-weight:900;letter-spacing:-.02em;line-height:1.22;margin:14px 0 10px}
   .hero .meta{font-size:15px;color:rgba(255,255,255,.72)}
   .hero .desc{font-size:16px;color:rgba(255,255,255,.86);margin-top:16px;max-width:640px;line-height:1.65}
-  .viewrow{display:flex;flex-wrap:wrap;gap:10px;margin-top:28px}
-  .viewbtn{display:inline-flex;align-items:center;gap:8px;background:var(--pumpkin);color:#fff;font-weight:800;font-size:15px;padding:14px 22px;border-radius:12px;border:0;cursor:pointer;transition:.15s;text-decoration:none}
+  .viewrow{display:grid;grid-template-columns:repeat(4,1fr);gap:8px;margin-top:28px}
+  .viewbtn{display:inline-flex;align-items:center;justify-content:center;gap:6px;background:var(--pumpkin);color:#fff;font-weight:800;font-size:14px;padding:14px 8px;border-radius:12px;border:0;cursor:pointer;transition:.15s;text-decoration:none;white-space:nowrap;min-width:0}
   .viewbtn:hover{transform:translateY(-1px);background:#d9641e}
   .viewbtn svg{width:16px;height:16px}
   section{padding:44px 0}
@@ -77,10 +77,10 @@
       <div class="sub" data-i18n="brandSub">세왕상사 시장동향 리포트</div>
     </div>
     <div class="langsel" id="langsel">
-      <button data-ui="ko" class="active">한국어</button>
+      <button data-ui="ko" class="active">한</button>
       <button data-ui="en">EN</button>
-      <button data-ui="zh">中文</button>
-      <button data-ui="ja">日本語</button>
+      <button data-ui="zh">中</button>
+      <button data-ui="ja">日</button>
     </div>
   </div>
 </div>
@@ -138,7 +138,7 @@
 
 <script>
 /* 웹뷰 지원 주차 — 이 리스트에 있는 주차만 "바로보기" 활성화 */
-const WEB_VIEW_WEEKS = ['2026-W43','2026-W44'];
+const WEB_VIEW_WEEKS = ['2026-W22','2026-W23','2026-W24','2026-W25','2026-W26','2026-W27','2026-W28','2026-W29','2026-W30','2026-W31','2026-W32','2026-W33','2026-W34','2026-W35','2026-W36','2026-W37','2026-W38','2026-W40','2026-W41','2026-W42','2026-W43','2026-W44'];
 
 const REPORTS = [
   { week:"2026-W44", date:"2026-10-28",
@@ -254,7 +254,7 @@ const I18N = {
   zh:{brandSub:"世旺商社 市场动向报告",latestLabel:"最新",archiveTitle:"往期报告",aboutTitle:"关于报告",aboutBody:"世旺每周发布的酒类市场动向报告,涵盖新品动向、趋势关键词及各渠道洞察。提供韩语、英语、中文、日语版本,可直接在线阅读。",contactTitle:"联系",addr:"首尔江东区辰煌岛路61街60号",contactNote:"欢迎首次咨询。请通过KakaoTalk告知地区、店铺类型和计划开业日期。",footNote:"酒类批发流通",view:"立即阅读",soon:"网页版准备中",reports:"份报告",linkWeb:"官网",telLabel:"代表电话",consultGuide:"准备在首尔或京畿开店?请通过KakaoTalk告知地区、店铺类型及开业计划。",kakaoCta:"KakaoTalk 开店·供货咨询",phoneCta:"电话 +82 2 2203 5311",officialCta:"官方网站"},
   ja:{brandSub:"世旺商社 マーケットトレンド",latestLabel:"最新号",archiveTitle:"過去のレポート",aboutTitle:"レポート案内",aboutBody:"世旺が毎週発行する酒類マーケットトレンドレポート。新商品動向·トレンドキーワード·チャネル別インサイトを韓国語·英語·中国語·日本語でそのままオンライン閲覧できます。",contactTitle:"お問い合わせ",addr:"ソウル特別市江東区辰煌島路61キル60",contactNote:"初めての方もご相談ください。KakaoTalkで地域·業態·開業予定日をお知らせください。",footNote:"酒類卸売流通",view:"今すぐ読む",soon:"ウェブ版準備中",reports:"件のレポート",linkWeb:"ウェブサイト",telLabel:"代表電話",consultGuide:"ソウル·京畿で開業準備中ですか?KakaoTalkで地域·業態·開業予定日をお知らせください。",kakaoCta:"KakaoTalk 開業·納品相談",phoneCta:"電話 +82 2 2203 5311",officialCta:"公式サイト"}
 };
-const LANG_NAMES={ko:"한국어",en:"English",zh:"中文",ja:"日本語"};
+const LANG_NAMES={ko:"한",en:"EN",zh:"中",ja:"日"};
 let currentUI="ko";
 
 function webviewUrl(week,lang){
