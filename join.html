@@ -1,0 +1,249 @@
+<!doctype html>
+<html lang="ko"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+<meta name="robots" content="noindex">
+<title>세왕 거래처 가입</title>
+<meta name="claude:viewport-fit-sides" content="cover">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-title" content="세왕 가입">
+<meta name="theme-color" content="#14213a">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=IBM+Plex+Sans+KR:wght@400;500;600;700&display=swap">
+<script src="https://cdnjs.cloudflare.com/ajax/libs/qrcodejs/1.0.0/qrcode.min.js"></script>
+<style>
+/* Layout: one-column phone app, a navy staff bar on top and one task card per screen; big thumb-sized buttons at the bottom */
+:root{
+  --bg:#f3f1ec; --surface:#ffffff; --ink:#14213a; --sub:#5d6475; --line:#dcd8cf;
+  --gold:#b0873a; --gold-soft:#f4ead6; --ok:#2f7d4f; --ok-soft:#e3f2e8; --warn:#a0471f;
+  --bar:#14213a; --bar-fg:#f3f1ec;
+  --font:"IBM Plex Sans KR","Apple SD Gothic Neo","Malgun Gothic",sans-serif;
+}
+@media (prefers-color-scheme: dark){:root:not([data-theme="light"]){
+  --bg:#10141d; --surface:#1a202c; --ink:#eef0f4; --sub:#a3aab8; --line:#2d3546;
+  --gold:#d6ab5c; --gold-soft:#3a3020; --ok:#62c18a; --ok-soft:#1d3428; --warn:#e48a62;
+  --bar:#0b0f17; --bar-fg:#eef0f4; color-scheme:dark}}
+:root[data-theme="dark"]{
+  --bg:#10141d; --surface:#1a202c; --ink:#eef0f4; --sub:#a3aab8; --line:#2d3546;
+  --gold:#d6ab5c; --gold-soft:#3a3020; --ok:#62c18a; --ok-soft:#1d3428; --warn:#e48a62;
+  --bar:#0b0f17; --bar-fg:#eef0f4; color-scheme:dark}
+*{box-sizing:border-box}
+body{background:var(--bg);color:var(--ink);font-family:var(--font);font-size:16px;line-height:1.5;-webkit-font-smoothing:antialiased}
+body::before{content:"";position:fixed;inset:0 0 auto;height:env(safe-area-inset-top,0px);z-index:10;background:var(--bar)}
+.bar{position:sticky;top:env(safe-area-inset-top,0px);z-index:5;background:var(--bar);color:var(--bar-fg);
+  padding-block:12px;padding-left:max(16px,env(safe-area-inset-left,0px));padding-right:max(16px,env(safe-area-inset-right,0px));
+  display:flex;align-items:center;justify-content:space-between;gap:12px}
+.brand{font-weight:700;letter-spacing:.02em;font-size:15px}
+.brand small{display:block;font-weight:400;font-size:12px;opacity:.75;letter-spacing:0}
+.chip-btn{background:transparent;border:1px solid color-mix(in srgb,var(--bar-fg) 35%,transparent);color:var(--bar-fg);
+  border-radius:999px;padding:6px 12px;font:inherit;font-size:13px;cursor:pointer}
+main{max-width:480px;margin:0 auto;padding-block:20px 40px;padding-left:max(16px,env(safe-area-inset-left,0px));padding-right:max(16px,env(safe-area-inset-right,0px));display:grid;gap:16px}
+h1{font-size:24px;line-height:1.3;margin:0;text-wrap:balance}
+h2{font-size:17px;margin:0}
+p{margin:0}
+.muted{color:var(--sub);font-size:14px}
+.card{background:var(--surface);border:1px solid var(--line);border-radius:14px;padding:18px;display:grid;gap:14px}
+.big{display:flex;align-items:center;gap:14px;width:100%;text-align:left;background:var(--surface);color:var(--ink);
+  border:1px solid var(--line);border-radius:14px;padding:18px;font:inherit;cursor:pointer}
+.big .ic{flex:none;width:48px;height:48px;border-radius:12px;display:grid;place-items:center;background:var(--gold-soft);color:var(--gold)}
+.big b{display:block;font-size:17px}
+.big span{color:var(--sub);font-size:14px}
+.big.primary{background:var(--ink);color:var(--bg);border-color:var(--ink)}
+.big.primary span{color:color-mix(in srgb,var(--bg) 75%,transparent)}
+.big.primary .ic{background:var(--gold);color:var(--ink)}
+.btn{display:block;width:100%;border:0;border-radius:12px;padding:16px;font:inherit;font-weight:600;font-size:17px;cursor:pointer;background:var(--ink);color:var(--bg);text-align:center;text-decoration:none}
+.btn.ghost{background:transparent;color:var(--ink);border:1px solid var(--line)}
+.btn.gold{background:var(--gold);color:#1b1408}
+.btn:disabled{opacity:.4;cursor:not-allowed}
+.btn:focus-visible,.big:focus-visible,input:focus-visible,.seg button:focus-visible,.staff button:focus-visible,.chip-btn:focus-visible{outline:3px solid var(--gold);outline-offset:2px}
+label.f{display:grid;gap:6px;font-size:14px;font-weight:600}
+input[type=text],input[type=tel]{width:100%;font:inherit;font-size:18px;padding:14px;border-radius:10px;border:1px solid var(--line);background:var(--bg);color:var(--ink)}
+.seg{display:flex;flex-wrap:wrap;gap:8px}
+.seg button{flex:1 1 40%;border:1px solid var(--line);background:var(--bg);color:var(--ink);border-radius:10px;padding:12px 8px;font:inherit;font-size:15px;cursor:pointer}
+.seg button[aria-pressed="true"]{border-color:var(--gold);background:var(--gold-soft);font-weight:600}
+.agree{display:flex;gap:10px;align-items:flex-start;font-size:14px}
+.agree input{width:22px;height:22px;flex:none;margin-top:1px;accent-color:var(--gold)}
+.agree em{font-style:normal;font-weight:700;color:var(--gold)}
+.steps{display:flex;gap:6px}
+.steps i{flex:1;height:4px;border-radius:2px;background:var(--line)}
+.steps i.on{background:var(--gold)}
+.gift{border-radius:14px;padding:18px;background:var(--gold-soft);display:flex;gap:14px;align-items:center}
+.gift .cup{flex:none;width:56px;height:56px;border-radius:50%;background:var(--surface);display:grid;place-items:center;color:var(--gold)}
+.gift b{display:block;font-size:17px}
+.code{font-size:34px;letter-spacing:.35em;text-align:center;font-weight:700;font-variant-numeric:tabular-nums}
+.demo{font-size:13px;color:var(--warn);background:color-mix(in srgb,var(--warn) 10%,transparent);border-radius:8px;padding:8px 10px}
+.err{color:var(--warn);font-size:14px}
+.qrbox{background:#fff;border-radius:14px;padding:18px;display:grid;place-items:center}
+.qrbox img,.qrbox canvas{width:min(70vw,260px)!important;height:auto!important}
+.url{font-size:12px;color:var(--sub);word-break:break-all;text-align:center}
+.list{display:grid;gap:0}
+.row{display:flex;justify-content:space-between;gap:12px;padding:12px 0;border-top:1px solid var(--line);font-size:15px}
+.row:first-child{border-top:0}
+.row .t{color:var(--sub);font-size:13px;font-variant-numeric:tabular-nums}
+.pill{font-size:12px;border-radius:999px;padding:2px 8px;background:var(--ok-soft);color:var(--ok);font-weight:600;white-space:nowrap}
+.pill.ex{background:var(--line);color:var(--sub)}
+.staff{display:grid;gap:8px}
+.staff button{display:flex;justify-content:space-between;gap:10px;border:1px solid var(--line);background:var(--surface);color:var(--ink);border-radius:10px;padding:14px;font:inherit;text-align:left;cursor:pointer}
+.staff button span{color:var(--sub);font-size:13px;text-align:right}
+.done-ic{width:72px;height:72px;border-radius:50%;background:var(--ok-soft);color:var(--ok);display:grid;place-items:center;margin:0 auto}
+.center{text-align:center}
+.testband{background:#a0471f;color:#fff;text-align:center;font-size:14px;font-weight:600;padding-block:8px;padding-left:max(16px,env(safe-area-inset-left,0px));padding-right:max(16px,env(safe-area-inset-right,0px))}
+@media (prefers-reduced-motion:no-preference){.screen{animation:in .25s ease-out}@keyframes in{from{transform:translateY(6px)}to{transform:none}}}
+</style>
+
+<style>:root{color-scheme:light;padding-top:env(safe-area-inset-top,0px);padding-bottom:env(safe-area-inset-bottom,0px)}body{margin:0}[hidden]{display:none!important}</style>
+</head><body>
+<div class="testband">시범 화면입니다 · 인증 문자와 쿠폰은 아직 발송되지 않습니다</div>
+<header class="bar">
+  <div class="brand">세왕상사 · 거래처 가입<small id="who">직원을 선택해 주세요</small></div>
+  <button class="chip-btn" id="switchBtn" type="button">직원 변경</button>
+</header>
+<main id="app"></main>
+
+<script>
+(function(){
+var STAFF=[
+ ["이한우","부사장","영업 총괄"],["박정언","전무","강남·서초·관악"],["손승일","상무","프랜차이즈"],
+ ["이원철","이사","강북·동대문·성동"],["채현용","이사","호텔·와인"],["김환","이사","인천·부천·안산"],
+ ["오건훈","이사","송파·강동"],["신홍철","이사","분당·수원·안양"],["배종환","부장","강서·영등포·고양"],
+ ["유광석","부장","하남·구리·남양주"],["성현우","부장","용산·마포·은평"],["황현웅","차장","신규 거래처 발굴"],["정민성","대표",""]
+];
+var JOIN_URL="https://msjung75.github.io/sewangliquor/join.html";
+var CHANNEL="https://pf.kakao.com/_ZGIMG/friend";
+var TYPES=["호텔","음식점","주점·바","카페·기타"];
+var app=document.getElementById('app');var OWNER=false;
+var st={staff:null,form:{store:"",type:"",name:"",phone:"",must:false,opt:true},code:"",tries:0,log:[]};
+
+function load(){try{var s=JSON.parse(localStorage.getItem('sw-join')||'{}');if(s.staff!=null)st.staff=s.staff;if(Array.isArray(s.log))st.log=s.log;}catch(e){}}
+function save(){try{localStorage.setItem('sw-join',JSON.stringify({staff:st.staff,log:st.log}));}catch(e){}}
+function esc(t){return String(t).replace(/[&<>"]/g,function(c){return{'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[c];});}
+function dash(p){var d=p.replace(/\D/g,'').slice(0,11);if(d.length<4)return d;if(d.length<8)return d.slice(0,3)+'-'+d.slice(3);return d.slice(0,3)+'-'+d.slice(3,7)+'-'+d.slice(7);}
+function mask(p){return p.replace(/^(\d{3})-(\d{2})\d{2}-(\d{2})\d{2}$/,'$1-$2**-$3**');}
+function today(){var d=new Date();return d.getFullYear()+'-'+(d.getMonth()+1)+'-'+d.getDate();}
+var ICON={
+ qr:'<svg width="26" height="26" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="3" width="7" height="7"/><rect x="14" y="3" width="7" height="7"/><rect x="3" y="14" width="7" height="7"/><path d="M14 14h3v3h-3zM20 14v.01M14 20h.01M17 20h4v-3"/></svg>',
+ phone:'<svg width="26" height="26" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="6" y="2" width="12" height="20" rx="2"/><path d="M11 18h2"/></svg>',
+ cup:'<svg width="30" height="30" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M5 8h12v6a5 5 0 0 1-5 5h-2a5 5 0 0 1-5-5z"/><path d="M17 10h1.5a2.5 2.5 0 0 1 0 5H17"/><path d="M8 2v3M12 2v3"/></svg>',
+ check:'<svg width="38" height="38" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M5 12.5l4.5 4.5L19 7.5"/></svg>'
+};
+
+function header(){
+  var w=document.getElementById('who');
+  w.textContent=st.staff==null?'직원을 선택해 주세요':(STAFF[st.staff][0]+' '+STAFF[st.staff][1]+' 담당');
+}
+function show(html,after){app.innerHTML='<div class="screen" style="display:grid;gap:16px">'+html+'</div>';header();window.scrollTo(0,0);if(after)after();}
+
+/* 1. 직원 선택 (처음 한 번) */
+function pickStaff(){
+  show('<h1>누구의 폰인가요?</h1><p class="muted">처음 한 번만 고르면 됩니다. 가입한 거래처가 이 이름으로 기록됩니다.</p>'+
+   '<div class="staff">'+STAFF.map(function(s,i){return '<button type="button" data-i="'+i+'"><b>'+s[0]+' '+s[1]+'</b><span>'+esc(s[2])+'</span></button>';}).join('')+'</div>',
+   function(){app.querySelectorAll('.staff button').forEach(function(b){b.onclick=function(){st.staff=+b.dataset.i;save();home();};});});
+}
+
+/* 2. 직원 홈 */
+function home(){
+  if(st.staff==null)return pickStaff();
+  var mine=st.log.filter(function(r){return r.staff===st.staff;});
+  var rows=mine.length?mine.slice().reverse().slice(0,8).map(function(r){return '<div class="row"><div><b>'+esc(r.store)+'</b><div class="t">'+esc(r.type)+' · '+mask(r.phone)+'</div></div><div style="text-align:right"><span class="pill">쿠폰 발송</span><div class="t">'+esc(r.time)+'</div></div></div>';}).join('')
+    :'<div class="row"><div><b>을지로 ○○호프</b><div class="t">주점·바 · 010-12**-56**</div></div><div style="text-align:right"><span class="pill ex">예시</span><div class="t">오늘 14:20</div></div></div>'+
+     '<div class="row"><div><b>성수 △△비스트로</b><div class="t">음식점 · 010-98**-43**</div></div><div style="text-align:right"><span class="pill ex">예시</span><div class="t">오늘 11:05</div></div></div>';
+  var todayN=mine.filter(function(r){return r.day===today();}).length;
+  show('<div><h1>업주님 가입,<br>30초면 끝납니다</h1><p class="muted" style="margin-top:6px">가입하면 업주님 폰으로 스타벅스 아메리카노 쿠폰이 바로 갑니다.</p></div>'+
+   '<button class="big primary" id="goQR" type="button"><span class="ic">'+ICON.qr+'</span><div><b>업주님 폰으로 가입</b><span>QR을 보여 주면 업주님이 찍어서 가입</span></div></button>'+
+   '<button class="big" id="goHere" type="button"><span class="ic">'+ICON.phone+'</span><div><b>이 폰에서 바로 가입</b><span>내 폰을 업주님께 건네서 입력</span></div></button>'+
+   '<section class="card"><div style="display:flex;justify-content:space-between;align-items:baseline"><h2>내가 받은 가입</h2><span class="muted">오늘 '+todayN+'건 · 전체 '+mine.length+'건</span></div><div class="list">'+rows+'</div></section>',
+   function(){document.getElementById('goQR').onclick=qr;document.getElementById('goHere').onclick=function(){resetForm();step1();};});
+}
+
+/* 3. QR */
+function qr(){
+  var url=JOIN_URL+'?s='+(st.staff+1);
+  show('<h1>업주님 폰 카메라로<br>찍어 주세요</h1><div class="qrbox"><div id="qr"></div></div><p class="url">'+esc(url)+'<br></p>'+
+   '<div class="gift"><span class="cup">'+ICON.cup+'</span><div><b>가입하면 아메리카노 1잔</b><span class="muted">업주님 휴대폰 문자로 바로 갑니다</span></div></div>'+
+   '<button class="btn ghost" id="back" type="button">처음으로</button>',
+   function(){
+     try{new QRCode(document.getElementById('qr'),{text:url,width:520,height:520,colorDark:'#14213a',colorLight:'#ffffff',correctLevel:QRCode.CorrectLevel.M});}
+     catch(e){document.getElementById('qr').textContent='QR을 그리지 못했습니다. 아래 주소를 업주님께 보내 주세요.';}
+     document.getElementById('back').onclick=home;});
+}
+
+/* 4. 업주 가입: 정보 입력 */
+function resetForm(){st.form={store:"",type:"",name:"",phone:"",must:false,opt:true};st.code="";st.tries=0;}
+function step1(){
+  var f=st.form;
+  show('<div class="steps"><i class="on"></i><i></i><i></i></div>'+
+   '<div><h1>세왕상사 거래처 가입</h1><p class="muted" style="margin-top:6px">가입하시면 <b style="color:var(--ink)">스타벅스 아메리카노 쿠폰</b>을 휴대폰 문자로 바로 보내 드립니다.</p></div>'+
+   '<form class="card" id="f1" novalidate>'+
+   '<label class="f" for="store">매장 이름<input id="store" type="text" autocomplete="organization" placeholder="예: 세왕 비스트로 성수점" value="'+esc(f.store)+'"></label>'+
+   '<div class="f" style="display:grid;gap:6px;font-size:14px;font-weight:600">업종<div class="seg" id="types">'+TYPES.map(function(t){return '<button type="button" aria-pressed="'+(f.type===t)+'">'+t+'</button>';}).join('')+'</div></div>'+
+   '<label class="f" for="name">대표자(사장님) 성함<input id="name" type="text" autocomplete="name" placeholder="홍길동" value="'+esc(f.name)+'"></label>'+
+   '<label class="f" for="phone">휴대폰 번호 <span class="muted" style="font-weight:400">쿠폰이 이 번호로 갑니다</span><input id="phone" type="tel" inputmode="numeric" autocomplete="tel" placeholder="010-0000-0000" value="'+esc(f.phone)+'"></label>'+
+   '<label class="agree" for="must"><input id="must" type="checkbox"'+(f.must?' checked':'')+'><span><em>[필수]</em> 거래 안내와 경품 발송을 위해 매장명·성함·휴대폰 번호를 수집·이용하는 데 동의합니다.</span></label>'+
+   '<label class="agree" for="opt"><input id="opt" type="checkbox"'+(f.opt?' checked':'')+'><span><em style="color:var(--sub)">[선택]</em> 주간 시장동향 리포트와 신상품·행사 소식을 카카오톡·문자로 받겠습니다.</span></label>'+
+   '<p class="err" id="e1" hidden></p>'+
+   '<button class="btn" type="submit">인증번호 받기</button></form>'+
+   (OWNER?'':'<button class="btn ghost" id="cancel" type="button">직원 화면으로</button>'),
+   function(){
+     var ph=document.getElementById('phone');
+     ph.addEventListener('input',function(){ph.value=dash(ph.value);});
+     app.querySelectorAll('#types button').forEach(function(b){b.onclick=function(){f.type=b.textContent;app.querySelectorAll('#types button').forEach(function(x){x.setAttribute('aria-pressed',String(x===b));});};});
+     var cb=document.getElementById('cancel');if(cb)cb.onclick=OWNER?function(){resetForm();step1();}:home;
+     document.getElementById('f1').addEventListener('submit',function(ev){
+       ev.preventDefault();
+       f.store=document.getElementById('store').value.trim();f.name=document.getElementById('name').value.trim();
+       f.phone=dash(ph.value);f.must=document.getElementById('must').checked;f.opt=document.getElementById('opt').checked;
+       var e=document.getElementById('e1'),msg='';
+       if(!f.store)msg='매장 이름을 입력해 주세요.';
+       else if(!f.type)msg='업종을 골라 주세요.';
+       else if(!f.name)msg='성함을 입력해 주세요.';
+       else if(!/^01[016789]-\d{3,4}-\d{4}$/.test(f.phone))msg='휴대폰 번호를 다시 확인해 주세요. (예: 010-1234-5678)';
+       else if(!f.must)msg='[필수] 동의에 체크해 주셔야 쿠폰을 보내 드릴 수 있습니다.';
+       else if(st.log.some(function(r){return r.phone===f.phone;}))msg='이미 가입한 번호입니다. 쿠폰은 번호 1개당 한 번만 드립니다.';
+       if(msg){e.textContent=msg;e.hidden=false;return;}
+       st.code=String(Math.floor(1000+Math.random()*9000));st.tries=0;step2();
+     });
+   });
+}
+
+/* 5. 인증번호 */
+function step2(){
+  show('<div class="steps"><i class="on"></i><i class="on"></i><i></i></div>'+
+   '<div><h1>문자로 온 4자리를<br>입력해 주세요</h1><p class="muted" style="margin-top:6px">'+esc(st.form.phone)+'로 인증번호를 보냈습니다.</p></div>'+
+   '<form class="card" id="f2" novalidate><p class="demo">시안 화면이라 실제 문자는 가지 않습니다. 인증번호: <b>'+st.code+'</b></p>'+
+   '<label class="f" for="code">인증번호<input id="code" class="code" type="tel" inputmode="numeric" maxlength="4" autocomplete="one-time-code" placeholder="····"></label>'+
+   '<p class="err" id="e2" hidden></p><button class="btn gold" type="submit">확인하고 쿠폰 받기</button></form>'+
+   '<button class="btn ghost" id="back2" type="button">번호 다시 입력</button>',
+   function(){
+     var c=document.getElementById('code');c.focus();
+     document.getElementById('back2').onclick=step1;
+     document.getElementById('f2').addEventListener('submit',function(ev){
+       ev.preventDefault();var e=document.getElementById('e2');
+       if(c.value.replace(/\D/g,'')!==st.code){st.tries++;e.textContent=st.tries>=3?'세 번 틀렸습니다. 번호를 다시 입력해 주세요.':'인증번호가 맞지 않습니다. 다시 확인해 주세요.';e.hidden=false;if(st.tries>=3)setTimeout(step1,1200);return;}
+       var d=new Date();
+       st.log.push({staff:st.staff,store:st.form.store,type:st.form.type,phone:st.form.phone,opt:st.form.opt,day:today(),time:'오늘 '+String(d.getHours()).padStart(2,'0')+':'+String(d.getMinutes()).padStart(2,'0')});
+       save();step3();
+     });
+   });
+}
+
+/* 6. 완료 */
+function step3(){
+  var s=STAFF[st.staff];
+  show('<div class="steps"><i class="on"></i><i class="on"></i><i class="on"></i></div>'+
+   '<div class="center" style="display:grid;gap:10px"><div class="done-ic">'+ICON.check+'</div><h1>가입이 끝났습니다</h1><p class="muted">'+esc(st.form.store)+' · '+esc(st.form.name)+' 사장님, 반갑습니다.</p></div>'+
+   '<div class="gift"><span class="cup">'+ICON.cup+'</span><div><b>아메리카노 쿠폰을 보냈습니다</b><span class="muted">'+esc(st.form.phone)+' 문자함을 확인해 주세요. (시안에서는 실제로 가지 않습니다)</span></div></div>'+
+   '<section class="card"><h2>리포트는 카카오톡으로 받아 보세요</h2><p class="muted">매주 수요일, 사장님 매장 운영에 쓸 외식·주류 시장 소식을 보내 드립니다.</p>'+
+   '<a class="btn gold" href="'+CHANNEL+'" target="_blank" rel="noopener">세왕상사 카카오 채널 친구 추가</a></section>'+
+   '<p class="muted center">담당: '+s[0]+' '+s[1]+'</p>'+
+   (OWNER?'':'<button class="btn ghost" id="fin" type="button">직원에게 폰 돌려주기</button>'),
+   function(){var fb=document.getElementById('fin');if(fb)fb.onclick=home;});
+}
+
+document.getElementById('switchBtn').onclick=pickStaff;
+load();
+var qs=new URLSearchParams(location.search),sv=parseInt(qs.get('s'),10);
+if(sv>=1&&sv<=STAFF.length){OWNER=true;st.staff=sv-1;document.getElementById('switchBtn').hidden=true;resetForm();step1();}
+else home();
+})();
+</script>
+
+</body></html>
