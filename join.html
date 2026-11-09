@@ -107,6 +107,27 @@ input[type=text],input[type=tel]{width:100%;font:inherit;font-size:18px;padding:
 .sns{display:grid;grid-template-columns:1fr 1fr;gap:8px}
 .sns a{display:block;text-align:center;border:1px solid var(--line);border-radius:10px;padding:12px 6px;font-size:14px;color:var(--ink);text-decoration:none;background:var(--surface)}
 </style>
+
+<style>
+.tasks{display:grid;gap:10px}
+.task{display:flex;align-items:center;gap:12px;background:var(--surface);border:1px solid var(--line);border-radius:14px;padding:14px}
+.task .tk{flex:none;width:34px;height:34px;border-radius:50%;background:var(--bg);border:2px solid var(--line);display:grid;place-items:center;font-weight:700;color:var(--sub)}
+.task.on{border-color:var(--ok);background:var(--ok-soft)}
+.task.on .tk{background:var(--ok);border-color:var(--ok);color:#fff}
+.task .tx{flex:1;min-width:0}
+.task .tx b{display:block;font-size:16px}
+.task .tx span{display:block;font-size:13px;color:var(--sub)}
+.task .tb{display:flex;gap:6px;flex:none}
+.tbtn{display:inline-block;border-radius:10px;padding:10px 14px;font-weight:700;font-size:15px;text-decoration:none;white-space:nowrap}
+.tbtn.kakao{background:#FEE500;color:#191919}
+.tbtn.insta{background:linear-gradient(45deg,#f58529,#dd2a7b,#8134af);color:#fff}
+.tbtn.ink{background:var(--ink);color:var(--bg)}
+.task.on .tbtn{opacity:.55}
+.cpn-h{display:flex;gap:12px;align-items:center;color:var(--gold)}
+.cpn-h b{display:block;font-size:17px;color:var(--ink)}
+.cpn.lock{opacity:.45}
+.err.ok{color:var(--ok)}
+</style>
 </head>
 <body>
 <header class="bar">
@@ -131,7 +152,7 @@ var INSTA="https://www.instagram.com/sewangliquor";
 var YOUTUBE="https://youtube.com/@sewangliquor";
 var TYPES=["호텔","음식점","주점·바","카페·기타"];
 var app=document.getElementById('app');var OWNER=false;
-var st={staff:null,form:{store:"",type:"",name:"",phone:"",must:false,warn:false,opt:true},coupon:"pending"};
+var st={staff:null,form:{},done:{},sent:false,coupon:"pending"};
 
 function ev(n,p){try{gtag('event',n,Object.assign({page:'join',staff:st.staff==null?'':STAFF[st.staff][0]},p||{}));}catch(e){}}
 function load(){try{var s=JSON.parse(localStorage.getItem('sw-join')||'{}');if(s.staff!=null)st.staff=s.staff;}catch(e){}}
@@ -167,7 +188,7 @@ function pickStaff(){
 /* 2. 직원 홈 */
 function home(){
   if(st.staff==null)return pickStaff();
-  show('<div><h1>업주님 가입,<br>1분이면 끝납니다</h1><p class="muted" style="margin-top:6px">인증까지 마치면 업주님 폰으로 아메리카노 쿠폰이 갑니다. 마지막 화면에서 <b style="color:var(--ink)">카카오 채널 추가</b>까지 꼭 같이 눌러 주세요.</p></div>'+
+  show('<div><h1>업주님 가입,<br>1분이면 끝납니다</h1><p class="muted" style="margin-top:6px">카카오 채널 추가 · 인스타 팔로우 · 주문 앱 받기를 마쳐야 쿠폰 받기가 열립니다. <b style="color:var(--ink)">옆에서 업주님 화면을 같이 확인해 주세요.</b></p></div>'+
    '<button class="big primary" id="goQR" type="button"><span class="ic">'+ICON.qr+'</span><div><b>업주님 폰으로 가입</b><span>QR을 보여 주면 업주님이 찍어서 가입</span></div></button>'+
    '<button class="big" id="goHere" type="button"><span class="ic">'+ICON.phone+'</span><div><b>이 폰에서 바로 가입</b><span>내 폰을 업주님께 건네서 입력</span></div></button>'+
    '<section class="card"><div style="display:flex;justify-content:space-between;align-items:baseline"><h2>내가 받은 가입</h2><span class="muted" id="cnt">불러오는 중…</span></div><div class="list" id="mine"><div class="row"><div class="t">잠시만요…</div></div></div></section>',
@@ -179,7 +200,7 @@ function home(){
        if(!d||!d.ok){c.textContent='';m.innerHTML='<div class="row"><div class="t">기록을 불러오지 못했습니다.</div></div>';return;}
        c.textContent='오늘 '+d.today+'건 · 전체 '+d.total+'건';
        m.innerHTML=d.recent.length?d.recent.map(function(r){var pill=r.coupon==='발송'?'<span class="pill">쿠폰 발송</span>':'<span class="pill wait">쿠폰 '+esc(r.coupon||'대기')+'</span>';
-         return '<div class="row"><div><b>'+esc(r.store)+'</b><div class="t">'+esc(r.type)+' · '+esc(r.phone)+'</div></div><div style="text-align:right">'+pill+'<div class="t">'+esc(r.time)+'</div></div></div>';}).join('')
+         return '<div class="row"><div><b>'+esc(r.store)+'</b><div class="t">'+(r.type?esc(r.type)+' · ':'')+esc(r.phone)+'</div></div><div style="text-align:right">'+pill+'<div class="t">'+esc(r.time)+'</div></div></div>';}).join('')
          :'<div class="row"><div class="t">아직 가입이 없습니다. 첫 업주님을 가입시켜 보세요.</div></div>';
      });
    });
@@ -197,96 +218,86 @@ function qr(){
      document.getElementById('back').onclick=home;});
 }
 
-/* 4. 정보 입력 */
-function resetForm(){st.form={store:"",type:"",name:"",phone:"",must:false,warn:false,opt:true};}
+/* 4. 업주 화면 — 할 일 3개(카카오·인스타·주문앱) → 쿠폰 받기(매장·번호·인증) */
+function resetForm(){st.form={store:"",phone:"",must:false,opt:false};st.done={kakao:false,insta:false,app:false};st.sent=false;}
+function allDone(){return st.done.kakao&&st.done.insta&&st.done.app;}
 function step1(){
-  var f=st.form;ev('join_form');
-  show('<div class="steps"><i class="on"></i><i></i><i></i></div>'+
-   '<div><h1>세왕상사 거래처 가입</h1><p class="muted" style="margin-top:6px">가입하시면 <b style="color:var(--ink)">아메리카노 쿠폰</b>을 휴대폰 문자로 보내 드립니다.</p></div>'+
-   '<form class="card" id="f1" novalidate>'+
-   '<label class="f" for="store">매장 이름<input id="store" type="text" autocomplete="organization" placeholder="예: 세왕 비스트로 성수점" value="'+esc(f.store)+'"></label>'+
-   '<div class="f" style="display:grid;gap:6px;font-size:14px;font-weight:600">업종<div class="seg" id="types">'+TYPES.map(function(t){return '<button type="button" aria-pressed="'+(f.type===t)+'">'+t+'</button>';}).join('')+'</div></div>'+
-   '<label class="f" for="name">대표자(사장님) 성함<input id="name" type="text" autocomplete="name" placeholder="홍길동" value="'+esc(f.name)+'"></label>'+
-   '<label class="f" for="phone">휴대폰 번호 <span class="muted" style="font-weight:400">인증번호와 쿠폰이 이 번호로 갑니다</span><input id="phone" type="tel" inputmode="numeric" autocomplete="tel" placeholder="010-0000-0000" value="'+esc(f.phone)+'"></label>'+
-   '<label class="agree" for="must"><input id="must" type="checkbox"'+(f.must?' checked':'')+'><span><em>[필수]</em> 거래 안내와 경품 발송을 위해 매장명·성함·휴대폰 번호를 수집·이용하는 데 동의합니다.</span></label>'+
-   '<label class="agree warnbox" for="warn"><input id="warn" type="checkbox"'+(f.warn?' checked':'')+'><span><em>[필수]</em> <b>쿠폰은 유효기간 안에 꼭 써 주세요.</b> 기간이 지나면 연장·환불·재발송이 안 됩니다. 확인했습니다.</span></label>'+
-   '<label class="agree" for="opt"><input id="opt" type="checkbox"'+(f.opt?' checked':'')+'><span><em style="color:var(--sub)">[선택]</em> 주간 시장동향 리포트와 신상품·행사 소식을 카카오톡·문자로 받겠습니다.</span></label>'+
-   '<p class="err" id="e1" hidden></p>'+
-   '<button class="btn" type="submit" id="sendBtn">인증번호 받기</button></form>'+
+  var f=st.form,d=st.done;ev('join_form');
+  var appLinks=OS==='ios'?[[APP_IOS,'앱 받기']]:OS==='and'?[[APP_AND,'앱 받기']]:[[APP_IOS,'아이폰'],[APP_AND,'안드로이드']];
+  function task(k,n,title,sub,btns,cls){
+    return '<div class="task'+(d[k]?' on':'')+'" data-k="'+k+'"><div class="tk">'+(d[k]?'✓':n)+'</div><div class="tx"><b>'+title+'</b><span>'+sub+'</span></div><div class="tb">'+
+      btns.map(function(b){return '<a class="tbtn '+cls+'" href="'+b[0]+'" target="_blank" rel="noopener" data-k="'+k+'">'+b[1]+'</a>';}).join('')+'</div></div>';
+  }
+  show('<div><h1>세왕상사 가입하고<br>아메리카노 받기</h1><p class="muted" style="margin-top:6px">아래 3개를 누르면 쿠폰 받기가 열립니다.</p></div>'+
+   '<section class="tasks">'+
+     task('kakao','1','카카오톡 채널 추가','매주 수요일 리포트가 카톡으로',[[CHANNEL,'추가']],'kakao')+
+     task('insta','2','인스타그램 팔로우','@sewangliquor',[[INSTA,'팔로우']],'insta')+
+     task('app','3','주문 앱 받기','세왕상사 주류주문',appLinks,'ink')+
+   '</section>'+
+   '<form class="card cpn'+(allDone()?'':' lock')+'" id="f1" novalidate>'+
+     '<div class="cpn-h">'+ICON.cup+'<div><b>아메리카노 쿠폰 받기</b><span class="muted" id="lockMsg">'+(allDone()?'번호 인증 후 문자로 보내 드립니다':'위 3개를 먼저 눌러 주세요')+'</span></div></div>'+
+     '<label class="f" for="store">매장 이름<input id="store" type="text" autocomplete="organization" placeholder="예: 세왕 비스트로 성수점" value="'+esc(f.store)+'"></label>'+
+     '<label class="f" for="phone">휴대폰 번호<input id="phone" type="tel" inputmode="numeric" autocomplete="tel" placeholder="010-0000-0000" value="'+esc(f.phone)+'"></label>'+
+     '<label class="agree warnbox" for="must"><input id="must" type="checkbox"'+(f.must?' checked':'')+'><span><em>[필수]</em> 쿠폰 발송을 위해 매장명·휴대폰 번호 수집에 동의하며, <b>쿠폰은 유효기간이 지나면 연장·환불·재발송이 안 되는 것</b>을 확인했습니다.</span></label>'+
+     '<div id="codeWrap" hidden><label class="f" for="code">문자로 온 인증번호 4자리<input id="code" class="code" type="tel" inputmode="numeric" maxlength="4" autocomplete="one-time-code" placeholder="····"></label></div>'+
+     '<p class="err" id="e1" hidden></p>'+
+     '<button class="btn gold" type="submit" id="goBtn">인증번호 받기</button>'+
+   '</form>'+
    (OWNER?'':'<button class="btn ghost" id="cancel" type="button">직원 화면으로</button>'),
    function(){
-     var ph=document.getElementById('phone');
-     ph.addEventListener('input',function(){ph.value=dash(ph.value);});
-     app.querySelectorAll('#types button').forEach(function(b){b.onclick=function(){f.type=b.textContent;app.querySelectorAll('#types button').forEach(function(x){x.setAttribute('aria-pressed',String(x===b));});};});
+     var form=document.getElementById('f1'),er=document.getElementById('e1'),btn=document.getElementById('goBtn'),cw=document.getElementById('codeWrap');
+     function refresh(){
+       app.querySelectorAll('.task').forEach(function(t){var k=t.dataset.k;t.classList.toggle('on',d[k]);t.querySelector('.tk').textContent=d[k]?'✓':({kakao:'1',insta:'2',app:'3'})[k];});
+       form.classList.toggle('lock',!allDone());
+       document.getElementById('lockMsg').textContent=allDone()?'번호 인증 후 문자로 보내 드립니다':'위 3개를 먼저 눌러 주세요';
+     }
+     app.querySelectorAll('.tbtn').forEach(function(a){a.addEventListener('click',function(){d[a.dataset.k]=true;ev('join_task',{task:a.dataset.k});setTimeout(refresh,300);});});
+     var ph=document.getElementById('phone');ph.addEventListener('input',function(){ph.value=dash(ph.value);});
      var cb=document.getElementById('cancel');if(cb)cb.onclick=home;
-     document.getElementById('f1').addEventListener('submit',function(e){
-       e.preventDefault();
-       f.store=document.getElementById('store').value.trim();f.name=document.getElementById('name').value.trim();
-       f.phone=dash(ph.value);f.must=document.getElementById('must').checked;f.warn=document.getElementById('warn').checked;f.opt=document.getElementById('opt').checked;
-       var er=document.getElementById('e1'),msg='';
+     if(st.sent){cw.hidden=false;btn.textContent='확인하고 쿠폰 받기';}
+     form.addEventListener('submit',function(e){
+       e.preventDefault();er.hidden=true;
+       if(!allDone()){er.textContent='위 3개(카카오·인스타·앱)를 먼저 눌러 주세요.';er.hidden=false;return;}
+       f.store=document.getElementById('store').value.trim();f.phone=dash(ph.value);f.must=document.getElementById('must').checked;
+       var msg='';
        if(!f.store)msg='매장 이름을 입력해 주세요.';
-       else if(!f.type)msg='업종을 골라 주세요.';
-       else if(!f.name)msg='성함을 입력해 주세요.';
        else if(!/^01[016789]-\d{3,4}-\d{4}$/.test(f.phone))msg='휴대폰 번호를 다시 확인해 주세요. (예: 010-1234-5678)';
-       else if(!f.must||!f.warn)msg='[필수] 두 항목에 체크해 주셔야 쿠폰을 보내 드릴 수 있습니다.';
+       else if(!f.must)msg='[필수] 항목에 체크해 주세요.';
        if(msg){er.textContent=msg;er.hidden=false;return;}
-       var btn=document.getElementById('sendBtn');busy(btn,true,'인증번호 보내는 중…');
-       call({action:'join_send',phone:f.phone,staff:st.staff,store:f.store}).then(function(d){
+       if(!st.sent){
+         busy(btn,true,'인증번호 보내는 중…');
+         call({action:'join_send',phone:f.phone,staff:st.staff,store:f.store}).then(function(r){
+           busy(btn,false);
+           if(r&&r.ok){st.sent=true;ev('join_sms_sent');cw.hidden=false;btn.textContent='확인하고 쿠폰 받기';document.getElementById('code').focus();
+             er.textContent=f.phone+'로 인증번호를 보냈습니다. (5분 안에 입력)';er.hidden=false;er.classList.add('ok');}
+           else{er.classList.remove('ok');er.textContent=(r&&r.msg)||'잠시 후 다시 시도해 주세요.';er.hidden=false;}
+         });
+         return;
+       }
+       var v=document.getElementById('code').value.replace(/\D/g,'');
+       er.classList.remove('ok');
+       if(v.length!==4){er.textContent='인증번호 4자리를 입력해 주세요.';er.hidden=false;return;}
+       busy(btn,true,'확인 중…');
+       call({action:'join_verify',phone:f.phone,code:v,staff:st.staff,store:f.store,type:'',name:'',must:true,opt:false,tasks:'kakao,insta,app'}).then(function(r){
          busy(btn,false);
-         if(d&&d.ok){ev('join_sms_sent');step2();}
-         else{er.textContent=(d&&d.msg)||'잠시 후 다시 시도해 주세요.';er.hidden=false;}
+         if(r&&r.ok){st.coupon=r.coupon||'pending';ev('join_done',{coupon:st.coupon});step3();}
+         else{er.textContent=(r&&r.msg)||'잠시 후 다시 시도해 주세요.';er.hidden=false;if(r&&r.expired){st.sent=false;cw.hidden=true;btn.textContent='인증번호 다시 받기';}}
        });
      });
    });
 }
 
-/* 5. 인증번호 */
-function step2(){
-  show('<div class="steps"><i class="on"></i><i class="on"></i><i></i></div>'+
-   '<div><h1>문자로 온 4자리를<br>입력해 주세요</h1><p class="muted" style="margin-top:6px">'+esc(st.form.phone)+'로 인증번호를 보냈습니다. 5분 안에 입력해 주세요.</p></div>'+
-   '<form class="card" id="f2" novalidate>'+
-   '<label class="f" for="code">인증번호<input id="code" class="code" type="tel" inputmode="numeric" maxlength="4" autocomplete="one-time-code" placeholder="····"></label>'+
-   '<p class="err" id="e2" hidden></p><button class="btn gold" type="submit" id="okBtn">확인하고 쿠폰 받기</button></form>'+
-   '<button class="btn ghost" id="back2" type="button">번호 다시 입력 · 다시 받기</button>',
-   function(){
-     var c=document.getElementById('code');c.focus();
-     document.getElementById('back2').onclick=step1;
-     document.getElementById('f2').addEventListener('submit',function(e){
-       e.preventDefault();var er=document.getElementById('e2');var v=c.value.replace(/\D/g,'');
-       if(v.length!==4){er.textContent='4자리를 입력해 주세요.';er.hidden=false;return;}
-       var btn=document.getElementById('okBtn');busy(btn,true,'확인 중…');
-       var f=st.form;
-       call({action:'join_verify',phone:f.phone,code:v,staff:st.staff,store:f.store,type:f.type,name:f.name,must:f.must&&f.warn,opt:f.opt}).then(function(d){
-         busy(btn,false);
-         if(d&&d.ok){st.coupon=d.coupon||'pending';ev('join_done',{coupon:st.coupon});step3();}
-         else{er.textContent=(d&&d.msg)||'잠시 후 다시 시도해 주세요.';er.hidden=false;if(d&&d.expired)setTimeout(step1,1600);}
-       });
-     });
-   });
-}
-
-/* 6. 완료 — 카카오 채널 → 주문 앱 → 인스타·유튜브 */
+/* 5. 완료 */
 function step3(){
   var s=STAFF[st.staff]||['',''];
   var cp=st.coupon==='sent'?['아메리카노 쿠폰을 보냈습니다',esc(st.form.phone)+' 문자함을 확인해 주세요. 유효기간 안에 꼭 써 주세요.']
         :(st.coupon==='limit'?['쿠폰은 담당자가 따로 챙겨 드립니다','오늘 쿠폰 수량이 끝나 담당 영업사원이 직접 보내 드립니다.']
         :['아메리카노 쿠폰은 오늘 안에 갑니다',esc(st.form.phone)+'로 문자 쿠폰을 보내 드립니다. 유효기간 안에 꼭 써 주세요.']);
-  var appBtns=OS==='ios'?'<a class="btn ink" id="appBtn" href="'+APP_IOS+'" target="_blank" rel="noopener">'+ICON.bag+' 「세왕상사 주류주문」 앱 받기</a>'
-    :OS==='and'?'<a class="btn ink" id="appBtn" href="'+APP_AND+'" target="_blank" rel="noopener">'+ICON.bag+' 「세왕상사 주류주문」 앱 받기</a>'
-    :'<div class="two"><a class="btn ink" href="'+APP_IOS+'" target="_blank" rel="noopener">아이폰</a><a class="btn ink" href="'+APP_AND+'" target="_blank" rel="noopener">안드로이드</a></div>';
-  show('<div class="steps"><i class="on"></i><i class="on"></i><i class="on"></i></div>'+
-   '<div class="center" style="display:grid;gap:10px"><div class="done-ic">'+ICON.check+'</div><h1>가입이 끝났습니다</h1><p class="muted">'+esc(st.form.store)+' · '+esc(st.form.name)+' 사장님, 반갑습니다.</p></div>'+
+  show('<div class="center" style="display:grid;gap:10px;margin-top:12px"><div class="done-ic">'+ICON.check+'</div><h1>가입이 끝났습니다</h1><p class="muted">'+esc(st.form.store)+' 사장님, 반갑습니다.</p></div>'+
    '<div class="gift"><span class="cup">'+ICON.cup+'</span><div><b>'+cp[0]+'</b><span class="muted">'+cp[1]+'</span></div></div>'+
-   '<section class="card hl"><div class="no">1</div><h2>카카오톡으로 리포트 받기</h2><p class="muted">매주 수요일, 매장 운영에 쓸 외식·주류 시장 소식이 카톡으로 옵니다. 채널 추가 한 번이면 끝.</p>'+
-   '<a class="btn kakao" id="chBtn" href="'+CHANNEL+'" target="_blank" rel="noopener">'+ICON.talk+' 카카오 채널 추가하기</a></section>'+
-   '<section class="card"><div class="no">2</div><h2>앱으로 바로 주문하기</h2><p class="muted">스토어에서 「세왕상사 주류주문」을 받아 두시면 전화 없이 주문할 수 있습니다.</p>'+appBtns+'</section>'+
-   '<div class="sns"><a href="'+INSTA+'" target="_blank" rel="noopener" id="igBtn">인스타그램 @sewangliquor</a><a href="'+YOUTUBE+'" target="_blank" rel="noopener" id="ytBtn">유튜브 @sewangliquor</a></div>'+
    '<p class="muted center">담당: '+esc(s[0])+' '+esc(s[1])+'</p>'+
    (OWNER?'':'<button class="btn ghost" id="fin" type="button">직원에게 폰 돌려주기</button>'),
-   function(){
-     var fb=document.getElementById('fin');if(fb)fb.onclick=function(){resetForm();home();};
-     [['chBtn','join_kakao'],['appBtn','join_app'],['igBtn','join_insta'],['ytBtn','join_youtube']].forEach(function(x){var b=document.getElementById(x[0]);if(b)b.addEventListener('click',function(){ev(x[1]);});});
-   });
+   function(){var fb=document.getElementById('fin');if(fb)fb.onclick=function(){resetForm();home();};});
 }
 
 document.getElementById('switchBtn').onclick=pickStaff;
