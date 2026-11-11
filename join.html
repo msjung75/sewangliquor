@@ -109,23 +109,40 @@ input[type=text],input[type=tel]{width:100%;font:inherit;font-size:18px;padding:
 </style>
 
 <style>
+.hero{position:relative;overflow:hidden;background:var(--bar);color:var(--bar-fg);border-radius:20px;padding:22px 20px 20px}
+.hero-k{display:inline-block;font-size:12px;font-weight:700;letter-spacing:.06em;color:var(--gold);background:rgba(255,255,255,.08);border-radius:999px;padding:4px 10px}
+.hero h1{color:var(--bar-fg);font-size:28px;line-height:1.25;margin:10px 0 6px}
+.hero p{margin:0;font-size:15px;opacity:.8}
+.hero-cup{position:absolute;right:-6px;top:10px;opacity:.16;transform:scale(3.4);transform-origin:top right;color:var(--gold)}
+.pg{display:flex;align-items:center;gap:10px;margin-top:16px}
+.pg-bar{flex:1;height:10px;border-radius:99px;background:rgba(255,255,255,.15);overflow:hidden}
+.pg-bar i{display:block;height:100%;background:var(--gold);border-radius:99px;transition:width .35s}
+.pg b{font-size:15px;min-width:42px;text-align:right}
 .tasks{display:grid;gap:10px}
-.task{display:flex;align-items:center;gap:12px;background:var(--surface);border:1px solid var(--line);border-radius:14px;padding:14px}
-.task .tk{flex:none;width:34px;height:34px;border-radius:50%;background:var(--bg);border:2px solid var(--line);display:grid;place-items:center;font-weight:700;color:var(--sub)}
+.task{display:flex;align-items:center;gap:12px;background:var(--surface);border:1.5px solid var(--line);border-radius:16px;padding:14px;transition:border-color .2s,background .2s}
+.task .ti{position:relative;flex:none;width:46px;height:46px;border-radius:14px;display:grid;place-items:center}
+.task .ti.kakao{background:#FEE500;color:#191919}
+.task .ti.insta{background:linear-gradient(45deg,#f58529,#dd2a7b,#8134af);color:#fff}
+.task .ti.ink{background:var(--ink);color:var(--bg)}
+.task .tk{position:absolute;right:-6px;bottom:-6px;width:22px;height:22px;border-radius:50%;background:var(--surface);border:2px solid var(--line);font-size:12px;font-weight:700;display:grid;place-items:center;color:var(--sub)}
 .task.on{border-color:var(--ok);background:var(--ok-soft)}
 .task.on .tk{background:var(--ok);border-color:var(--ok);color:#fff}
 .task .tx{flex:1;min-width:0}
 .task .tx b{display:block;font-size:16px}
-.task .tx span{display:block;font-size:13px;color:var(--sub)}
-.task .tb{display:flex;gap:6px;flex:none}
-.tbtn{display:inline-block;border-radius:10px;padding:10px 14px;font-weight:700;font-size:15px;text-decoration:none;white-space:nowrap}
+.task .tx span{display:block;font-size:13px;color:var(--sub);line-height:1.4;margin-top:2px}
+.task .tb{display:flex;flex-direction:column;gap:6px;flex:none}
+.tbtn{display:block;text-align:center;border-radius:10px;padding:10px 14px;font-weight:700;font-size:15px;text-decoration:none;white-space:nowrap}
 .tbtn.kakao{background:#FEE500;color:#191919}
 .tbtn.insta{background:linear-gradient(45deg,#f58529,#dd2a7b,#8134af);color:#fff}
 .tbtn.ink{background:var(--ink);color:var(--bg)}
-.task.on .tbtn{opacity:.55}
+.task.on .tbtn{background:transparent;color:var(--ok);border:1.5px solid var(--ok);padding:8.5px 12.5px}
+.cpn{border:2px solid var(--gold);transition:opacity .2s}
 .cpn-h{display:flex;gap:12px;align-items:center;color:var(--gold)}
-.cpn-h b{display:block;font-size:17px;color:var(--ink)}
-.cpn.lock{opacity:.45}
+.cpn-h .lk{flex:none;width:44px;height:44px;border-radius:12px;background:var(--gold-soft);display:grid;place-items:center;font-size:20px}
+.cpn-h b{display:block;font-size:18px;color:var(--ink)}
+.cpn-body{display:grid;gap:12px;margin-top:14px}
+.cpn.lock{border:1.5px dashed var(--line);opacity:.75}
+.cpn.lock .cpn-body{display:none}
 .err.ok{color:var(--ok)}
 </style>
 </head>
@@ -175,7 +192,7 @@ var ICON={
  bag:'<svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M6 7h12l-1 13H7z"/><path d="M9 7a3 3 0 0 1 6 0"/></svg>'
 };
 
-function header(){var w=document.getElementById('who');w.textContent=st.staff==null?'직원을 선택해 주세요':(STAFF[st.staff][0]+' '+STAFF[st.staff][1]+' 담당');}
+function header(){var w=document.getElementById('who');w.textContent=st.staff==null?'직원을 선택해 주세요':(OWNER?'담당 ':'')+STAFF[st.staff][0]+' '+STAFF[st.staff][1]+(OWNER?'':' 담당');}
 function show(html,after){app.innerHTML='<div class="screen" style="display:grid;gap:16px">'+html+'</div>';header();window.scrollTo(0,0);if(after)after();}
 
 /* 1. 직원 선택 */
@@ -191,10 +208,19 @@ function home(){
   show('<div><h1>업주님 가입,<br>1분이면 끝납니다</h1><p class="muted" style="margin-top:6px">카카오 채널 추가 · 인스타 팔로우 · 주문 앱 받기를 마쳐야 쿠폰 받기가 열립니다. <b style="color:var(--ink)">옆에서 업주님 화면을 같이 확인해 주세요.</b></p></div>'+
    '<button class="big primary" id="goQR" type="button"><span class="ic">'+ICON.qr+'</span><div><b>업주님 폰으로 가입</b><span>QR을 보여 주면 업주님이 찍어서 가입</span></div></button>'+
    '<button class="big" id="goHere" type="button"><span class="ic">'+ICON.phone+'</span><div><b>이 폰에서 바로 가입</b><span>내 폰을 업주님께 건네서 입력</span></div></button>'+
+   '<button class="big" id="goLink" type="button"><span class="ic">'+ICON.talk+'</span><div><b>링크 보내기</b><span>방문 못 할 때 카톡·문자로 보내기</span></div></button>'+
    '<section class="card"><div style="display:flex;justify-content:space-between;align-items:baseline"><h2>내가 받은 가입</h2><span class="muted" id="cnt">불러오는 중…</span></div><div class="list" id="mine"><div class="row"><div class="t">잠시만요…</div></div></div></section>',
    function(){
      document.getElementById('goQR').onclick=qr;
      document.getElementById('goHere').onclick=function(){resetForm();step1();};
+     document.getElementById('goLink').onclick=function(){
+       var b=this,url=JOIN_URL+'?s='+(st.staff+1)+'&from=link',s=STAFF[st.staff];
+       var txt='사장님, 세왕상사 '+s[0]+' '+s[1]+'입니다. 아래 링크에서 카카오 채널 추가·인스타 팔로우·주문 앱 받기를 해 주시면 아메리카노 쿠폰을 보내 드립니다(1분).';
+       ev('join_link_send');
+       if(navigator.share){navigator.share({title:'세왕상사 거래처 가입',text:txt,url:url}).catch(function(){});return;}
+       var all=txt+'\n'+url,done=function(){b.querySelector('b').textContent='복사했습니다 — 카톡에 붙여 넣으세요';setTimeout(function(){b.querySelector('b').textContent='링크 보내기';},2500);};
+       if(navigator.clipboard){navigator.clipboard.writeText(all).then(done,function(){prompt('복사해서 보내세요',all);});}else{prompt('복사해서 보내세요',all);}
+     };
      call({action:'join_stats',staff:st.staff}).then(function(d){
        var c=document.getElementById('cnt'),m=document.getElementById('mine');if(!c)return;
        if(!d||!d.ok){c.textContent='';m.innerHTML='<div class="row"><div class="t">기록을 불러오지 못했습니다.</div></div>';return;}
@@ -209,7 +235,7 @@ function home(){
 /* 3. QR */
 function qr(){
   var url=JOIN_URL+'?s='+(st.staff+1);ev('join_qr');
-  show('<h1>업주님 폰 카메라로<br>찍어 주세요</h1><div class="qrbox"><div id="qr"></div></div><p class="url">'+esc(url)+'</p>'+
+  show('<h1>이 화면을<br>업주님께 보여 주세요</h1><p class="muted">업주님이 자기 폰 카메라로 찍으면 가입 화면이 열립니다.</p><div class="qrbox"><div id="qr"></div></div><p class="url">'+esc(url)+'</p>'+
    '<div class="gift"><span class="cup">'+ICON.cup+'</span><div><b>가입하면 아메리카노 1잔</b><span class="muted">업주님 휴대폰 문자로 갑니다</span></div></div>'+
    '<button class="btn ghost" id="back" type="button">처음으로</button>',
    function(){
@@ -224,32 +250,41 @@ function allDone(){return st.done.kakao&&st.done.insta&&st.done.app;}
 function step1(){
   var f=st.form,d=st.done;ev('join_form');
   var appLinks=OS==='ios'?[[APP_IOS,'앱 받기']]:OS==='and'?[[APP_AND,'앱 받기']]:[[APP_IOS,'아이폰'],[APP_AND,'안드로이드']];
+  var IG='<svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="3" width="18" height="18" rx="5"/><circle cx="12" cy="12" r="4"/><circle cx="17.5" cy="6.5" r="1" fill="currentColor"/></svg>';
+  var TI={kakao:ICON.talk,insta:IG,app:ICON.bag};
   function task(k,n,title,sub,btns,cls){
-    return '<div class="task'+(d[k]?' on':'')+'" data-k="'+k+'"><div class="tk">'+(d[k]?'✓':n)+'</div><div class="tx"><b>'+title+'</b><span>'+sub+'</span></div><div class="tb">'+
+    return '<div class="task'+(d[k]?' on':'')+'" data-k="'+k+'"><div class="ti '+cls+'">'+TI[k]+'<span class="tk">'+(d[k]?'✓':n)+'</span></div><div class="tx"><b>'+title+'</b><span>'+sub+'</span></div><div class="tb">'+
       btns.map(function(b){return '<a class="tbtn '+cls+'" href="'+b[0]+'" target="_blank" rel="noopener" data-k="'+k+'">'+b[1]+'</a>';}).join('')+'</div></div>';
   }
-  show('<div><h1>세왕상사 가입하고<br>아메리카노 받기</h1><p class="muted" style="margin-top:6px">아래 3개를 누르면 쿠폰 받기가 열립니다.</p></div>'+
+  function cnt(){return (d.kakao?1:0)+(d.insta?1:0)+(d.app?1:0);}
+  show('<section class="hero"><div class="hero-k">세왕상사 거래처 가입</div><h1>3개만 누르면<br>아메리카노 한 잔</h1><p>카카오 채널 · 인스타 · 주문 앱. 1분이면 끝나요.</p>'+
+     '<div class="pg"><div class="pg-bar"><i id="pgFill" style="width:'+(cnt()*100/3)+'%"></i></div><b id="pgTxt">'+cnt()+' / 3</b></div><span class="hero-cup">'+ICON.cup+'</span></section>'+
    '<section class="tasks">'+
-     task('kakao','1','카카오톡 채널 추가','매주 수요일 리포트가 카톡으로',[[CHANNEL,'추가']],'kakao')+
-     task('insta','2','인스타그램 팔로우','@sewangliquor',[[INSTA,'팔로우']],'insta')+
-     task('app','3','주문 앱 받기','세왕상사 주류주문',appLinks,'ink')+
+     task('kakao','1','카카오톡 채널 추가','매주 수요일 시장 리포트를 카톡으로',[[CHANNEL,'추가']],'kakao')+
+     task('insta','2','인스타그램 팔로우','신상품·행사 소식 @sewangliquor',[[INSTA,'팔로우']],'insta')+
+     task('app','3','주문 앱 받기','세왕상사 주류주문 · 전화 없이 주문',appLinks,'ink')+
    '</section>'+
    '<form class="card cpn'+(allDone()?'':' lock')+'" id="f1" novalidate>'+
-     '<div class="cpn-h">'+ICON.cup+'<div><b>아메리카노 쿠폰 받기</b><span class="muted" id="lockMsg">'+(allDone()?'번호 인증 후 문자로 보내 드립니다':'위 3개를 먼저 눌러 주세요')+'</span></div></div>'+
+     '<div class="cpn-h"><span class="lk">'+(allDone()?ICON.cup:'🔒')+'</span><div><b>아메리카노 쿠폰 받기</b><span class="muted" id="lockMsg">'+(allDone()?'매장 이름과 번호를 넣으면 문자로 보내 드려요':'위 3개를 마치면 열려요')+'</span></div></div>'+
+     '<div class="cpn-body">'+
      '<label class="f" for="store">매장 이름<input id="store" type="text" autocomplete="organization" placeholder="예: 세왕 비스트로 성수점" value="'+esc(f.store)+'"></label>'+
      '<label class="f" for="phone">휴대폰 번호<input id="phone" type="tel" inputmode="numeric" autocomplete="tel" placeholder="010-0000-0000" value="'+esc(f.phone)+'"></label>'+
      '<label class="agree warnbox" for="must"><input id="must" type="checkbox"'+(f.must?' checked':'')+'><span><em>[필수]</em> 쿠폰 발송을 위해 매장명·휴대폰 번호 수집에 동의하며, <b>쿠폰은 유효기간이 지나면 연장·환불·재발송이 안 되는 것</b>을 확인했습니다.</span></label>'+
      '<div id="codeWrap" hidden><label class="f" for="code">문자로 온 인증번호 4자리<input id="code" class="code" type="tel" inputmode="numeric" maxlength="4" autocomplete="one-time-code" placeholder="····"></label></div>'+
      '<p class="err" id="e1" hidden></p>'+
      '<button class="btn gold" type="submit" id="goBtn">인증번호 받기</button>'+
-   '</form>'+
+   '</div></form>'+
    (OWNER?'':'<button class="btn ghost" id="cancel" type="button">직원 화면으로</button>'),
    function(){
      var form=document.getElementById('f1'),er=document.getElementById('e1'),btn=document.getElementById('goBtn'),cw=document.getElementById('codeWrap');
      function refresh(){
        app.querySelectorAll('.task').forEach(function(t){var k=t.dataset.k;t.classList.toggle('on',d[k]);t.querySelector('.tk').textContent=d[k]?'✓':({kakao:'1',insta:'2',app:'3'})[k];});
+       var was=form.classList.contains('lock');
        form.classList.toggle('lock',!allDone());
-       document.getElementById('lockMsg').textContent=allDone()?'번호 인증 후 문자로 보내 드립니다':'위 3개를 먼저 눌러 주세요';
+       document.getElementById('pgFill').style.width=(cnt()*100/3)+'%';document.getElementById('pgTxt').textContent=cnt()+' / 3';
+       document.getElementById('lockMsg').textContent=allDone()?'매장 이름과 번호를 넣으면 문자로 보내 드려요':'위 3개를 마치면 열려요';
+       form.querySelector('.lk').innerHTML=allDone()?ICON.cup:'🔒';
+       if(was&&allDone()){setTimeout(function(){form.scrollIntoView({behavior:'smooth',block:'start'});},350);}
      }
      app.querySelectorAll('.tbtn').forEach(function(a){a.addEventListener('click',function(){d[a.dataset.k]=true;ev('join_task',{task:a.dataset.k});setTimeout(refresh,300);});});
      var ph=document.getElementById('phone');ph.addEventListener('input',function(){ph.value=dash(ph.value);});
