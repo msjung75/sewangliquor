@@ -313,7 +313,7 @@ function step1(){
        er.classList.remove('ok');
        if(v.length!==4){er.textContent='인증번호 4자리를 입력해 주세요.';er.hidden=false;return;}
        busy(btn,true,'확인 중…');
-       call({action:'join_verify',phone:f.phone,code:v,staff:st.staff,store:f.store,type:'',name:'',must:true,opt:false,tasks:'kakao,insta,app'}).then(function(r){
+       call({action:'join_verify',src:(new URLSearchParams(location.search).get('from')==='link'?'링크':(OWNER?'QR':'직원폰')),phone:f.phone,code:v,staff:st.staff,store:f.store,type:'',name:'',must:true,opt:false,tasks:'kakao,insta,app'}).then(function(r){
          busy(btn,false);
          if(r&&r.ok){st.coupon=r.coupon||'pending';ev('join_done',{coupon:st.coupon});step3();}
          else{er.textContent=(r&&r.msg)||'잠시 후 다시 시도해 주세요.';er.hidden=false;if(r&&r.expired){st.sent=false;cw.hidden=true;btn.textContent='인증번호 다시 받기';}}
