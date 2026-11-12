@@ -482,9 +482,10 @@ footer b{color:var(--navy);font-family:var(--serif)}
   <div class="sharecard" id="sharecard">
     <span class="tag">分享</span>
     <h3>发给同商圈的老板 ☕</h3>
-    <p>年会套餐单和隔壁店一起看，价格线就清楚了。<b>11/14（周六）前分享，先到先得10位可立即获得美式咖啡券代码。</b></p>
+    <p>年会套餐单和隔壁店一起看，价格线就清楚了。<b>11/14（周六）前点击下方按钮，先到先得10位会先获得美式咖啡券代码。分享链接后，请把代码发到我们的频道。</b></p>
     <button class="btn g" id="shareBtn" type="button">把链接发给隔壁店老板</button>
     <p class="raffle-note" id="raffleNote"></p>
+    <p class="raffle-note" id="cpSaved" style="display:none"></p>
   </div>
   <div class="next">
     <span class="tag">下期 · 11月18日（周三）</span>
@@ -710,17 +711,18 @@ footer b{color:var(--navy);font-family:var(--serif)}
 
 
   //
-  var CP={"ko": {"t": "쿠폰 코드가 나왔습니다", "p": "세왕상사 카카오 채널 1:1 채팅으로 이 코드를 보내 주시면 아메리카노 쿠폰을 보내 드립니다.", "ch": "카카오 채널로 코드 보내기", "cp": "코드 복사", "ok": "복사했습니다", "x": "닫기", "so": "소진되었습니다", "sop": "이번 호 쿠폰은 모두 나갔습니다. 공유해 주셔서 감사합니다."}, "en": {"t": "Your coupon code", "p": "Send this code to Sewang Trading's Kakao channel (1:1 chat) and we'll send you an Americano coupon.", "ch": "Send code on Kakao channel", "cp": "Copy code", "ok": "Copied", "x": "Close", "so": "All gone", "sop": "This issue's coupons have all been claimed. Thank you for sharing."}, "ja": {"t": "クーポンコードが出ました", "p": "セワン商事のカカオチャンネル（1:1チャット）にこのコードを送ってください。アメリカーノのクーポンをお送りします。", "ch": "カカオチャンネルでコードを送る", "cp": "コードをコピー", "ok": "コピーしました", "x": "閉じる", "so": "終了しました", "sop": "今号のクーポンはすべてなくなりました。共有ありがとうございます。"}, "zh": {"t": "您的优惠券代码", "p": "请把此代码发送到世旺商事Kakao频道（1:1聊天），我们会把美式咖啡券发给您。", "ch": "在Kakao频道发送代码", "cp": "复制代码", "ok": "已复制", "x": "关闭", "so": "已领完", "sop": "本期咖啡券已全部领完，感谢分享。"}}[LANG]||null;
+  var CP={"ko": {"t": "쿠폰 코드가 나왔습니다", "p": "세왕상사 카카오 채널 1:1 채팅으로 이 코드를 보내 주시면 아메리카노 쿠폰을 보내 드립니다.", "ch": "카카오 채널로 코드 보내기", "cp": "코드 복사", "ok": "복사했습니다", "x": "닫기", "so": "소진되었습니다", "sop": "이번 호 쿠폰은 모두 나갔습니다. 공유해 주셔서 감사합니다."}, "en": {"t": "Your coupon code", "p": "Send this code to Sewang Trading's Kakao channel (1:1 chat) and we'll send you an Americano coupon.", "ch": "Send code on Kakao channel", "cp": "Copy code", "ok": "Copied", "x": "Close", "so": "All gone", "sop": "This issue's coupons have all been claimed. Thank you for sharing."}, "ja": {"t": "クーポンコードが出ました", "p": "セワン商事のカカオチャンネル（1:1チャット）にこのコードを送ってください。アメリカーノのクーポンをお送りします。", "ch": "カカオチャンネルでコードを送る", "cp": "コードをコピー", "ok": "コピーしました", "x": "閉じる", "so": "終了しました", "sop": "今号のクーポンはすべてなくなりました。共有ありがとうございます。"}, "zh": {"t": "您的优惠券代码", "p": "① 用下方按钮分享链接，② 把此代码发送到世旺商事Kakao频道（1:1聊天），我们会把美式咖啡券发给您。", "ch": "在Kakao频道发送代码", "cp": "复制代码", "ok": "已复制", "x": "关闭", "so": "已领完", "sop": "本期咖啡券已全部领完，感谢分享。", "sh": "分享链接（KakaoTalk等）", "saved": "您的优惠券代码", "send": "发送代码到Kakao频道 ›"}}[LANG]||null;
   var CP_END='2026-11-14T23:59:59+09:00', CP_MAX=10;
   var CPX={ko:{t:'쿠폰 기간이 끝났습니다',p:'이번 호 공유 쿠폰은 11/14(토)까지였습니다. 공유해 주셔서 감사합니다.'},en:{t:'Coupon period ended',p:'This issue\'s share coupon ran until Sat 14 Nov. Thank you for sharing.'},ja:{t:'クーポン期間は終了しました',p:'今号の共有クーポンは11/14（土）まででした。共有ありがとうございます。'},zh:{t:'优惠券活动已结束',p:'本期分享咖啡券截至11月14日（周六）。感谢分享。'}}[LANG]||null;
   var COUPON_URL='https://script.google.com/macros/s/AKfycbyJ8-w8S1LK9_lB36t-2oWgBCqki90PIE5ogTNfnQP5ffNTORRqfUyerlpsnYgDlW3B/exec';
   var CHAT_URL='https://pf.kakao.com/_ZGIMG/chat';
-  function cpBox(big,title,body,code){
+  function cpBox(big,title,body,code,share){
     var bg=document.createElement('div'); bg.className='rf-bg';
-    bg.innerHTML='<div class="rf-box" role="dialog" aria-modal="true"><p class="big"></p><h3></h3><div class="rf-code" style="display:none"></div><p class="p1"></p><a class="btn g b1" target="_blank" rel="noopener" style="display:none;text-decoration:none;align-items:center;justify-content:center;box-sizing:border-box"></a><button class="btn w b2" type="button" style="display:none"></button><button class="btn w b3" type="button" style="border:0;background:transparent;color:var(--mute)"></button></div>';
+    bg.innerHTML='<div class="rf-box" role="dialog" aria-modal="true"><p class="big"></p><h3></h3><div class="rf-code" style="display:none"></div><p class="p1"></p><button class="btn g b0" type="button" style="display:none"></button><a class="btn g b1" target="_blank" rel="noopener" style="display:none;text-decoration:none;align-items:center;justify-content:center;box-sizing:border-box"></a><button class="btn w b2" type="button" style="display:none"></button><button class="btn w b3" type="button" style="border:0;background:transparent;color:var(--mute)"></button></div>';
     bg.querySelector('.big').textContent=big; bg.querySelector('h3').textContent=title; bg.querySelector('.p1').textContent=body;
     var b3=bg.querySelector('.b3'); b3.textContent=CP.x; b3.onclick=function(){ bg.remove(); };
     bg.addEventListener('click',function(x){ if(x.target===bg) bg.remove(); });
+    if(share){ var b0=bg.querySelector('.b0'); b0.style.display='block'; b0.textContent=CP.sh; b0.onclick=function(){ doShare(); }; }
     if(code){
       var c=bg.querySelector('.rf-code'); c.style.display='block'; c.textContent=code;
       var copy=function(){ try{ navigator.clipboard&&navigator.clipboard.writeText(code); }catch(e){} };
@@ -730,29 +732,34 @@ footer b{color:var(--navy);font-family:var(--serif)}
     document.body.appendChild(bg);
   }
   function giveCoupon(en){
-    if(!CP) return;
+    if(!CP){ doShare(); return; }
     var key='sw-coupon-'+WEEK, saved=null, ref=null;
     try{ saved=localStorage.getItem(key); ref=localStorage.getItem(key+'-ref'); }catch(e){}
-    if(saved){ cpBox('☕',CP.t,CP.p,saved); return; }
-    if(CPX&&Date.now()>Date.parse(CP_END)){ ev('report_web_coupon',{result:'expired'}); cpBox('⏰',CPX.t,CPX.p,null); return; }
+    if(saved){ cpBox('☕',CP.t,CP.p,saved,true); return; }
+    if(CPX&&Date.now()>Date.parse(CP_END)){ ev('report_web_coupon',{result:'expired'}); cpBox('⏰',CPX.t,CPX.p,null,true); return; }
     ref=en?en.ref:(ref||newRef()); try{ localStorage.setItem(key+'-ref',ref); }catch(e){}
     fetch(COUPON_URL+'?action=coupon&week='+encodeURIComponent(WEEK)+'&ref='+encodeURIComponent(ref)+'&lang='+LANG,{cache:'no-store'})
       .then(function(r){ return r.json(); })
       .then(function(d){
-        if(d&&d.code){ try{ localStorage.setItem(key,d.code); }catch(e){} ev('report_web_coupon',{ref:ref,result:'issued'}); cpBox('☕',CP.t,CP.p,d.code); }
-        else if(d&&d.soldout){ ev('report_web_coupon',{ref:ref,result:'soldout'}); cpBox('🙏',CP.so,CP.sop,null); }
-      }).catch(function(){});
+        if(d&&d.code){ try{ localStorage.setItem(key,d.code); }catch(e){} ev('report_web_coupon',{ref:ref,result:'issued'}); cpBox('☕',CP.t,CP.p,d.code,true); }
+        else if(d&&d.soldout){ ev('report_web_coupon',{ref:ref,result:'soldout'}); cpBox('🙏',CP.so,CP.sop,null,true); }
+        else { doShare(); }
+      }).catch(function(){ doShare(); });
   }
 
   //
-  document.getElementById('shareBtn').addEventListener('click',function(){
+  function doShare(){
     var en=myEntry();
-    var url=location.origin+location.pathname+'?from=share'+(en?'&ref='+en.ref:''), title="酒类动向 W46 — 年会客人去了两端 · 中间价位7万韩元店铺的一招";
-    ev('report_web_share',{ref:en?en.ref:''});
-    if(navigator.share){ navigator.share({title:title,text:'人气店卖酒的方法 + 4.9万韩元人均费用计算模板 · 3分钟网页版',url:url}).then(function(){ giveCoupon(en); }).catch(function(){}); return; }
-    var done=function(){ giveCoupon(en); var b=document.getElementById('shareBtn'); b.textContent='链接已复制'; setTimeout(function(){ b.textContent='把链接发给隔壁店老板'; },2500); };
+    var cref=null; try{ cref=localStorage.getItem('sw-coupon-'+WEEK+'-ref'); }catch(e){} var sref=en?en.ref:cref; var url=location.origin+location.pathname+'?from=share'+(sref?'&ref='+sref:''), title="酒类动向 W46 — 年会客人去了两端 · 中间价位7万韩元店铺的一招";
+    ev('report_web_share',{ref:sref||''});
+    if(navigator.share){ navigator.share({title:title,text:'人气店卖酒的方法 + 4.9万韩元人均费用计算模板 · 3分钟网页版',url:url}).catch(function(){}); return; }
+    var done=function(){ var b=document.getElementById('shareBtn'); b.textContent='链接已复制'; setTimeout(function(){ b.textContent='把链接发给隔壁店老板'; },2500); };
     if(navigator.clipboard){ navigator.clipboard.writeText(url).then(done,function(){ prompt('请复制链接',url); }); } else { prompt('请复制链接',url); }
-  });
+  }
+  document.getElementById('shareBtn').addEventListener('click',function(){ ev('report_web_share_click',{}); giveCoupon(myEntry()); });
+  (function(){ var c=null; try{ c=localStorage.getItem('sw-coupon-'+WEEK); }catch(e){} if(!c||!CP) return; var el=document.getElementById('cpSaved'); el.style.display='block';
+    el.innerHTML='☕ '+CP.saved+' <b></b> · <a href="'+CHAT_URL+'" target="_blank" rel="noopener"></a>'; el.querySelector('b').textContent=c; var a=el.querySelector('a'); a.textContent=CP.send;
+    a.onclick=function(){ try{ navigator.clipboard&&navigator.clipboard.writeText(c); }catch(e){} ev('report_web_coupon_chat',{code:c,from:'saved'}); }; })();
   document.getElementById('chBtn').addEventListener('click',function(){ ev('report_web_channel',{}); });
 })();
 </script>
