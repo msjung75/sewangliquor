@@ -215,7 +215,7 @@ function home(){
      document.getElementById('goHere').onclick=function(){resetForm();step1();};
      document.getElementById('goLink').onclick=function(){
        var b=this,url=JOIN_URL+'?s='+(st.staff+1)+'&from=link',s=STAFF[st.staff];
-       var txt='사장님, 세왕상사 '+s[0]+' '+s[1]+'입니다. 아래 링크에서 카카오 채널 추가·인스타 팔로우·주문 앱 받기를 해 주시면 아메리카노 쿠폰을 보내 드립니다(1분).';
+       var txt='사장님, 세왕상사 '+s[0]+' '+s[1]+'입니다. 아래 링크에서 카카오 채널 추가·인스타 팔로우·주문 앱 받기를 해 주시면 메가MGC커피 아메리카노 쿠폰 2장(각 1잔·유효기간 30일)을 보내 드립니다(1분).';
        ev('join_link_send');
        if(navigator.share){navigator.share({title:'세왕상사 거래처 가입',text:txt,url:url}).catch(function(){});return;}
        var all=txt+'\n'+url,done=function(){b.querySelector('b').textContent='복사했습니다 — 카톡에 붙여 넣으세요';setTimeout(function(){b.querySelector('b').textContent='링크 보내기';},2500);};
@@ -236,7 +236,7 @@ function home(){
 function qr(){
   var url=JOIN_URL+'?s='+(st.staff+1);ev('join_qr');
   show('<h1>이 화면을<br>업주님께 보여 주세요</h1><p class="muted">업주님이 자기 폰 카메라로 찍으면 가입 화면이 열립니다.</p><div class="qrbox"><div id="qr"></div></div><p class="url">'+esc(url)+'</p>'+
-   '<div class="gift"><span class="cup">'+ICON.cup+'</span><div><b>가입하면 아메리카노 1잔</b><span class="muted">업주님 휴대폰 문자로 갑니다</span></div></div>'+
+   '<div class="gift"><span class="cup">'+ICON.cup+'</span><div><b>가입하면 메가MGC커피 아메리카노 2잔</b><span class="muted">각 1잔 쿠폰 2장 · 문자 발송 · 유효기간 30일</span></div></div>'+
    '<button class="btn ghost" id="back" type="button">처음으로</button>',
    function(){
      try{new QRCode(document.getElementById('qr'),{text:url,width:520,height:520,colorDark:'#14213a',colorLight:'#ffffff',correctLevel:QRCode.CorrectLevel.M});}
@@ -257,7 +257,7 @@ function step1(){
       btns.map(function(b){return '<a class="tbtn '+cls+'" href="'+b[0]+'" target="_blank" rel="noopener" data-k="'+k+'">'+b[1]+'</a>';}).join('')+'</div></div>';
   }
   function cnt(){return (d.kakao?1:0)+(d.insta?1:0)+(d.app?1:0);}
-  show('<section class="hero"><div class="hero-k">세왕상사 거래처 가입</div><h1>3개만 누르면<br>아메리카노 한 잔</h1><p>카카오 채널 · 인스타 · 주문 앱. 1분이면 끝나요.</p>'+
+  show('<section class="hero"><div class="hero-k">세왕상사 거래처 가입</div><h1>메가MGC커피<br>아메리카노 2잔</h1><p>카카오 채널 · 인스타 · 주문 앱. 1분이면 끝나요.</p>'+
      '<div class="pg"><div class="pg-bar"><i id="pgFill" style="width:'+(cnt()*100/3)+'%"></i></div><b id="pgTxt">'+cnt()+' / 3</b></div><span class="hero-cup">'+ICON.cup+'</span></section>'+
    '<section class="tasks">'+
      task('kakao','1','카카오톡 채널 추가','매주 수요일 시장 리포트를 카톡으로',[[CHANNEL,'추가']],'kakao')+
@@ -265,11 +265,11 @@ function step1(){
      task('app','3','주문 앱 받기','세왕상사 주류주문 · 전화 없이 주문',appLinks,'ink')+
    '</section>'+
    '<form class="card cpn'+(allDone()?'':' lock')+'" id="f1" novalidate>'+
-     '<div class="cpn-h"><span class="lk">'+(allDone()?ICON.cup:'🔒')+'</span><div><b>아메리카노 쿠폰 받기</b><span class="muted" id="lockMsg">'+(allDone()?'매장 이름과 번호를 넣으면 문자로 보내 드려요':'위 3개를 마치면 열려요')+'</span></div></div>'+
+     '<div class="cpn-h"><span class="lk">'+(allDone()?ICON.cup:'🔒')+'</span><div><b>아메리카노 쿠폰 2장 받기</b><span class="muted" id="lockMsg">'+(allDone()?'매장 이름과 번호를 넣으면 문자로 보내 드려요':'위 3개를 마치면 열려요')+'</span></div></div>'+
      '<div class="cpn-body">'+
      '<label class="f" for="store">매장 이름<input id="store" type="text" autocomplete="organization" placeholder="예: 세왕 비스트로 성수점" value="'+esc(f.store)+'"></label>'+
      '<label class="f" for="phone">휴대폰 번호<input id="phone" type="tel" inputmode="numeric" autocomplete="tel" placeholder="010-0000-0000" value="'+esc(f.phone)+'"></label>'+
-     '<label class="agree warnbox" for="must"><input id="must" type="checkbox"'+(f.must?' checked':'')+'><span><em>[필수]</em> 쿠폰 발송을 위해 매장명·휴대폰 번호 수집에 동의하며, <b>쿠폰은 유효기간이 지나면 연장·환불·재발송이 안 되는 것</b>을 확인했습니다.</span></label>'+
+     '<label class="agree warnbox" for="must"><input id="must" type="checkbox"'+(f.must?' checked':'')+'><span><em>[필수]</em> 쿠폰 발송을 위해 매장명·휴대폰 번호 수집에 동의하며, <b>쿠폰 유효기간은 30일이며, 유효기간이 지나면 연장·환불·재발송이 안 되는 것</b>을 확인했습니다.</span></label>'+
      '<div id="codeWrap" hidden><label class="f" for="code">문자로 온 인증번호 4자리<input id="code" class="code" type="tel" inputmode="numeric" maxlength="4" autocomplete="one-time-code" placeholder="····"></label></div>'+
      '<p class="err" id="e1" hidden></p>'+
      '<button class="btn gold" type="submit" id="goBtn">인증번호 받기</button>'+
@@ -325,9 +325,10 @@ function step1(){
 /* 5. 완료 */
 function step3(){
   var s=STAFF[st.staff]||['',''];
-  var cp=st.coupon==='sent'?['아메리카노 쿠폰을 보냈습니다',esc(st.form.phone)+' 문자함을 확인해 주세요. 유효기간 안에 꼭 써 주세요.']
+  var cp=st.coupon==='sent'?['메가MGC커피 아메리카노 쿠폰 2장을 보냈습니다',esc(st.form.phone)+' 문자함을 확인해 주세요. 각 1잔 쿠폰 2장이며, 유효기간은 30일입니다.']
+        :(st.coupon==='partial'?['쿠폰 1장을 보냈습니다','문자함을 확인해 주세요. 나머지 1장은 담당 영업사원이 따로 챙겨 드립니다. 쿠폰 유효기간은 30일입니다.']
         :(st.coupon==='limit'?['쿠폰은 담당자가 따로 챙겨 드립니다','오늘 쿠폰 수량이 끝나 담당 영업사원이 직접 보내 드립니다.']
-        :['아메리카노 쿠폰은 오늘 안에 갑니다',esc(st.form.phone)+'로 문자 쿠폰을 보내 드립니다. 유효기간 안에 꼭 써 주세요.']);
+        :['메가MGC커피 아메리카노 쿠폰 2장은 오늘 안에 갑니다',esc(st.form.phone)+'로 각 1잔 쿠폰 2장을 보내 드립니다. 유효기간은 30일입니다.']));
   show('<div class="center" style="display:grid;gap:10px;margin-top:12px"><div class="done-ic">'+ICON.check+'</div><h1>가입이 끝났습니다</h1><p class="muted">'+esc(st.form.store)+' 사장님, 반갑습니다.</p></div>'+
    '<div class="gift"><span class="cup">'+ICON.cup+'</span><div><b>'+cp[0]+'</b><span class="muted">'+cp[1]+'</span></div></div>'+
    '<p class="muted center">담당: '+esc(s[0])+' '+esc(s[1])+'</p>'+
