@@ -327,7 +327,7 @@ footer b{color:var(--navy);font-family:var(--serif)}
     <div class="chipsrc">CatchTable 2026.11.6 · Embrain ディープデータ(韓国経済新聞 11.6) · セワン調査 11.7</div>
   </div>
   <div class="season"><span class="x">③</span>忘年会シリーズ — ① W43 予約開始 · ② W45 予約金 · <b>③ W46 両端へ流れた客</b>
-  <div class="read">↓ 下にスクロールしてご覧ください · PDFは不要 · ☕ メガMGCコーヒー2杯（07 · 11/14まで今号先着5名）</div></div>
+  <div class="read">↓ 下にスクロールしてご覧ください · PDFは不要 · ☕ メガMGCコーヒー2杯（07 · 今号先着5名、5名の申込で受付終了）</div></div>
 </div></header>
 
 <main class="wrap">
@@ -489,7 +489,7 @@ footer b{color:var(--navy);font-family:var(--serif)}
   <div class="sharecard" id="sharecard">
     <span class="tag">共有</span>
     <h3>同じ商圏の店主に送る ☕</h3>
-    <p>忘年会のコース表は、隣の店と一緒に見ると価格の並びが見えてきます。<b>11月14日（土）まで、今号の先着5名様にメガMGCコーヒーのアイスアメリカーノ引換券を2枚プレゼント。1枚につき1杯、携帯電話番号1つにつき1回限りです。番号と同意事項を入力して申し込んだ後、リンクを共有してください。</b></p>
+    <p>忘年会のコース表は、隣の店と一緒に見ると価格の並びが見えてきます。<b>今号の先着5名様にメガMGCコーヒーのアイスアメリカーノ引換券を2枚プレゼント。5名のお申し込みで受付終了となります。1枚につき1杯、携帯電話番号1つにつき1回限りです。番号と同意事項を入力して申し込んだ後、リンクを共有してください。</b></p>
     <button class="btn g" id="shareBtn" type="button">引換券2枚を受け取って共有</button>
     <p class="raffle-note" id="raffleNote"></p>
     <p class="raffle-note" id="cpSaved" style="display:none"></p>
@@ -642,10 +642,20 @@ footer b{color:var(--navy);font-family:var(--serif)}
 
 
   // W46 share vouchers: phone and both consents first; sharing follows an accepted request.
-  var CP={"campaign": "11月14日（土）まで、今号の先着5名様にメガMGCコーヒーのアイスアメリカーノ引換券を2枚プレゼント。1枚につき1杯、携帯電話番号1つにつき1回限りです。番号と同意事項を入力して申し込んだ後、リンクを共有してください。", "read": "☕ メガMGCコーヒー2杯（07 · 11/14まで今号先着5名）", "button": "引換券2枚を受け取って共有", "title": "メガMGCコーヒーのアメリカーノ2杯", "description": "11月14日（土）まで · 今号先着5名様 · アイスアメリカーノ引換券2枚（各1杯）· 1番号につき1回。SMSを受け取る韓国の携帯番号をご入力ください。", "phone": "韓国の携帯電話番号", "privacy": "【必須】引換券の送付に限り、携帯電話番号を収集・利用することに同意します。", "terms": "【必須】引換券の有効期間は30日間で、期限後は延長・返金・再発行ができないことを確認しました。", "submit": "引換券2枚を申し込む", "sending": "申し込み中…", "close": "閉じる", "share": "リポートのリンクを共有する", "copied": "リンクをコピーしました", "sentTitle": "引換券2枚を送信しました", "sent": "SMSをご確認ください。メガMGCコーヒーのアイスアメリカーノ引換券2枚（各1杯）で、有効期間は30日間です。", "pendingTitle": "お申し込みを受け付けました", "pending": "引換券2枚の送信処理中です。まだ送信完了は確認できていません。", "accepted": "引換券のお申し込みを受け付けました。担当者が送信状況を確認します。", "dup": "この携帯電話番号では、すでにお申し込み済みです。お申し込みは1番号につき1回限りです。", "soldout": "今号の先着5名様分は終了しました。", "expired": "このキャンペーンは11月14日（土）に終了しました。", "bad": "韓国の携帯電話番号をご確認ください。（例：010-1234-5678）", "need": "必須の同意事項2項目にチェックしてください。", "fail": "お申し込みの受け付けを確認できませんでした。もう一度お試しください。"};
-  var COUPON_URL="https://script.google.com/macros/s/AKfycbyJ8-w8S1LK9_lB36t-2oWgBCqki90PIE5ogTNfnQP5ffNTORRqfUyerlpsnYgDlW3B/exec", CP_END='2026-11-14T23:59:59+09:00';
+  var CP={"campaign": "今号の先着5名様にメガMGCコーヒーのアイスアメリカーノ引換券を2枚プレゼント。5名のお申し込みで受付終了となります。1枚につき1杯、携帯電話番号1つにつき1回限りです。番号と同意事項を入力して申し込んだ後、リンクを共有してください。", "read": "☕ メガMGCコーヒー2杯（07 · 今号先着5名、5名の申込で受付終了）", "button": "引換券2枚を受け取って共有", "title": "メガMGCコーヒーのアメリカーノ2杯", "description": "今号先着5名様 · 5名の申込で受付終了 · アイスアメリカーノ引換券2枚（各1杯）· 1番号につき1回。SMSを受け取る韓国の携帯番号をご入力ください。", "phone": "韓国の携帯電話番号", "privacy": "【必須】引換券の送付に限り、携帯電話番号を収集・利用することに同意します。", "terms": "【必須】引換券の有効期間は30日間で、期限後は延長・返金・再発行ができないことを確認しました。", "submit": "引換券2枚を申し込む", "sending": "申し込み中…", "close": "閉じる", "share": "リポートのリンクを共有する", "copied": "リンクをコピーしました", "sentTitle": "引換券2枚を送信しました", "sent": "SMSをご確認ください。メガMGCコーヒーのアイスアメリカーノ引換券2枚（各1杯）で、有効期間は30日間です。", "pendingTitle": "お申し込みを受け付けました", "pending": "引換券2枚の送信処理中です。まだ送信完了は確認できていません。", "accepted": "引換券のお申し込みを受け付けました。担当者が送信状況を確認します。", "dup": "この携帯電話番号では、すでにお申し込み済みです。お申し込みは1番号につき1回限りです。", "soldout": "今号の先着5名様分は終了しました。", "expired": "今号の引換券のお申し込みは終了しました。", "bad": "韓国の携帯電話番号をご確認ください。（例：010-1234-5678）", "need": "必須の同意事項2項目にチェックしてください。", "fail": "お申し込みの結果を確認できませんでした。重複して申し込まず、セワンの営業担当者へお問い合わせください。", "apiTitle": "引換券の送信を受け付けました", "apiAccepted": "メガMGCコーヒー引換券2枚の送信を受け付けました。SMSの到達は確認中です。重複して申し込まず、SMSをご確認ください。", "apiPending": "引換券の送信結果を確認中です。重複送信を防ぐため、再度申し込まず、セワンの営業担当者へお問い合わせください。", "dailyLimit": "本日の引換券のお申し込みは終了しました。明日、再度ご確認ください。", "configuration": "引換券の送信設定を確認中です。しばらくしてから再度ご確認ください。", "budget": "引換券の送信を一時保留しています。セワンの営業担当者へお問い合わせください。"};
+  var COUPON_URL="https://script.google.com/macros/s/AKfycbyJ8-w8S1LK9_lB36t-2oWgBCqki90PIE5ogTNfnQP5ffNTORRqfUyerlpsnYgDlW3B/exec", CP_END=null;
   var couponModal=null, couponReceipt=null;
-  function couponDelivered(d){return d.sent===true||Number(d.sent)>=2;}
+  // API acceptance does not confirm that the text message was delivered.
+  function couponDelivered(d){return Number(d.delivered)>=2;}
+  function couponResult(d){
+    if(d.dup) return {title:CP.pendingTitle,text:CP.dup,event:'duplicate'};
+    if(couponDelivered(d)) return {title:CP.sentTitle,text:CP.sent,event:'sent'};
+    if(d.api) return {title:Number(d.accepted)>=2?CP.apiTitle:CP.pendingTitle,text:Number(d.accepted)>=2?CP.apiAccepted:CP.apiPending,event:'pending'};
+    return {title:CP.pendingTitle,text:(d.pending||Number(d.sent)>0)?CP.pending:CP.accepted,event:(d.pending||Number(d.sent)>0)?'pending':'accepted'};
+  }
+  function couponError(d){
+    return d?(d.expired?'expired':d.dup?'dup':d.soldout?'soldout':d.dailyLimit?'dailyLimit':(d.configuration||d.config||d.invalidConfig)?'configuration':d.budget?'budget':d.bad?'bad':d.need?'need':'fail'):'fail';
+  }
   function couponRef(){
     var key='sw-share-coupon-'+WEEK+'-ref', ref=null;
     try{ ref=localStorage.getItem(key); }catch(e){}
@@ -675,9 +685,8 @@ footer b{color:var(--navy);font-family:var(--serif)}
     function dismiss(){bg.remove();couponModal=null;if(opener&&opener.focus)opener.focus();}
     function accepted(d){
       couponReceipt=d;form.hidden=true;intro.hidden=true;result.hidden=false;share.hidden=false;
-      title.textContent=couponDelivered(d)?CP.sentTitle:CP.pendingTitle;
-      result.textContent=d.dup?CP.dup:(couponDelivered(d)?CP.sent:((d.pending||Number(d.sent)>0)?CP.pending:CP.accepted));
-      if(d.dup) title.textContent=CP.pendingTitle;
+      var receipt=couponResult(d);
+      title.textContent=receipt.title;result.textContent=receipt.text;
       share.focus();
     }
     close.onclick=dismiss;share.onclick=function(){doShare();};
@@ -697,14 +706,14 @@ footer b{color:var(--navy);font-family:var(--serif)}
       var number=phone.value.replace(/\D/g,'');
       if(!/^01[016789]\d{7,8}$/.test(number)){error.textContent=CP.bad;phone.focus();return;}
       if(!privacy.checked||!terms.checked){error.textContent=CP.need;(!privacy.checked?privacy:terms).focus();return;}
-      if(Date.now()>Date.parse(CP_END)){error.textContent=CP.expired;return;}
+      if(CP_END&&Date.now()>Date.parse(CP_END)){error.textContent=CP.expired;return;}
       busy=true;submit.disabled=true;phone.disabled=true;privacy.disabled=true;terms.disabled=true;submit.textContent=CP.sending;
       var ref=couponRef();
       fetch(COUPON_URL,{method:'POST',headers:{'Content-Type':'text/plain;charset=utf-8'},body:JSON.stringify({action:'share_coupon',week:WEEK,phone:number,lang:LANG,agree:true,ref:ref}),redirect:'follow'})
         .then(function(r){if(!r.ok)throw new Error('http');return r.json();})
         .then(function(d){
-          if(d&&d.ok){ev('report_web_coupon',{ref:ref,result:d.dup?'duplicate':(couponDelivered(d)?'sent':((d.pending||Number(d.sent)>0)?'pending':'accepted'))});accepted(d);return;}
-          var status=d?(d.expired?'expired':d.dup?'dup':d.soldout?'soldout':d.bad?'bad':d.need?'need':'fail'):'fail';
+          if(d&&d.ok){ev('report_web_coupon',{ref:ref,result:couponResult(d).event});accepted(d);return;}
+          var status=couponError(d);
           error.textContent=CP[status];ev('report_web_coupon',{ref:ref,result:status});
         })
         .catch(function(){error.textContent=CP.fail;ev('report_web_coupon',{result:'fail'});})
