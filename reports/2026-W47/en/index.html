@@ -1024,10 +1024,20 @@ h2 .price-pair .jpy{font-size:12px}
 
 
   // W47 share vouchers: phone and both consents first; sharing follows an accepted request.
-  var CP={"campaign": "By Sat 21 Nov, the first 5 people for this issue can receive 2 MegaMGC Coffee Iced Americano vouchers, one drink per voucher. One claim per mobile number. Enter your number and consent to request your vouchers, then share the link.", "read": "☕ 2 MegaMGC Coffee drinks (08 · first 5 per issue, by Sat 21 Nov)", "button": "Get 2 vouchers & share the link", "title": "2 MegaMGC Coffee Americanos", "description": "By Sat 21 Nov · first 5 people for this issue · 2 Iced Americano vouchers, one drink each · one claim per number. Enter a number that can receive Korean text messages.", "phone": "Korean mobile number", "privacy": "[Required] I agree to the collection and use of my mobile number solely to deliver the vouchers.", "terms": "[Required] I understand that each voucher is valid for 30 days and cannot be extended, refunded or reissued after expiry.", "submit": "Request 2 vouchers", "sending": "Requesting…", "close": "Close", "share": "Share the report link", "copied": "Link copied", "sentTitle": "Your 2 vouchers have been sent", "sent": "Please check your text messages for 2 MegaMGC Coffee Iced Americano vouchers, one drink each. Each voucher is valid for 30 days.", "pendingTitle": "Your request has been accepted", "pending": "Your request has been received. After checking it, our team will text 2 MegaMGC Coffee Iced Americano vouchers (one drink each) to this number within 1 business day. Vouchers are valid for 30 days.", "accepted": "Your voucher request has been accepted. Our team will check the delivery status.", "dup": "A request has already been made with this mobile number. Each number can claim once.", "soldout": "All 5 places for this issue have been claimed.", "expired": "This offer ended on Sat 21 Nov.", "bad": "Please enter a valid Korean mobile number, such as 010-1234-5678.", "need": "Please tick both required consent boxes.", "fail": "We could not confirm your request. Please try again."};
+  var CP={"campaign": "By Sat 21 Nov, the first 5 people for this issue can receive 2 MegaMGC Coffee Iced Americano vouchers, one drink per voucher. One claim per mobile number. Enter your number and consent to request your vouchers, then share the link.", "read": "☕ 2 MegaMGC Coffee drinks (08 · first 5 per issue, by Sat 21 Nov)", "button": "Get 2 vouchers & share the link", "title": "2 MegaMGC Coffee Americanos", "description": "By Sat 21 Nov · first 5 people for this issue · 2 Iced Americano vouchers, one drink each · one claim per number. Enter a number that can receive Korean text messages.", "phone": "Korean mobile number", "privacy": "[Required] I agree to the collection and use of my mobile number solely to deliver the vouchers.", "terms": "[Required] I understand that each voucher is valid for 30 days and cannot be extended, refunded or reissued after expiry.", "submit": "Request 2 vouchers", "sending": "Requesting…", "close": "Close", "share": "Share the report link", "copied": "Link copied", "sentTitle": "Your 2 vouchers have been sent", "sent": "Please check your text messages for 2 MegaMGC Coffee Iced Americano vouchers, one drink each. Each voucher is valid for 30 days.", "pendingTitle": "Your request has been accepted", "pending": "Delivery of your 2 text-message vouchers is being processed. They have not been confirmed as sent yet.", "accepted": "Your voucher request has been accepted. Our team will check the delivery status.", "dup": "A request has already been made with this mobile number. Each number can claim once.", "soldout": "All 5 places for this issue have been claimed.", "expired": "This offer ended on Sat 21 Nov.", "bad": "Please enter a valid Korean mobile number, such as 010-1234-5678.", "need": "Please tick both required consent boxes.", "fail": "We could not confirm your request. Please do not submit another request; contact your Sewang sales representative.", "apiTitle": "Your voucher delivery request was accepted", "apiAccepted": "Delivery of your 2 MegaMGC Coffee vouchers has been requested. Text-message delivery is still being checked. Please do not submit another request; check your text messages.", "apiPending": "We are checking the voucher delivery result. To prevent duplicate delivery, please do not submit another request. Contact your Sewang sales representative.", "dailyLimit": "Today’s voucher requests are closed. Please check again tomorrow.", "configuration": "Voucher delivery settings are being checked. Please check again later.", "budget": "Voucher delivery is temporarily on hold. Please contact your Sewang sales representative."};
   var COUPON_URL="https://script.google.com/macros/s/AKfycbyJ8-w8S1LK9_lB36t-2oWgBCqki90PIE5ogTNfnQP5ffNTORRqfUyerlpsnYgDlW3B/exec", CP_END='2026-11-21T23:59:59+09:00';
   var couponModal=null, couponReceipt=null;
-  function couponDelivered(d){return d.sent===true||Number(d.sent)>=2;}
+  // API acceptance does not confirm that the text message was delivered.
+  function couponDelivered(d){return Number(d.delivered)>=2;}
+  function couponResult(d){
+    if(d.dup) return {title:CP.pendingTitle,text:CP.dup,event:'duplicate'};
+    if(couponDelivered(d)) return {title:CP.sentTitle,text:CP.sent,event:'sent'};
+    if(d.api) return {title:Number(d.accepted)>=2?CP.apiTitle:CP.pendingTitle,text:Number(d.accepted)>=2?CP.apiAccepted:CP.apiPending,event:'pending'};
+    return {title:CP.pendingTitle,text:(d.pending||Number(d.sent)>0)?CP.pending:CP.accepted,event:(d.pending||Number(d.sent)>0)?'pending':'accepted'};
+  }
+  function couponError(d){
+    return d?(d.expired?'expired':d.dup?'dup':d.soldout?'soldout':d.dailyLimit?'dailyLimit':(d.configuration||d.config||d.invalidConfig)?'configuration':d.budget?'budget':d.bad?'bad':d.need?'need':'fail'):'fail';
+  }
   function couponRef(){
     var key='sw-share-coupon-'+WEEK+'-ref', ref=null;
     try{ ref=localStorage.getItem(key); }catch(e){}
@@ -1057,9 +1067,8 @@ h2 .price-pair .jpy{font-size:12px}
     function dismiss(){bg.remove();couponModal=null;if(opener&&opener.focus)opener.focus();}
     function accepted(d){
       couponReceipt=d;form.hidden=true;intro.hidden=true;result.hidden=false;share.hidden=false;
-      title.textContent=couponDelivered(d)?CP.sentTitle:CP.pendingTitle;
-      result.textContent=d.dup?CP.dup:(couponDelivered(d)?CP.sent:((d.pending||Number(d.sent)>0)?CP.pending:CP.accepted));
-      if(d.dup) title.textContent=CP.pendingTitle;
+      var receipt=couponResult(d);
+      title.textContent=receipt.title;result.textContent=receipt.text;
       share.focus();
     }
     close.onclick=dismiss;share.onclick=function(){doShare();};
@@ -1085,8 +1094,8 @@ h2 .price-pair .jpy{font-size:12px}
       fetch(COUPON_URL,{method:'POST',headers:{'Content-Type':'text/plain;charset=utf-8'},body:JSON.stringify({action:'share_coupon',week:WEEK,phone:number,lang:LANG,agree:true,ref:ref}),redirect:'follow'})
         .then(function(r){if(!r.ok)throw new Error('http');return r.json();})
         .then(function(d){
-          if(d&&d.ok){ev('report_web_coupon',{ref:ref,result:d.dup?'duplicate':(couponDelivered(d)?'sent':((d.pending||Number(d.sent)>0)?'pending':'accepted'))});accepted(d);return;}
-          var status=d?(d.expired?'expired':d.dup?'dup':d.soldout?'soldout':d.bad?'bad':d.need?'need':'fail'):'fail';
+          if(d&&d.ok){ev('report_web_coupon',{ref:ref,result:couponResult(d).event});accepted(d);return;}
+          var status=couponError(d);
           error.textContent=CP[status];ev('report_web_coupon',{ref:ref,result:status});
         })
         .catch(function(){error.textContent=CP.fail;ev('report_web_coupon',{result:'fail'});})
