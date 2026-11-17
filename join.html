@@ -144,6 +144,7 @@ input[type=text],input[type=tel]{width:100%;font:inherit;font-size:18px;padding:
 .cpn.lock{border:1.5px dashed var(--line);opacity:.75}
 .cpn.lock .cpn-body{display:none}
 .err.ok{color:var(--ok)}
+.join-otp{display:grid;gap:10px}.join-otp .code{font-size:28px;letter-spacing:.22em}.join-otp-time{font-size:13px;font-variant-numeric:tabular-nums;color:var(--sub)}
 </style>
 </head>
 <body>
@@ -154,8 +155,8 @@ input[type=text],input[type=tel]{width:100%;font:inherit;font-size:18px;padding:
 <main id="app"></main>
 <script>
 (function(){
-/* 2026-11-14: 문자 인증·기프티쇼 자동 발송 점검 중 — 인증번호 없이 신청서를 받고(서버가 Gmail로 알림) 쿠폰은 담당자가 수동 발송. 정상화되면 false로 */
-var MANUAL=true;
+/* join-otp-20261117: verify the current number before registration; coupon handling remains server-controlled. */
+var joinScreenCleanup=null,joinOtpCooldowns={},joinReceipts={};
 var API="https://script.google.com/macros/s/AKfycbyJ8-w8S1LK9_lB36t-2oWgBCqki90PIE5ogTNfnQP5ffNTORRqfUyerlpsnYgDlW3B/exec";
 var STAFF=[
  ["이한우","부사장","영업 총괄"],["박정언","전무","강남·서초·관악"],["손승일","상무","프랜차이즈"],
@@ -171,7 +172,7 @@ var INSTA="https://www.instagram.com/sewangliquor";
 var YOUTUBE="https://youtube.com/@sewangliquor";
 var TYPES=["호텔","음식점","주점·바","카페·기타"];
 var app=document.getElementById('app');var OWNER=false;
-var st={staff:null,form:{},done:{},sent:false,coupon:"pending"};
+var st={staff:null,form:{},done:{},coupon:"pending"};
 
 function ev(n,p){try{gtag('event',n,Object.assign({page:'join',staff:st.staff==null?'':STAFF[st.staff][0]},p||{}));}catch(e){}}
 function load(){try{var s=JSON.parse(localStorage.getItem('sw-join')||'{}');if(s.staff!=null)st.staff=s.staff;}catch(e){}}
@@ -195,7 +196,7 @@ var ICON={
 };
 
 function header(){var w=document.getElementById('who');w.textContent=st.staff==null?'직원을 선택해 주세요':(OWNER?'담당 ':'')+STAFF[st.staff][0]+' '+STAFF[st.staff][1]+(OWNER?'':' 담당');}
-function show(html,after){app.innerHTML='<div class="screen" style="display:grid;gap:16px">'+html+'</div>';header();window.scrollTo(0,0);if(after)after();}
+function show(html,after){if(joinScreenCleanup){var dispose=joinScreenCleanup;joinScreenCleanup=null;dispose();}app.innerHTML='<div class="screen" style="display:grid;gap:16px">'+html+'</div>';header();window.scrollTo(0,0);if(after)after();}
 
 /* 1. 직원 선택 */
 function pickStaff(){
@@ -247,8 +248,112 @@ function qr(){
 }
 
 /* 4. 업주 화면 — 할 일 3개(카카오·인스타·주문앱) → 쿠폰 받기(매장·번호·인증) */
-function resetForm(){st.form={store:"",phone:"",must:false,opt:false};st.done={kakao:false,insta:false,app:false};st.sent=false;}
+function resetForm(){st.form={store:"",phone:"",must:false,opt:false};st.done={kakao:false,insta:false,app:false};st.deliveryMode="";st.accepted=0;st.delivered=0;}
 function allDone(){return st.done.kakao&&st.done.insta&&st.done.app;}
+
+function showJoinReceipt(receipt){
+  if(receipt.state==='done'){
+    st.form=Object.assign({},receipt.form);st.staff=receipt.staff;st.coupon=receipt.coupon;st.deliveryMode=receipt.mode;st.accepted=receipt.accepted;st.delivered=receipt.delivered;step3();return;
+  }
+  var duplicate=receipt.state==='duplicate';
+  show('<div class="card"><h1>'+(duplicate?'이미 가입된 번호입니다':'가입 접수 여부를 확인하고 있습니다')+'</h1><p>'+(duplicate?'같은 번호로 다시 신청하지 말고 담당 영업사원에게 가입·쿠폰 상태를 확인해 주세요.':'신청 결과가 아직 확정되지 않았습니다. 중복 신청하지 말고 담당 영업사원에게 확인해 주세요. 쿠폰 발송 완료를 뜻하지 않습니다.')+'</p></div>'+(OWNER?'':'<button class="btn ghost" id="receiptBack" type="button">직원 화면으로</button>'),function(){var back=document.getElementById('receiptBack');if(back)back.onclick=home;});
+}
+
+function setupJoinOtp(f){
+  var form=document.getElementById('f1'),er=document.getElementById('e1'),btn=document.getElementById('goBtn');
+  var ph=document.getElementById('phone'),store=document.getElementById('store'),must=document.getElementById('must');
+  var send=document.getElementById('sendOtp'),verify=document.getElementById('verifyOtp'),cw=document.getElementById('codeWrap'),code=document.getElementById('code'),status=document.getElementById('otpStatus'),time=document.getElementById('otpTime');
+  var disposed=false,revision=0,sequence=0,sending=false,verifying=false,submitting=false;
+  var proof='',proofUntil=0,verifiedPhone='',challengePhone='',challengeUntil=0,lastPhone=number(),sentOnce=false;
+  function number(){return ph.value.replace(/\D/g,'').slice(0,11);}
+  function validPhone(){return /^01[016789]\d{7,8}$/.test(number());}
+  function error(message){er.textContent=message;er.hidden=!message;er.classList.remove('ok');}
+  function clearAuth(){proof='';proofUntil=0;verifiedPhone='';challengePhone='';challengeUntil=0;code.value='';cw.hidden=true;}
+  function invalidate(){revision++;sequence++;sending=false;verifying=false;clearAuth();status.textContent='휴대폰 번호를 다시 인증해 주세요.';error('');render();}
+  function lifetime(r){if(!r||r.expiresIn===undefined)return 300000;var n=Number(r.expiresIn);return isFinite(n)&&n>=0?Math.min(n,300)*1000:0;}
+  function waitFor(r){var n=Number(r&&r.retryAfter);return isFinite(n)&&n>0?Math.min(n,3600)*1000:60000;}
+  function allowed(){return allDone()&&!!store.value.trim()&&validPhone()&&must.checked;}
+  function verified(){return !!proof&&verifiedPhone===number()&&Date.now()<proofUntil;}
+  function cooldown(){return Math.max(0,Math.ceil(((joinOtpCooldowns[number()]||0)-Date.now())/1000));}
+  function render(){
+    if(disposed)return;
+    if((proof&&Date.now()>=proofUntil)||(challengePhone&&Date.now()>=challengeUntil)){
+      revision++;sequence++;sending=false;verifying=false;clearAuth();status.textContent='인증 시간이 지났습니다. 인증번호를 다시 받아 주세요.';
+    }
+    var wait=cooldown(),authed=verified(),busy=sending||verifying||submitting;
+    send.disabled=busy||!allowed()||wait>0||authed;send.textContent=sending?'인증번호 요청 중…':(wait>0?'인증번호 다시 받기 ('+wait+'초)':(sentOnce?'인증번호 다시 받기':'인증번호 받기'));
+    verify.disabled=busy||!allowed()||cw.hidden||!/^\d{6}$/.test(code.value)||Date.now()>=challengeUntil;
+    verify.textContent=verifying?'인증번호 확인 중…':'인증번호 확인';
+    btn.disabled=busy||!allowed()||!authed;btn.textContent=submitting?'가입 접수 중…':'가입하고 쿠폰 신청';
+    ph.readOnly=submitting;store.readOnly=submitting;must.disabled=submitting;code.disabled=busy||authed;
+    var until=authed?proofUntil:challengeUntil;
+    time.textContent=until>Date.now()?(authed?'인증 유지 시간 ':'인증번호 입력 시간 ')+Math.floor(Math.ceil((until-Date.now())/1000)/60)+':'+('0'+Math.ceil((until-Date.now())/1000)%60).slice(-2):'';
+  }
+  function collect(){f.store=store.value.trim();f.phone=dash(ph.value);f.must=must.checked;return {store:f.store,phone:f.phone,must:f.must,opt:false};}
+  function validate(){collect();var msg=!allDone()?'위 3개(카카오·인스타·앱)를 먼저 눌러 주세요.':(!f.store?'매장 이름을 입력해 주세요.':(!validPhone()?'휴대폰 번호를 다시 확인해 주세요.':(!must.checked?'[필수] 항목에 체크해 주세요.':'')));error(msg);return !msg;}
+  function post(body){
+    return new Promise(function(resolve){var settled=false;var timer=setTimeout(function(){finish(null);},20000);function finish(r){if(settled)return;settled=true;clearTimeout(timer);resolve(r);}try{fetch(API,{method:'POST',headers:{'Content-Type':'text/plain;charset=utf-8'},body:JSON.stringify(body),redirect:'follow'}).then(function(r){if(r.ok===false)throw Error('response');return r.json();}).then(finish,function(){finish(null);});}catch(e){finish(null);}});
+  }
+  function current(rev,seq,phone){return !disposed&&revision===rev&&sequence===seq&&number()===phone&&must.checked;}
+  function otpError(r,stage){
+    if(r&&r.dup){var receipt={state:'duplicate',form:collect(),staff:st.staff};joinReceipts[number()]=receipt;showJoinReceipt(receipt);return;}
+    if(r&&r.retryAfter)joinOtpCooldowns[number()]=Math.max(joinOtpCooldowns[number()]||0,Date.now()+waitFor(r));
+    if(r&&(r.expired||r.otpRequired)){clearAuth();status.textContent='인증 시간이 지났습니다. 인증번호를 다시 받아 주세요.';error('인증번호를 다시 받아 인증해 주세요.');}
+    else if(r&&r.invalidCode)error('인증번호가 맞지 않습니다. 문자에 적힌 6자리를 확인해 주세요.');
+    else if(r&&r.phoneLimit)error('인증 요청이 많습니다. 잠시 후 다시 시도해 주세요.');
+    else if(r&&r.dailyLimit)error('오늘 인증 요청이 마감되었습니다. 담당 영업사원에게 문의해 주세요.');
+    else if(r&&r.rateLimited)error('잠시 기다린 뒤 인증번호를 다시 요청해 주세요.');
+    else if(r&&r.bad)error('휴대폰 번호와 필수 항목을 다시 확인해 주세요.');
+    else error(stage==='verify'?'인증번호를 확인하지 못했습니다. 잠시 후 다시 확인해 주세요.':'지금은 인증문자를 보낼 수 없습니다. 잠시 후 다시 시도해 주세요.');
+  }
+  send.onclick=function(){
+    if(disposed||sending||verifying||submitting||!validate())return;render();if(cooldown()>0||verified())return;
+    var receipt=joinReceipts[number()];if(receipt){showJoinReceipt(receipt);return;}
+    var phone=number(),rev=revision,seq=++sequence;sending=true;clearAuth();error('');joinOtpCooldowns[phone]=Date.now()+60000;render();
+    post({action:'join_send_otp',phone:phone,agree:true}).then(function(r){
+      if(!current(rev,seq,phone))return;sending=false;sentOnce=true;
+      if(!r||(r.ok&&(r.otpSent||r.pending))){
+        joinOtpCooldowns[phone]=Date.now()+waitFor(r);var ttl=lifetime(r);challengePhone=phone;challengeUntil=Date.now()+ttl;
+        cw.hidden=ttl<=0;status.textContent=ttl<=0?'인증 시간이 지났습니다. 인증번호를 다시 받아 주세요.':(r&&r.otpSent?'인증번호를 보냈습니다. 5분 안에 입력해 주세요.':'인증문자 발송 결과를 확인 중입니다. 문자가 도착하면 인증번호를 입력해 주세요. 재요청은 대기 시간이 지난 뒤 가능합니다.');
+        if(ttl>0)code.focus();
+      }else otpError(r,'send');render();
+    });
+  };
+  verify.onclick=function(){
+    if(disposed||sending||verifying||submitting||!validate())return;render();if(cw.hidden||!/^\d{6}$/.test(code.value)||challengePhone!==number()||Date.now()>=challengeUntil){error('문자로 온 인증번호 6자리를 입력해 주세요.');return;}
+    var phone=number(),rev=revision,seq=++sequence;verifying=true;error('');render();
+    post({action:'join_verify_otp',phone:phone,code:code.value}).then(function(r){
+      if(!current(rev,seq,phone))return;verifying=false;
+      if(r&&r.ok&&typeof r.proof==='string'&&r.proof){var ttl=lifetime(r);if(ttl>0){proof=r.proof;proofUntil=Date.now()+ttl;verifiedPhone=phone;challengePhone='';challengeUntil=0;code.value='';cw.hidden=true;status.textContent='휴대폰 번호 인증이 완료되었습니다. 아래 버튼을 눌러 가입을 신청해 주세요.';btn.focus();}else{clearAuth();status.textContent='인증 시간이 지났습니다. 인증번호를 다시 받아 주세요.';}}
+      else otpError(r,'verify');render();
+    });
+  };
+  form.addEventListener('submit',function(e){
+    e.preventDefault();if(disposed||submitting||sending||verifying||!validate())return;render();
+    var phone=number(),existing=joinReceipts[phone];if(existing){showJoinReceipt(existing);return;}
+    if(!verified()){error('휴대폰 번호를 먼저 인증해 주세요.');return;}
+    var submittedProof=proof,snapshot=collect(),receipt={state:'checking',form:Object.assign({},snapshot),staff:st.staff};joinReceipts[phone]=receipt;
+    var rev=revision,seq=++sequence;submitting=true;clearAuth();error('');render();
+    var payload={action:'join_submit',phone:snapshot.phone,proof:submittedProof,staff:st.staff,store:snapshot.store,type:'',name:'',must:true,opt:false,tasks:'kakao,insta,app',src:(new URLSearchParams(location.search).get('from')==='link'?'링크':(OWNER?'QR':'직원폰'))};submittedProof='';
+    post(payload).then(function(r){
+      if(r&&r.ok&&r.verified===true){receipt.state='done';receipt.coupon=r.coupon||'pending';receipt.mode=r.mode==='api'||r.api===true?'api':'mail';receipt.accepted=Number.isInteger(r.accepted)&&r.accepted>=0&&r.accepted<=2?r.accepted:0;receipt.delivered=r.delivered===2?2:0;ev('join_done',{coupon:receipt.coupon,mode:receipt.mode});}
+      else if(r&&r.dup)receipt.state='duplicate';
+      else if(r&&(r.otpRequired||r.expired||r.invalidCode||r.bad||r.need||r.configuration||r.dailyLimit||r.budget||r.rateLimited)){
+        delete joinReceipts[phone];if(!current(rev,seq,phone))return;submitting=false;clearAuth();otpError(r,'verify');render();return;
+      }
+      if(!disposed&&revision===rev&&sequence===seq&&number()===phone)showJoinReceipt(receipt);
+    });
+  });
+  ph.addEventListener('input',function(){var next=number();ph.value=dash(ph.value);f.phone=ph.value;if(next!==lastPhone){lastPhone=next;invalidate();}else render();});
+  store.addEventListener('input',function(){f.store=store.value.trim();render();});
+  must.addEventListener('change',function(){f.must=must.checked;if(!must.checked)invalidate();else render();});
+  code.addEventListener('input',function(){code.value=code.value.replace(/\D/g,'').slice(0,6);error('');render();});
+  var cancel=document.getElementById('cancel');if(cancel)cancel.onclick=home;
+  var timer=setInterval(render,1000);joinScreenCleanup=function(){disposed=true;revision++;sequence++;clearAuth();clearInterval(timer);};
+  var existing=joinReceipts[number()];if(existing){showJoinReceipt(existing);return function(){};}
+  render();return render;
+}
+
 function step1(){
   var f=st.form,d=st.done;ev('join_form');
   var appLinks=OS==='ios'?[[APP_IOS,'앱 받기']]:OS==='and'?[[APP_AND,'앱 받기']]:[[APP_IOS,'아이폰'],[APP_AND,'안드로이드']];
@@ -267,64 +372,33 @@ function step1(){
      task('app','3','주문 앱 받기','세왕상사 주류주문 · 전화 없이 주문',appLinks,'ink')+
    '</section>'+
    '<form class="card cpn'+(allDone()?'':' lock')+'" id="f1" novalidate>'+
-     '<div class="cpn-h"><span class="lk">'+(allDone()?ICON.cup:'🔒')+'</span><div><b>아메리카노 쿠폰 2장 받기</b><span class="muted" id="lockMsg">'+(allDone()?'매장 이름과 번호를 넣으면 문자로 보내 드려요':'위 3개를 마치면 열려요')+'</span></div></div>'+
+     '<div class="cpn-h"><span class="lk">'+(allDone()?ICON.cup:'🔒')+'</span><div><b>아메리카노 쿠폰 2장 받기</b><span class="muted" id="lockMsg">'+(allDone()?'번호를 인증한 뒤 쿠폰을 신청해 주세요':'위 3개를 마치면 열려요')+'</span></div></div>'+
      '<div class="cpn-body">'+
      '<label class="f" for="store">매장 이름<input id="store" type="text" autocomplete="organization" placeholder="예: 세왕 비스트로 성수점" value="'+esc(f.store)+'"></label>'+
      '<label class="f" for="phone">휴대폰 번호<input id="phone" type="tel" inputmode="numeric" autocomplete="tel" placeholder="010-0000-0000" value="'+esc(f.phone)+'"></label>'+
-     '<label class="agree warnbox" for="must"><input id="must" type="checkbox"'+(f.must?' checked':'')+'><span><em>[필수]</em> 쿠폰 발송을 위해 매장명·휴대폰 번호 수집에 동의하며, <b>쿠폰 유효기간은 30일이며, 유효기간이 지나면 연장·환불·재발송이 안 되는 것</b>을 확인했습니다.</span></label>'+
-     '<div id="codeWrap" hidden><label class="f" for="code">문자로 온 인증번호 4자리<input id="code" class="code" type="tel" inputmode="numeric" maxlength="4" autocomplete="one-time-code" placeholder="····"></label></div>'+
-     '<p class="err" id="e1" hidden></p>'+
-     '<button class="btn gold" type="submit" id="goBtn">'+(MANUAL?'가입하고 쿠폰 신청':'인증번호 받기')+'</button>'+
+     '<label class="agree warnbox" for="must"><input id="must" type="checkbox"'+(f.must?' checked':'')+'><span><em>[필수]</em> 가입·문자인증·쿠폰 발송을 위해 매장명·휴대폰 번호 수집 및 이용에 동의하며, <b>쿠폰 유효기간은 30일이며, 유효기간이 지나면 연장·환불·재발송이 안 되는 것</b>을 확인했습니다.</span></label>'+
+     '<button class="btn ghost" type="button" id="sendOtp" aria-controls="codeWrap">인증번호 받기</button>'+
+     '<div class="join-otp" id="codeWrap" hidden><label class="f" for="code">문자로 온 인증번호 6자리<input id="code" class="code" type="text" inputmode="numeric" pattern="[0-9]{6}" maxlength="6" autocomplete="one-time-code" aria-describedby="otpStatus otpTime" placeholder="000000"></label><button class="btn ghost" type="button" id="verifyOtp">인증번호 확인</button></div>'+
+     '<p class="muted" id="otpStatus" role="status" aria-live="polite">휴대폰 번호를 인증하면 가입을 신청할 수 있습니다.</p><p class="join-otp-time" id="otpTime" aria-live="off"></p>'+
+     '<p class="err" id="e1" role="alert" hidden></p>'+
+     '<button class="btn gold" type="submit" id="goBtn" disabled>가입하고 쿠폰 신청</button>'+
    '</div></form>'+
    (OWNER?'':'<button class="btn ghost" id="cancel" type="button">직원 화면으로</button>'),
    function(){
-     var form=document.getElementById('f1'),er=document.getElementById('e1'),btn=document.getElementById('goBtn'),cw=document.getElementById('codeWrap');
+     var form=document.getElementById('f1'),otpRefresh=function(){};
      function refresh(){
        app.querySelectorAll('.task').forEach(function(t){var k=t.dataset.k;t.classList.toggle('on',d[k]);t.querySelector('.tk').textContent=d[k]?'✓':({kakao:'1',insta:'2',app:'3'})[k];});
        var was=form.classList.contains('lock');
        form.classList.toggle('lock',!allDone());
        document.getElementById('pgFill').style.width=(cnt()*100/3)+'%';document.getElementById('pgTxt').textContent=cnt()+' / 3';
-       document.getElementById('lockMsg').textContent=allDone()?'매장 이름과 번호를 넣으면 문자로 보내 드려요':'위 3개를 마치면 열려요';
+       document.getElementById('lockMsg').textContent=allDone()?'번호를 인증한 뒤 쿠폰을 신청해 주세요':'위 3개를 마치면 열려요';
        form.querySelector('.lk').innerHTML=allDone()?ICON.cup:'🔒';
        if(was&&allDone()){setTimeout(function(){form.scrollIntoView({behavior:'smooth',block:'start'});},350);}
+       otpRefresh();
      }
      app.querySelectorAll('.tbtn').forEach(function(a){a.addEventListener('click',function(){d[a.dataset.k]=true;ev('join_task',{task:a.dataset.k});setTimeout(refresh,300);});});
-     var ph=document.getElementById('phone');ph.addEventListener('input',function(){ph.value=dash(ph.value);});
-     var cb=document.getElementById('cancel');if(cb)cb.onclick=home;
-     if(st.sent){cw.hidden=false;btn.textContent='확인하고 쿠폰 받기';}
-     form.addEventListener('submit',function(e){
-       e.preventDefault();er.hidden=true;
-       if(!allDone()){er.textContent='위 3개(카카오·인스타·앱)를 먼저 눌러 주세요.';er.hidden=false;return;}
-       f.store=document.getElementById('store').value.trim();f.phone=dash(ph.value);f.must=document.getElementById('must').checked;
-       var msg='';
-       if(!f.store)msg='매장 이름을 입력해 주세요.';
-       else if(!/^01[016789]-\d{3,4}-\d{4}$/.test(f.phone))msg='휴대폰 번호를 다시 확인해 주세요. (예: 010-1234-5678)';
-       else if(!f.must)msg='[필수] 항목에 체크해 주세요.';
-       if(msg){er.textContent=msg;er.hidden=false;return;}
-       if(MANUAL){verify('');return;}
-       if(!st.sent){
-         busy(btn,true,'인증번호 보내는 중…');
-         call({action:'join_send',phone:f.phone,staff:st.staff,store:f.store}).then(function(r){
-           busy(btn,false);
-           if(r&&r.ok){st.sent=true;ev('join_sms_sent');cw.hidden=false;btn.textContent='확인하고 쿠폰 받기';document.getElementById('code').focus();
-             er.textContent=f.phone+'로 인증번호를 보냈습니다. (5분 안에 입력)';er.hidden=false;er.classList.add('ok');}
-           else{er.classList.remove('ok');er.textContent=(r&&r.msg)||'잠시 후 다시 시도해 주세요.';er.hidden=false;}
-         });
-         return;
-       }
-       var v=document.getElementById('code').value.replace(/\D/g,'');
-       er.classList.remove('ok');
-       if(v.length!==4){er.textContent='인증번호 4자리를 입력해 주세요.';er.hidden=false;return;}
-       verify(v);
-     });
-     function verify(v){
-       busy(btn,true,MANUAL?'접수 중…':'확인 중…');
-       call({action:'join_verify',src:(new URLSearchParams(location.search).get('from')==='link'?'링크':(OWNER?'QR':'직원폰')),phone:f.phone,code:v,staff:st.staff,store:f.store,type:'',name:'',must:true,opt:false,tasks:'kakao,insta,app'}).then(function(r){
-         busy(btn,false);
-         if(r&&r.ok){st.coupon=r.coupon||'pending';ev('join_done',{coupon:st.coupon,manual:MANUAL});step3();}
-         else{er.classList.remove('ok');er.textContent=(r&&r.msg)||'잠시 후 다시 시도해 주세요.';er.hidden=false;if(!MANUAL&&r&&r.expired){st.sent=false;cw.hidden=true;btn.textContent='인증번호 다시 받기';}}
-       });
-     }
+     otpRefresh=setupJoinOtp(f);
+
    });
 }
 
@@ -335,6 +409,12 @@ function step3(){
         :(st.coupon==='partial'?['쿠폰 1장을 보냈습니다','문자함을 확인해 주세요. 나머지 1장은 담당 영업사원이 따로 챙겨 드립니다. 쿠폰 유효기간은 30일입니다.']
         :(st.coupon==='limit'?['쿠폰은 담당자가 따로 챙겨 드립니다','오늘 쿠폰 수량이 끝나 담당 영업사원이 직접 보내 드립니다.']
         :['메가MGC커피 아메리카노 쿠폰 2장을 보내 드립니다',esc(st.form.phone)+'로 담당자가 확인한 뒤 영업일 1일 안에 각 1잔 쿠폰 2장을 문자로 보내 드립니다. 유효기간은 30일입니다.']));
+  if(st.deliveryMode==='api'){
+    cp=st.coupon==='limit'?['쿠폰 발송을 보류했습니다','가입은 완료되었습니다. 오늘 쿠폰 수량이 끝나 발송 상태를 확인하고 있습니다. 추가 신청하지 말고 담당 영업사원에게 문의해 주세요.']
+      :(st.delivered===2?['메가MGC커피 아메리카노 쿠폰 2장 전달을 확인했습니다',esc(st.form.phone)+' 문자함을 확인해 주세요. 각 1잔 쿠폰이 문자 2통으로 도착하며, 유효기간은 30일입니다.']
+      :(st.accepted===2?['쿠폰 2장 발송을 접수했습니다',esc(st.form.phone)+'로 각 1잔 쿠폰을 문자 2통으로 보내는 중입니다. 실제 전달 여부는 확인 중이며 순서대로 도착할 수 있습니다. 한 장만 도착했거나 늦어져도 추가 신청하지 말고 담당 영업사원에게 확인해 주세요.']
+      :['쿠폰 발송 결과를 확인하고 있습니다','가입은 완료되었습니다. 쿠폰 2장의 발송 결과가 아직 확정되지 않았습니다. 추가 신청하지 말고 담당 영업사원에게 확인해 주세요.']));
+  }
   show('<div class="center" style="display:grid;gap:10px;margin-top:12px"><div class="done-ic">'+ICON.check+'</div><h1>가입이 끝났습니다</h1><p class="muted">'+esc(st.form.store)+' 사장님, 반갑습니다.</p></div>'+
    '<div class="gift"><span class="cup">'+ICON.cup+'</span><div><b>'+cp[0]+'</b><span class="muted">'+cp[1]+'</span></div></div>'+
    '<p class="muted center">담당: '+esc(s[0])+' '+esc(s[1])+'</p>'+
