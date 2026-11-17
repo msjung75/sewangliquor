@@ -294,6 +294,21 @@ footer b{color:var(--navy);font-family:var(--serif)}
 .cover h1{font-size:32px}
 .raffle-note{font-weight:700}
 .hb .num{overflow-wrap:normal;white-space:nowrap}
+
+/* Verify ownership of the number before requesting share vouchers. */
+.rf-bg{padding:16px;overflow-y:auto;overscroll-behavior:contain}
+.rf-box{box-sizing:border-box;max-height:calc(100vh - 32px);max-height:calc(100dvh - 32px);overflow-y:auto;overscroll-behavior:contain}
+.rf-otp-area{margin-top:12px;padding-top:12px;border-top:1px solid var(--line)}
+.rf-otp-label{display:block;text-align:left;font-size:14px;font-weight:700;color:var(--navy)}
+.rf-otp-row{display:flex;align-items:stretch;gap:8px}
+.rf-otp-row .rf-in{min-width:0;flex:1;font-variant-numeric:tabular-nums;letter-spacing:.12em}
+.rf-box .rf-otp-row .btn{width:auto;flex:0 0 110px;margin:6px 0 10px;min-height:48px;padding:10px 8px;white-space:normal;font-size:14px}
+.rf-box .rf-otp-status{font-size:14px;line-height:1.5;color:var(--navy);margin:10px 0 4px;text-align:left}
+.rf-box .rf-otp-time{font-size:12px;font-variant-numeric:tabular-nums;margin:0 0 8px;text-align:left}
+.rf-box .btn:disabled{opacity:.55;cursor:not-allowed;box-shadow:none}
+.rf-in:focus-visible,.rf-box .btn:focus-visible,.rf-ag input:focus-visible{outline:3px solid var(--coral);outline-offset:3px}
+@media(max-width:360px){.rf-box{padding:20px 14px}.rf-box .rf-otp-row .btn{flex-basis:96px}}
+
 </style>
 <style>
 .rf-box{max-height:calc(100dvh - 40px);overflow:auto;box-sizing:border-box}
@@ -641,9 +656,9 @@ footer b{color:var(--navy);font-family:var(--serif)}
 
 
   // W46 share vouchers: phone and both consents first; sharing follows an accepted request.
-  var CP={"campaign": "本期前5位申请者可获得2张MegaMGC Coffee冰美式咖啡券，每张可兑换1杯。满5人即截止，每个手机号限领1次。请填写手机号并勾选同意事项，申请咖啡券后再分享链接。", "read": "☕ MegaMGC Coffee咖啡2杯（07 · 本期前5位，满5人即截止）", "button": "领取2张咖啡券并分享", "title": "MegaMGC Coffee美式咖啡2杯", "description": "本期前5位 · 满5人即截止 · 冰美式咖啡券2张（每张1杯）· 每个手机号限领1次。请填写可接收短信的韩国手机号。", "phone": "韩国手机号", "privacy": "【必选】我同意收集和使用我的手机号，仅用于发送咖啡券。", "terms": "【必选】我已知悉：咖啡券有效期为30天，过期后不可延期、退款或补发。", "submit": "申请2张咖啡券", "sending": "申请中…", "close": "关闭", "share": "分享报告链接", "copied": "链接已复制", "sentTitle": "2张咖啡券已发送", "sent": "请查看手机短信。您将收到2张MegaMGC Coffee冰美式咖啡券，每张可兑换1杯，有效期为30天。", "pendingTitle": "咖啡券申请已受理", "pending": "我们核对申请后，将依次通过短信发送2张咖啡券。目前尚未发送，可能需要一些时间。", "accepted": "咖啡券申请已受理，工作人员将确认发送状态。", "dup": "该手机号已提交过申请，每个手机号限领1次。", "soldout": "本期5个名额已领完。", "expired": "本期咖啡券申请已截止。", "bad": "请检查韩国手机号。（例如：010-1234-5678）", "need": "请勾选两项必选同意事项。", "fail": "暂时无法确认申请结果。请勿重复申请，请联系世王营业负责人。", "apiTitle": "咖啡券发送申请已受理", "apiAccepted": "已受理2张MegaMGC Coffee咖啡券的发送申请，短信送达情况仍在确认中。请勿重复申请，请查看手机短信。", "apiPending": "正在确认咖啡券发送结果。为避免重复发送，请勿再次申请，请联系世王营业负责人。", "dailyLimit": "今日咖啡券申请已结束，请明天再确认。", "configuration": "正在检查咖啡券发送设置，请稍后再确认。", "budget": "咖啡券发送暂时保留，请联系世王营业负责人。"};
+  var CP={"campaign":"本期前5位申请者可获得2张MegaMGC Coffee冰美式咖啡券，每张可兑换1杯。满5人即截止，每个手机号限领1次。请填写手机号并勾选同意事项，申请咖啡券后再分享链接。","read":"☕ MegaMGC Coffee咖啡2杯（07 · 本期前5位，满5人即截止）","button":"领取2张咖啡券并分享","title":"MegaMGC Coffee美式咖啡2杯","description":"本期前5位 · 满5人即截止 · 冰美式咖啡券2张 · 每个手机号限领1次。请先通过短信验证韩国手机号，再申请咖啡券。","phone":"韩国手机号","privacy":"【必选】我同意收集和使用手机号，仅用于号码验证和发送咖啡券。","terms":"【必选】我已知悉：咖啡券有效期为30天，过期后不可延期、退款或补发。","submit":"申请2张咖啡券","sending":"申请中…","close":"关闭","share":"分享报告链接","copied":"链接已复制","sentTitle":"2张咖啡券已发送","sent":"请查看手机短信。您将收到2张MegaMGC Coffee冰美式咖啡券，每张可兑换1杯，有效期为30天。","pendingTitle":"咖啡券申请已受理","pending":"我们核对申请后，将依次通过短信发送2张咖啡券。目前尚未发送，可能需要一些时间。","accepted":"咖啡券申请已受理，工作人员将确认发送状态。","dup":"该手机号已提交过申请，每个手机号限领1次。","soldout":"本期5个名额已领完。","expired":"本期咖啡券申请已截止。","bad":"请检查韩国手机号。（例如：010-1234-5678）","need":"请勾选两项必选同意事项。","fail":"暂时无法确认申请结果。请勿重复申请，请联系世王营业负责人。","apiTitle":"咖啡券发送申请已受理","apiAccepted":"已受理2张MegaMGC Coffee咖啡券的发送申请，短信送达情况仍在确认中。请勿重复申请，请查看手机短信。","apiPending":"正在确认咖啡券发送结果。为避免重复发送，请勿再次申请，请联系世王营业负责人。","dailyLimit":"今日咖啡券申请已结束，请明天再确认。","configuration":"正在检查咖啡券发送设置，请稍后再确认。","budget":"咖啡券发送暂时保留，请联系世王营业负责人。","otpSend":"获取验证码","otpResend":"重新获取验证码","otpSending":"正在发送验证码…","otpCode":"短信验证码","otpVerify":"验证号码","otpVerifying":"正在验证…","otpSent":"验证码已通过短信发送，请在5分钟内输入。","otpSendPending":"正在确认短信发送结果。收到短信后，请输入验证码。60秒后可重新获取。","otpVerified":"手机号验证成功。请点击下方按钮申请2张咖啡券。","otpNeed":"请先验证手机号。","otpChanged":"手机号已更改，请重新获取验证码。","otpExpired":"验证已过期，请重新获取验证码。","otpBad":"请输入短信中的6位验证码。","otpWrong":"验证码不正确，请再次核对。","otpLimit":"验证次数较多，请稍后再试。","otpPhoneLimit":"该号码已达到今日验证次数上限，请明天再试。","otpDailyLimit":"今日手机号验证申请已结束，请明天再试。","otpUnavailable":"目前无法发送验证短信，请稍后再试。","otpVerifyFail":"暂时无法确认验证结果，请再次核对验证码。","otpWait":"{seconds}秒后可重新获取","otpCodeTime":"验证码输入剩余时间 {time}","otpProofTime":"验证有效时间剩余 {time}"};
   var COUPON_URL="https://script.google.com/macros/s/AKfycbyJ8-w8S1LK9_lB36t-2oWgBCqki90PIE5ogTNfnQP5ffNTORRqfUyerlpsnYgDlW3B/exec", CP_END=null;
-  var couponModal=null, couponReceipt=null;
+  var couponModal=null, couponReceipt=null, couponOtpCooldowns={};
   // API acceptance does not confirm that the text message was delivered.
   function couponDelivered(d){return Number(d.delivered)>=2;}
   function couponResult(d){
@@ -676,19 +691,101 @@ footer b{color:var(--navy);font-family:var(--serif)}
   function showCouponForm(){
     if(couponModal) return;
     var opener=document.activeElement,bg=document.createElement('div');bg.className='rf-bg';couponModal=bg;
-    bg.innerHTML='<div class="rf-box" role="dialog" aria-modal="true" aria-labelledby="shareCouponTitle"><p class="big">☕</p><h3 id="shareCouponTitle"></h3><p class="p1"></p><form class="frm" novalidate><label class="rf-phone-label" for="shareCouponPhone"></label><input id="shareCouponPhone" class="rf-in" type="tel" inputmode="tel" autocomplete="tel" maxlength="13" placeholder="010-0000-0000" required><label class="rf-ag"><input class="rf-privacy" type="checkbox" required><span></span></label><label class="rf-ag"><input class="rf-terms" type="checkbox" required><span></span></label><p class="rf-err" role="alert"></p><button class="btn g rf-submit" type="submit"></button></form><p class="rf-result" role="status" hidden></p><button class="btn g rf-share" type="button" hidden></button><button class="btn w rf-close" type="button" style="border:0;background:transparent;color:var(--mute)"></button></div>';
-    var title=bg.querySelector('h3'),intro=bg.querySelector('.p1'),form=bg.querySelector('form'),phone=bg.querySelector('.rf-in'),privacy=bg.querySelector('.rf-privacy'),terms=bg.querySelector('.rf-terms'),error=bg.querySelector('.rf-err'),submit=bg.querySelector('.rf-submit'),result=bg.querySelector('.rf-result'),share=bg.querySelector('.rf-share'),close=bg.querySelector('.rf-close'),busy=false;
+    bg.innerHTML='<div class="rf-box" role="dialog" aria-modal="true" aria-labelledby="shareCouponTitle" aria-describedby="shareCouponIntro"><p class="big">☕</p><h3 id="shareCouponTitle"></h3><p class="p1" id="shareCouponIntro"></p><form class="frm" novalidate><label class="rf-phone-label" for="shareCouponPhone"></label><input id="shareCouponPhone" class="rf-in" type="tel" inputmode="tel" autocomplete="tel" maxlength="13" placeholder="010-0000-0000" aria-describedby="shareCouponError shareCouponOtpStatus" required><label class="rf-ag"><input class="rf-privacy" type="checkbox" required><span></span></label><label class="rf-ag"><input class="rf-terms" type="checkbox" required><span></span></label><button class="btn w rf-otp-send" type="button" aria-controls="shareCouponOtpArea"></button><div class="rf-otp-area" id="shareCouponOtpArea" hidden><label class="rf-otp-label" for="shareCouponOtp"></label><div class="rf-otp-row"><input id="shareCouponOtp" class="rf-in rf-otp-input" type="text" inputmode="numeric" autocomplete="one-time-code" maxlength="6" pattern="[0-9]{6}" placeholder="000000" aria-describedby="shareCouponError shareCouponOtpStatus"><button class="btn w rf-otp-verify" type="button"></button></div></div><p class="rf-otp-status" id="shareCouponOtpStatus" role="status" aria-live="polite"></p><p class="rf-otp-time" aria-live="off"></p><p class="rf-err" id="shareCouponError" role="alert"></p><button class="btn g rf-submit" type="submit" aria-describedby="shareCouponOtpStatus" disabled></button></form><p class="rf-result" role="status" hidden></p><button class="btn g rf-share" type="button" hidden></button><button class="btn w rf-close" type="button" style="border:0;background:transparent;color:var(--mute)"></button></div>';
+    var title=bg.querySelector('h3'),intro=bg.querySelector('.p1'),form=bg.querySelector('form'),phone=bg.querySelector('#shareCouponPhone'),privacy=bg.querySelector('.rf-privacy'),terms=bg.querySelector('.rf-terms'),error=bg.querySelector('.rf-err'),submit=bg.querySelector('.rf-submit'),result=bg.querySelector('.rf-result'),share=bg.querySelector('.rf-share'),close=bg.querySelector('.rf-close');
+    var otpSend=bg.querySelector('.rf-otp-send'),otpArea=bg.querySelector('.rf-otp-area'),otpCode=bg.querySelector('.rf-otp-input'),otpVerify=bg.querySelector('.rf-otp-verify'),otpStatus=bg.querySelector('.rf-otp-status'),otpTime=bg.querySelector('.rf-otp-time');
+    var state={number:'',revision:0,sequence:0,sendBusy:false,verifyBusy:false,challenge:false,challengePhone:'',codeUntil:0,proof:'',proofPhone:'',proofUntil:0,everSent:false,status:CP.otpNeed},couponBusy=false,disposed=false;
     title.textContent=CP.title;intro.textContent=CP.description;bg.querySelector('.rf-phone-label').textContent=CP.phone;
-    bg.querySelector('.rf-privacy+span').textContent=CP.privacy;bg.querySelector('.rf-terms+span').textContent=CP.terms;
-    submit.textContent=CP.submit;share.textContent=CP.share;close.textContent=CP.close;
-    function dismiss(){bg.remove();couponModal=null;if(opener&&opener.focus)opener.focus();}
-    function accepted(d){
-      couponReceipt=d;form.hidden=true;intro.hidden=true;result.hidden=false;share.hidden=false;
-      var receipt=couponResult(d);
-      title.textContent=receipt.title;result.textContent=receipt.text;
-      share.focus();
+    bg.querySelector('.rf-privacy+span').textContent=CP.privacy;bg.querySelector('.rf-terms+span').textContent=CP.terms;bg.querySelector('.rf-otp-label').textContent=CP.otpCode;
+    share.textContent=CP.share;close.textContent=CP.close;
+    function digits(){return phone.value.replace(/\D/g,'');}
+    function consented(){return privacy.checked&&terms.checked;}
+    function hasProof(){return !!state.proof&&state.proofPhone===digits()&&Date.now()<state.proofUntil;}
+    function secondsLeft(number){return Math.max(0,Math.ceil(((couponOtpCooldowns[number]||0)-Date.now())/1000));}
+    function hold(number,seconds){var n=Number(seconds);if(!isFinite(n)||n<0)n=60;couponOtpCooldowns[number]=Math.max(couponOtpCooldowns[number]||0,Date.now()+Math.min(n,86400)*1000);}
+    function lifetime(d){if(!d||d.expiresIn===undefined)return 300000;var n=Number(d.expiresIn);return isFinite(n)&&n>=0?Math.min(n,300)*1000:0;}
+    function clock(until){var s=Math.max(0,Math.ceil((until-Date.now())/1000));return Math.floor(s/60)+':'+('0'+s%60).slice(-2);}
+    function render(){
+      if(disposed)return;
+      var verified=hasProof(),wait=secondsLeft(digits()),authBusy=state.sendBusy||state.verifyBusy;
+      phone.disabled=couponBusy;privacy.disabled=couponBusy;terms.disabled=couponBusy;
+      otpSend.hidden=verified;otpSend.disabled=couponBusy||authBusy||wait>0;
+      otpSend.textContent=state.sendBusy?CP.otpSending:(wait?CP.otpWait.replace('{seconds}',wait):(state.everSent?CP.otpResend:CP.otpSend));
+      otpArea.hidden=!state.challenge||verified;otpCode.disabled=couponBusy||authBusy||verified;
+      otpVerify.disabled=couponBusy||authBusy||!state.challenge||otpCode.value.replace(/\D/g,'').length!==6;
+      otpVerify.textContent=state.verifyBusy?CP.otpVerifying:CP.otpVerify;
+      submit.disabled=couponBusy||authBusy||!verified||!consented();submit.textContent=couponBusy?CP.sending:CP.submit;
+      form.setAttribute('aria-busy',couponBusy||authBusy?'true':'false');
+      if(otpStatus.textContent!==state.status)otpStatus.textContent=state.status;
+      otpTime.textContent=verified?CP.otpProofTime.replace('{time}',clock(state.proofUntil)):(state.challenge?CP.otpCodeTime.replace('{time}',clock(state.codeUntil)):'');
     }
-    close.onclick=dismiss;share.onclick=function(){doShare();};
+    function invalidate(message){
+      state.revision++;state.sequence++;state.sendBusy=false;state.verifyBusy=false;state.challenge=false;state.challengePhone='';state.codeUntil=0;state.proof='';state.proofPhone='';state.proofUntil=0;otpCode.value='';state.status=message||CP.otpNeed;error.textContent='';render();
+    }
+    function syncPhone(){var n=digits();if(n!==state.number){state.number=n;invalidate(state.everSent?CP.otpChanged:CP.otpNeed);}return n;}
+    function validBase(number){
+      if(!/^01[016789]\d{7,8}$/.test(number)){error.textContent=CP.bad;phone.focus();return false;}
+      if(!consented()){error.textContent=CP.need;(!privacy.checked?privacy:terms).focus();return false;}
+      if(CP_END&&Date.now()>Date.parse(CP_END)){error.textContent=CP.expired;return false;}
+      return true;
+    }
+    function operation(number){return {number:number,revision:state.revision,sequence:++state.sequence};}
+    function current(op){return !disposed&&op.revision===state.revision&&op.sequence===state.sequence&&op.number===digits()&&consented();}
+    function post(data){
+      return new Promise(function(resolve,reject){
+        var settled=false,timer=setTimeout(function(){if(!settled){settled=true;reject(new Error('network'));}},20000);
+        fetch(COUPON_URL,{method:'POST',headers:{'Content-Type':'text/plain;charset=utf-8'},body:JSON.stringify(data),redirect:'follow'})
+          .then(function(r){if(!r.ok)throw new Error('network');return r.json();})
+          .then(function(d){if(!settled){settled=true;clearTimeout(timer);resolve(d);}},function(){if(!settled){settled=true;clearTimeout(timer);reject(new Error('network'));}});
+      });
+    }
+    function openCode(op,d,pending){
+      var ttl=lifetime(d);if(ttl<=0){invalidate(CP.otpExpired);error.textContent=CP.otpExpired;return;}
+      state.challenge=true;state.challengePhone=op.number;state.codeUntil=Date.now()+ttl;state.status=pending?CP.otpSendPending:CP.otpSent;render();otpCode.focus();
+    }
+    function otpError(d,stage){
+      if(d&&d.dup){accepted(d);return;}
+      if(d&&(d.otpRequired||(d.expired&&d.otp))){invalidate(CP.otpExpired);error.textContent=CP.otpExpired;return;}
+      if(d&&(d.soldout||d.expired||d.bad||d.need||d.budget)){var why=couponError(d);invalidate(CP[why]);error.textContent=CP[why];return;}
+      if(d&&d.invalidCode){error.textContent=CP.otpWrong;otpCode.value='';render();otpCode.focus();return;}
+      if(d&&(d.rateLimited||d.phoneLimit||d.dailyLimit)){
+        invalidate(d.phoneLimit?CP.otpPhoneLimit:(d.dailyLimit?CP.otpDailyLimit:CP.otpLimit));error.textContent=state.status;return;
+      }
+      error.textContent=d&&d.configuration?CP.otpUnavailable:(stage==='verify'?CP.otpVerifyFail:CP.otpUnavailable);render();
+    }
+    function sendCode(){
+      var number=syncPhone();if(couponBusy||state.sendBusy||state.verifyBusy||hasProof())return;error.textContent='';
+      if(!validBase(number))return;
+      if(secondsLeft(number)){error.textContent=CP.otpWait.replace('{seconds}',secondsLeft(number));render();return;}
+      var op=operation(number);state.sendBusy=true;state.challenge=false;state.proof='';state.proofUntil=0;state.everSent=true;state.status=CP.otpSending;otpCode.value='';hold(number,60);render();
+      post({action:'share_send_otp',week:WEEK,phone:number,agree:true,lang:LANG}).then(function(d){
+        if(d&&d.retryAfter!==undefined)hold(op.number,d.retryAfter);
+        if(!current(op))return;state.sendBusy=false;
+        if(d&&(d.dup||d.soldout||(d.expired&&!d.otp))){otpError(d,'send');return;}
+        if(d&&d.ok){openCode(op,d,d.otpSent!==true);return;}
+        otpError(d,'send');
+      }).catch(function(){if(!current(op))return;state.sendBusy=false;openCode(op,null,true);});
+    }
+    function verifyCode(){
+      var number=syncPhone();if(couponBusy||state.sendBusy||state.verifyBusy)return;error.textContent='';
+      if(!validBase(number))return;
+      if(!state.challenge||state.challengePhone!==number||Date.now()>=state.codeUntil){invalidate(CP.otpExpired);error.textContent=CP.otpExpired;return;}
+      var code=otpCode.value.replace(/\D/g,'');if(!/^\d{6}$/.test(code)){error.textContent=CP.otpBad;otpCode.focus();return;}
+      var op=operation(number);state.verifyBusy=true;state.status=CP.otpVerifying;render();
+      post({action:'share_verify_otp',week:WEEK,phone:number,code:code}).then(function(d){
+        if(d&&d.retryAfter!==undefined)hold(op.number,d.retryAfter);
+        if(!current(op))return;state.verifyBusy=false;
+        if(d&&d.ok&&typeof d.proof==='string'&&d.proof){var ttl=lifetime(d);if(ttl<=0){invalidate(CP.otpExpired);error.textContent=CP.otpExpired;return;}state.proof=d.proof;state.proofPhone=number;state.proofUntil=Date.now()+ttl;state.challenge=false;state.codeUntil=0;otpCode.value='';state.status=CP.otpVerified;render();submit.focus();return;}
+        otpError(d,'verify');
+      }).catch(function(){if(!current(op))return;state.verifyBusy=false;error.textContent=CP.otpVerifyFail;state.status=CP.otpSent;render();});
+    }
+    function accepted(d){
+      couponReceipt=d;state.proof='';state.proofPhone='';state.proofUntil=0;otpCode.value='';clearInterval(ticker);
+      if(disposed)return;form.hidden=true;intro.hidden=true;result.hidden=false;share.hidden=false;
+      var receipt=couponResult(d);title.textContent=receipt.title;result.textContent=receipt.text;share.focus();
+    }
+    function dismiss(){disposed=true;state.sequence++;state.proof='';state.proofPhone='';otpCode.value='';clearInterval(ticker);bg.remove();couponModal=null;if(opener&&opener.focus)opener.focus();}
+    close.onclick=dismiss;share.onclick=function(){doShare();};otpSend.onclick=sendCode;otpVerify.onclick=verifyCode;
     bg.addEventListener('click',function(e){if(e.target===bg)dismiss();});
     bg.addEventListener('keydown',function(e){
       if(e.key==='Escape'){e.preventDefault();dismiss();}
@@ -699,27 +796,32 @@ footer b{color:var(--navy);font-family:var(--serif)}
         else if(!e.shiftKey&&document.activeElement===last){e.preventDefault();first.focus();}
       }
     });
-    phone.addEventListener('input',function(){var v=phone.value.replace(/\D/g,'').slice(0,11);phone.value=v.length>7?v.slice(0,3)+'-'+v.slice(3,v.length-4)+'-'+v.slice(-4):(v.length>3?v.slice(0,3)+'-'+v.slice(3):v);});
+    phone.addEventListener('input',function(){var v=phone.value.replace(/\D/g,'').slice(0,11);phone.value=v.length>7?v.slice(0,3)+'-'+v.slice(3,v.length-4)+'-'+v.slice(-4):(v.length>3?v.slice(0,3)+'-'+v.slice(3):v);syncPhone();render();});
+    phone.addEventListener('keydown',function(e){if(e.key==='Enter'&&!hasProof()){e.preventDefault();sendCode();}});
+    otpCode.addEventListener('input',function(){otpCode.value=otpCode.value.replace(/\D/g,'').slice(0,6);error.textContent='';render();});
+    otpCode.addEventListener('keydown',function(e){if(e.key==='Enter'){e.preventDefault();verifyCode();}});
+    [privacy,terms].forEach(function(el){el.addEventListener('change',function(){if(!consented())invalidate(CP.otpNeed);else render();});});
     form.addEventListener('submit',function(e){
-      e.preventDefault();if(busy)return;error.textContent='';
-      var number=phone.value.replace(/\D/g,'');
-      if(!/^01[016789]\d{7,8}$/.test(number)){error.textContent=CP.bad;phone.focus();return;}
-      if(!privacy.checked||!terms.checked){error.textContent=CP.need;(!privacy.checked?privacy:terms).focus();return;}
-      if(CP_END&&Date.now()>Date.parse(CP_END)){error.textContent=CP.expired;return;}
-      busy=true;submit.disabled=true;phone.disabled=true;privacy.disabled=true;terms.disabled=true;submit.textContent=CP.sending;
-      var ref=couponRef();
-      fetch(COUPON_URL,{method:'POST',headers:{'Content-Type':'text/plain;charset=utf-8'},body:JSON.stringify({action:'share_coupon',week:WEEK,phone:number,lang:LANG,agree:true,ref:ref}),redirect:'follow'})
-        .then(function(r){if(!r.ok)throw new Error('http');return r.json();})
-        .then(function(d){
-          if(d&&d.ok){ev('report_web_coupon',{ref:ref,result:couponResult(d).event});accepted(d);return;}
-          var status=couponError(d);
-          error.textContent=CP[status];ev('report_web_coupon',{ref:ref,result:status});
-        })
-        .catch(function(){error.textContent=CP.fail;ev('report_web_coupon',{result:'fail'});})
-        .then(function(){busy=false;submit.disabled=false;phone.disabled=false;privacy.disabled=false;terms.disabled=false;submit.textContent=CP.submit;});
+      e.preventDefault();var number=syncPhone();if(couponBusy||state.sendBusy||state.verifyBusy)return;error.textContent='';
+      if(!validBase(number))return;
+      if(!hasProof()){error.textContent=CP.otpNeed;render();(state.challenge?otpCode:otpSend).focus();return;}
+      var proof=state.proof,ref=couponRef();couponBusy=true;couponReceipt={ok:true,api:true,accepted:0,pending:true};render();
+      post({action:'share_coupon',week:WEEK,phone:number,lang:LANG,agree:true,ref:ref,proof:proof}).then(function(d){
+        if(d&&(d.ok||d.dup)){ev('report_web_coupon',{ref:ref,result:couponResult(d).event});accepted(d);return;}
+        if(d&&d.otpRequired){couponReceipt=null;couponBusy=false;if(disposed)return;invalidate(CP.otpExpired);error.textContent=CP.otpExpired;otpSend.focus();return;}
+        var status=couponError(d),known=d&&(d.expired||d.soldout||d.dailyLimit||d.configuration||d.config||d.invalidConfig||d.budget||d.bad||d.need);
+        ev('report_web_coupon',{ref:ref,result:status});
+        if(known){couponReceipt=null;if(!disposed)error.textContent=CP[status];}
+        else accepted(couponReceipt);
+      }).catch(function(){ev('report_web_coupon',{result:'fail'});accepted(couponReceipt);}).then(function(){couponBusy=false;if(!disposed&&!form.hidden)render();});
     });
-    document.body.appendChild(bg);
-    if(couponReceipt) accepted(couponReceipt);else phone.focus();
+    var ticker=setInterval(function(){
+      if(disposed)return;
+      if(!couponBusy&&state.proof&&Date.now()>=state.proofUntil)invalidate(CP.otpExpired);
+      else if(!state.verifyBusy&&!state.sendBusy&&state.challenge&&Date.now()>=state.codeUntil)invalidate(CP.otpExpired);
+      else render();
+    },1000);
+    document.body.appendChild(bg);if(couponReceipt)accepted(couponReceipt);else{render();phone.focus();}
   }
 
   function doShare(){
