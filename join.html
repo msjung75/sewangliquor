@@ -218,13 +218,13 @@ function pickStaff(){
 function home(){
   if(st.staff==null)return pickStaff();
   show('<div><h1>업주님 가입,<br>1분이면 끝납니다</h1><p class="muted" style="margin-top:6px">카카오 채널 추가 · 인스타 팔로우 · 주문 앱 받기를 마쳐야 쿠폰 받기가 열립니다. <b style="color:var(--ink)">옆에서 업주님 화면을 같이 확인해 주세요.</b></p></div>'+
-   '<button class="big primary" id="goQR" type="button"><span class="ic">'+ICON.qr+'</span><div><b>업주님 폰으로 가입</b><span>QR을 보여 주면 업주님이 찍어서 가입</span></div></button>'+
+   '<p class="muted" style="margin:0;font-weight:700;color:var(--ink)">신규 거래처 가입</p>'+'<button class="big primary" id="goQR" type="button"><span class="ic">'+ICON.qr+'</span><div><b>업주님 폰으로 가입</b><span>QR을 보여 주면 업주님이 찍어서 가입</span></div></button>'+
    '<button class="big" id="goHere" type="button"><span class="ic">'+ICON.phone+'</span><div><b>이 폰에서 바로 가입</b><span>내 폰을 업주님께 건네서 입력</span></div></button>'+
    '<button class="big" id="goLink" type="button"><span class="ic">'+ICON.talk+'</span><div><b>링크 보내기</b><span>방문 못 할 때 카톡·문자로 보내기</span></div></button>'+
-   '<section class="card"><div style="display:flex;justify-content:space-between;align-items:baseline"><h2>내가 받은 가입</h2><span class="muted" id="cnt">불러오는 중…</span></div><div class="list" id="mine"><div class="row"><div class="t">잠시만요…</div></div></div></section>',
+   '<div id="exBox" style="display:grid;gap:10px"></div>'+'<section class="card"><div style="display:flex;justify-content:space-between;align-items:baseline"><h2>내가 받은 가입</h2><span class="muted" id="cnt">불러오는 중…</span></div><div class="list" id="mine"><div class="row"><div class="t">잠시만요…</div></div></div></section>',
    function(){
      document.getElementById('goQR').onclick=qr;
-     document.getElementById('goHere').onclick=function(){resetForm();chooseKind();};
+     document.getElementById('goHere').onclick=function(){resetForm();st.kind='new';step1();};
      document.getElementById('goLink').onclick=function(){
        var b=this,url=JOIN_URL+'?s='+(st.staff+1)+'&from=link',s=STAFF[st.staff];
        var txt='사장님, 세왕상사 '+s[0]+' '+s[1]+'입니다. 아래 링크에서 카카오 채널 추가·인스타 팔로우·주문 앱 받기를 해 주시면 메가MGC커피 아메리카노 쿠폰 2장(각 1잔·유효기간 30일)을 보내 드립니다(1분).';
@@ -233,9 +233,24 @@ function home(){
        var all=txt+'\n'+url,done=function(){b.querySelector('b').textContent='복사했습니다 — 카톡에 붙여 넣으세요';setTimeout(function(){b.querySelector('b').textContent='링크 보내기';},2500);};
        if(navigator.clipboard){navigator.clipboard.writeText(all).then(done,function(){prompt('복사해서 보내세요',all);});}else{prompt('복사해서 보내세요',all);}
      };
-     call({action:'join_survey_status',staff:st.staff}).then(function(r){var c=document.getElementById('cnt');if(!c||!r||!r.ok||!r.staffLimit)return;var n=document.createElement('p');n.className='muted';n.style.margin='0';
-       n.innerHTML=r.open?'<b style="color:var(--ink)">기존 거래처 설문 '+r.staffCount+' / '+r.staffLimit+'</b> — 업주님 화면에서 “이미 세왕 거래처예요”를 고르면 됩니다':'기존 거래처 설문 마감 ('+r.staffCount+' / '+r.staffLimit+')';
-       var sec=c.closest('section');if(sec)sec.parentNode.insertBefore(n,sec);});
+     call({action:'join_survey_status',staff:st.staff}).then(function(r){
+       var box=document.getElementById('exBox');if(!box||!r||!r.ok||!r.staffLimit)return;st.svStat=r;
+       if(!r.open){box.innerHTML='<p class="muted" style="margin:8px 0 0">기존 거래처 설문 마감 ('+r.staffCount+' / '+r.staffLimit+')</p>';return;}
+       box.innerHTML='<p class="muted" style="margin:8px 0 0;font-weight:700;color:var(--ink)">기존 거래처 의견 받기 · '+r.staffCount+' / '+r.staffLimit+'</p>'+
+         '<button class="big" id="exQR" type="button"><span class="ic">'+ICON.qr+'</span><div><b>업주님 폰으로 설문</b><span>QR을 찍으면 설문 4가지 → 커피 2잔</span></div></button>'+
+         '<button class="big" id="exHere" type="button"><span class="ic">'+ICON.phone+'</span><div><b>이 폰에서 바로 설문</b><span>내 폰을 업주님께 건네서 입력</span></div></button>'+
+         '<button class="big" id="exLink" type="button"><span class="ic">'+ICON.talk+'</span><div><b>설문 링크 보내기</b><span>방문 못 할 때 카톡·문자로</span></div></button>';
+       document.getElementById('exQR').onclick=function(){qr('ex');};
+       document.getElementById('exHere').onclick=function(){resetForm();st.kind='existing';st.done={kakao:true,insta:true,app:true};ev('survey_here');step1();};
+       document.getElementById('exLink').onclick=function(){
+         var b=this,url=JOIN_URL+'?s='+(st.staff+1)+'&k=ex&from=link',s=STAFF[st.staff];
+         var txt='사장님, 세왕상사 '+s[0]+' '+s[1]+'입니다. 이번 주 시장 리포트에 대한 의견 4가지만 골라 주시면 메가MGC커피 아메리카노 쿠폰 2장(각 1잔·유효기간 30일)을 보내 드립니다(1분).';
+         ev('survey_link_send');
+         if(navigator.share){navigator.share({title:'세왕상사 리포트 의견',text:txt,url:url}).catch(function(){});return;}
+         var all=txt+'\n'+url,done=function(){b.querySelector('b').textContent='복사했습니다 — 카톡에 붙여 넣으세요';setTimeout(function(){b.querySelector('b').textContent='설문 링크 보내기';},2500);};
+         if(navigator.clipboard){navigator.clipboard.writeText(all).then(done,function(){prompt('복사해서 보내세요',all);});}else{prompt('복사해서 보내세요',all);}
+       };
+     });
      call({action:'join_stats',staff:st.staff}).then(function(d){
        var c=document.getElementById('cnt'),m=document.getElementById('mine');if(!c)return;
        if(!d||!d.ok){c.textContent='';m.innerHTML='<div class="row"><div class="t">기록을 불러오지 못했습니다.</div></div>';return;}
@@ -248,10 +263,10 @@ function home(){
 }
 
 /* 3. QR */
-function qr(){
-  var url=JOIN_URL+'?s='+(st.staff+1);ev('join_qr');
-  show('<h1>이 화면을<br>업주님께 보여 주세요</h1><p class="muted">업주님이 자기 폰 카메라로 찍으면 가입 화면이 열립니다.</p><div class="qrbox"><div id="qr"></div></div><p class="url">'+esc(url)+'</p>'+
-   '<div class="gift"><span class="cup">'+ICON.cup+'</span><div><b>가입하면 메가MGC커피 아메리카노 2잔</b><span class="muted">각 1잔 쿠폰 2장 · 문자 발송 · 유효기간 30일</span></div></div>'+
+function qr(kind){
+  var ex=kind==='ex',url=JOIN_URL+'?s='+(st.staff+1)+(ex?'&k=ex':'');ev(ex?'survey_qr':'join_qr');
+  show('<h1>이 화면을<br>업주님께 보여 주세요</h1><p class="muted">업주님이 자기 폰 카메라로 찍으면 '+(ex?'설문':'가입')+' 화면이 열립니다.</p><div class="qrbox"><div id="qr"></div></div><p class="url">'+esc(url)+'</p>'+
+   '<div class="gift"><span class="cup">'+ICON.cup+'</span><div><b>'+(ex?'의견 4가지 골라 주시면':'가입하면')+' 메가MGC커피 아메리카노 2잔</b><span class="muted">각 1잔 쿠폰 2장 · 문자 발송 · 유효기간 30일</span></div></div>'+
    '<button class="btn ghost" id="back" type="button">처음으로</button>',
    function(){
      try{new QRCode(document.getElementById('qr'),{text:url,width:520,height:520,colorDark:'#14213a',colorLight:'#ffffff',correctLevel:QRCode.CorrectLevel.M});}
@@ -503,7 +518,11 @@ function step3(){
 document.getElementById('switchBtn').onclick=pickStaff;
 load();
 var qs=new URLSearchParams(location.search),sv=parseInt(qs.get('s'),10);
-if(sv>=1&&sv<=STAFF.length){OWNER=true;st.staff=sv-1;document.getElementById('switchBtn').hidden=true;resetForm();chooseKind();}
+if(sv>=1&&sv<=STAFF.length){OWNER=true;st.staff=sv-1;document.getElementById('switchBtn').hidden=true;resetForm();
+  if(qs.get('k')==='ex'){show('<div class="center" style="margin-top:8px"><p class="muted">잠시만요…</p></div>');call({action:'join_survey_status',staff:st.staff}).then(function(r){
+    if(r&&r.ok&&r.open){st.svStat=r;st.kind='existing';st.done={kakao:true,insta:true,app:true};step1();}
+    else show('<div class="card center" style="display:grid;gap:8px"><h1>이번 설문은 마감되었습니다</h1><p class="muted">관심 가져 주셔서 고맙습니다. 매주 수요일 리포트는 카톡 채널에서 받아 보실 수 있어요.</p><a class="btn kakao" href="'+CHANNEL+'" target="_blank" rel="noopener">카톡 채널 추가</a></div>');});}
+  else{st.kind='new';step1();}}
 else home();
 })();
 </script>
