@@ -138,9 +138,14 @@
 
 <script>
 /* 웹뷰 지원 주차 — 이 리스트에 있는 주차만 "바로보기" 활성화 */
-const WEB_VIEW_WEEKS = ['2026-W22','2026-W23','2026-W24','2026-W25','2026-W26','2026-W27','2026-W28','2026-W29','2026-W30','2026-W31','2026-W32','2026-W33','2026-W34','2026-W35','2026-W36','2026-W37','2026-W38','2026-W40','2026-W41','2026-W42','2026-W43','2026-W44','2026-W45','2026-W46','2026-W47'];
+const WEB_VIEW_WEEKS = ['2026-W22','2026-W23','2026-W24','2026-W25','2026-W26','2026-W27','2026-W28','2026-W29','2026-W30','2026-W31','2026-W32','2026-W33','2026-W34','2026-W35','2026-W36','2026-W37','2026-W38','2026-W40','2026-W41','2026-W42','2026-W43','2026-W44','2026-W45','2026-W46','2026-W47','2026-W48'];
 
 const REPORTS = [
+  { week:"2026-W48", date:"2026-11-25",
+    issue:{ko:"2026년 11월 4주차",en:"Week 4, November 2026",zh:"2026年11月第4周",ja:"2026年11月第4週"},
+    title:{ko:"주류동향 W48 — 손님이 고르기 쉬운 가게 · 우리 음식에 맞는 한 잔과 메뉴판 한 줄",en:"Market Weekly W48 — The Easy-to-Choose Restaurant · One Drink That Fits Your Food, One Line on the Menu",zh:"酒类周报 W48 — 让客人容易选择的店 · 一杯配得上你家菜的酒，菜单上加一句话",ja:"酒類ウィークリー W48 — お客様が選びやすい店 · 料理に合う一杯とメニューの一行"},
+    desc:{ko:"해외 바텐더 95%가 \"내 추천을 손님이 거의 따른다\"고 답했습니다. 메뉴판의 맛 한 줄이 그 추천 역할을 합니다. 요즘 뜨는 키워드(대방어·노포·송년회)와 함께 구이·한식·횟집·양식집별로 음식에 맞는 한 잔과 메뉴판 문구를 골랐습니다. 2분 웹판.",en:"95% of bartenders surveyed say guests almost always follow their recommendation. A one-line taste note on the menu does the same job. Alongside this week's rising keywords (yellowtail, old-school spots, year-end parties), we pick one drink and one menu line each for grill, Korean, seafood and Western restaurants. 2-minute web edition.",zh:"95%的受访调酒师表示，客人几乎都会听从他们的推荐。菜单上一句口味说明就能起到同样作用。结合近期热门关键词（大鰤鱼、老字号、年末聚会），我们为烤肉店、韩餐、海鲜店和西餐店各选了一款搭配的酒和一句菜单文案。2分钟网页版。",ja:"海外のバーテンダーの95%が「自分の勧めを客はほぼ受け入れる」と回答。メニューの味の一行が同じ役割を果たします。最近伸びているキーワード（寒ブリ・老舗・忘年会）とともに、焼肉・韓食・刺身・洋食の店ごとに料理に合う一杯とメニュー文言を選びました。2分ウェブ版。"}
+  },
   { week:"2026-W47", date:"2026-11-18",
     issue:{ko:"2026년 11월 3주차",en:"Week 3, November 2026",zh:"2026年11月第3周",ja:"2026年11月第3週"},
     title:{ko:"주류동향 W47 — 일본 야키토리 새 얼굴 25곳은 작고 젊었다 · 술은 이름과 잔으로 판다",en:"Market Weekly W47 — Japan's 25 New Yakitori Top-100 Shops Are Small and Young · They Sell Drinks by Name and by the Glass",zh:"酒类周报 W47 — 日本烧鸟百名店新面孔25家：小而年轻 · 酒按品牌和杯数来卖",ja:"酒類ウィークリー W47 — 焼き鳥百名店の新顔25店は小さく若かった · 酒は銘柄と杯で売る"},
